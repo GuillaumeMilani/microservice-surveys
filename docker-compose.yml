@@ -1,0 +1,19 @@
+version: '2'
+services:
+  mongo:
+    image: mongo
+    restart: always
+    container_name: amt_mongo
+    expose: 
+      - 27017
+    ports:
+      - 27017:27017
+  mongo-express:
+    image: mongo-express
+    links:
+      - mongo:mongo
+    container_name: amt_mongo-express
+    expose:
+      - 8081
+    ports:
+      - 8081:8081
