@@ -2,10 +2,7 @@ package io.lozzikit.survey.entities;
 
 import org.joda.time.DateTime;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
 
@@ -17,13 +14,31 @@ public class SurveyEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private long id;
 
+    @Column(nullable = false)
     private long owner;
+
+    @Column(nullable = false)
     private String title;
+
+    @Column(nullable = false)
     private String description;
+
+    @Column(nullable = false)
     private DateTime createdAt;
+
+    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
     private Set<QuestionEntity> questions;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public long getOwner() {
         return owner;
