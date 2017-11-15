@@ -1,11 +1,11 @@
 package io.lozzikit.survey.repositories;
 
-import io.lozzikit.survey.entities.FruitEntity;
+import io.lozzikit.survey.entities.SurveyEntity;
 import org.springframework.data.repository.CrudRepository;
 
 /**
  * Created by Olivier Liechti on 26/07/17.
  */
-public interface FruitRepository extends CrudRepository<FruitEntity, Long>{
+public interface SurveyRepository extends CrudRepository<SurveyEntity, Long>{
 
 }
