@@ -1,0 +1,14 @@
+io/lozzikit/survey/api/util/ApiOriginFilter.class
+io/lozzikit/survey/entities/FruitEntity.class
+io/lozzikit/survey/repositories/FruitRepository.class
+io/lozzikit/survey/RFC3339DateFormat.class
+io/lozzikit/survey/configuration/HomeController.class
+io/lozzikit/survey/api/FruitsApi.class
+io/lozzikit/survey/configuration/SwaggerDocumentationConfig.class
+io/lozzikit/survey/api/model/Fruit.class
+io/lozzikit/survey/api/util/ApiResponseMessage.class
+io/lozzikit/survey/Swagger2SpringBoot.class
+io/lozzikit/survey/api/exceptions/NotFoundException.class
+io/lozzikit/survey/Swagger2SpringBoot$ExitException.class
+io/lozzikit/survey/api/endpoints/FruitsApiController.class
+io/lozzikit/survey/api/exceptions/ApiException.class
