@@ -18,8 +18,6 @@ tags:
   externalDocs:
     description: "Find out more"
     url: "http://swagger.io"
-- name: "answer"
-  description: "Survey answers"
 schemes:
 - "https"
 - "http"
@@ -88,47 +86,14 @@ securityDefinitions:
     name: "api_key"
     in: "header"
 definitions:
-  User:
-    type: "object"
-    required:
-    - "email"
-    - "id"
-    - "password"
-    - "username"
-    properties:
-      id:
-        type: "integer"
-        format: "int64"
-      username:
-        type: "string"
-      firstName:
-        type: "string"
-      lastName:
-        type: "string"
-      email:
-        type: "string"
-      password:
-        type: "string"
-    xml:
-      name: "User"
   Survey:
     type: "object"
     required:
-    - "id"
     - "owner"
     properties:
-      id:
+      owner:
         type: "integer"
         format: "int64"
-      owner:
-        $ref: "#/definitions/User"
-      status:
-        type: "string"
-        description: "type of survey"
-        enum:
-        - "wip"
-        - "opened"
-        - "closed"
       title:
         type: "string"
       description:
@@ -145,12 +110,8 @@ definitions:
   Question:
     type: "object"
     required:
-    - "id"
     - "question"
     properties:
-      id:
-        type: "integer"
-        format: "int64"
       question:
         type: "string"
     xml:
