@@ -9,6 +9,7 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -16,7 +17,29 @@ public class SurveyService {
     @Autowired
     SurveyRepository surveyRepository;
 
-    public long saveSurvey(Survey survey) {
+    public List<Survey> getAllSurveys() {
+        List<SurveyEntity> surveyEntities = surveyRepository.findAll();
+        
+        return surveyEntities.stream()
+                .map(surveyEntity -> entityToSurvey(surveyEntity))
+                .collect(Collectors.toList());
+    }
+
+    public String saveSurvey(Survey survey) {
+        SurveyEntity surveyEntity = surveyToEntity(survey);
+
+        surveyRepository.save(surveyEntity);
+        return surveyEntity.getId();
+    }
+
+    public Survey getSurvey(String id) {
+        SurveyEntity surveyEntity = surveyRepository.findOne(id);
+        Survey survey = entityToSurvey(surveyEntity);
+
+        return survey;
+    }
+
+    private SurveyEntity surveyToEntity(Survey survey) {
         SurveyEntity surveyEntity = new SurveyEntity();
 
         surveyEntity.setTitle(survey.getTitle());
@@ -28,12 +51,10 @@ public class SurveyService {
                 .collect(Collectors.toSet())
         );
 
-        surveyRepository.save(surveyEntity);
-        return surveyEntity.getId();
+        return surveyEntity;
     }
 
-    public Survey getSurvey(long id) {
-        SurveyEntity surveyEntity = surveyRepository.findOne(id);
+    private Survey entityToSurvey(SurveyEntity surveyEntity) {
         Survey survey = new Survey();
 
         survey.setTitle(surveyEntity.getTitle());

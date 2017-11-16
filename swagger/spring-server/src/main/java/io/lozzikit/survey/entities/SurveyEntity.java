@@ -1,42 +1,39 @@
 package io.lozzikit.survey.entities;
 
 import org.joda.time.DateTime;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.io.Serializable;
 import java.util.Set;
 
 /**
  * Created by Olivier Liechti on 26/07/17.
  */
-@Entity
+@Document(collection = "surveys")
 public class SurveyEntity implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private long id;
+    private String id;
 
-    @Column(nullable = false)
     private long owner;
 
-    @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false)
     private String description;
 
-    @Column(nullable = false)
     private DateTime createdAt;
 
     @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
     private Set<QuestionEntity> questions;
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

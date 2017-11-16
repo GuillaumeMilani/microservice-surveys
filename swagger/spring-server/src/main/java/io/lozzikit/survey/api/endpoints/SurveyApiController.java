@@ -21,7 +21,7 @@ public class SurveyApiController implements SurveyApi {
     }
 
     @Override
-    public ResponseEntity<Survey> getSurveyById(Long surveyId) {
+    public ResponseEntity<Survey> getSurveyById(String surveyId) {
         Survey survey = surveyService.getSurvey(surveyId);
 
         if (survey == null) {
