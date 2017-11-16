@@ -3,10 +3,12 @@ package io.lozzikit.survey.api.endpoints;
 import io.lozzikit.survey.api.SurveyApi;
 import io.lozzikit.survey.api.model.Survey;
 import io.lozzikit.survey.services.SurveyService;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class SurveyApiController implements SurveyApi {
@@ -15,13 +17,13 @@ public class SurveyApiController implements SurveyApi {
 
     @Override
     public ResponseEntity<Void> addSurvey(Survey body) {
-        surveyService.saveSurvey(body);
+        String newSurveyId = surveyService.saveSurvey(body);
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @Override
-    public ResponseEntity<Survey> getSurveyById(String surveyId) {
+    public ResponseEntity<Survey> getSurveyById(@ApiParam(value = "ID of survey to return", required = true) @PathVariable("surveyId") String surveyId) {
         Survey survey = surveyService.getSurvey(surveyId);
 
         if (survey == null) {

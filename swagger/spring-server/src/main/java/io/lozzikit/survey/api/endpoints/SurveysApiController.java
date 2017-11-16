@@ -18,6 +18,6 @@ public class SurveysApiController implements SurveysApi {
     public ResponseEntity<List<Survey>> getSurveys() {
         List<Survey> surveys = surveyService.getAllSurveys();
 
-        return ResponseEntity.ok(surveys);
+        return ResponseEntity.ok().body(surveys);
     }
 }

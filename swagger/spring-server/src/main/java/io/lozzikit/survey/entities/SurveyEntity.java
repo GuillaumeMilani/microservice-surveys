@@ -3,11 +3,9 @@ package io.lozzikit.survey.entities;
 import org.joda.time.DateTime;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import java.io.Serializable;
-import java.util.Set;
+import java.util.List;
 
 /**
  * Created by Olivier Liechti on 26/07/17.
@@ -26,8 +24,7 @@ public class SurveyEntity implements Serializable {
 
     private DateTime createdAt;
 
-    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
-    private Set<QuestionEntity> questions;
+    private List<QuestionEntity> questions;
 
     public String getId() {
         return id;
@@ -69,11 +66,11 @@ public class SurveyEntity implements Serializable {
         this.createdAt = createdAt;
     }
 
-    public Set<QuestionEntity> getQuestions() {
+    public List<QuestionEntity> getQuestions() {
         return questions;
     }
 
-    public void setQuestions(Set<QuestionEntity> questions) {
+    public void setQuestions(List<QuestionEntity> questions) {
         this.questions = questions;
     }
 }

@@ -19,9 +19,9 @@ public class SurveyService {
 
     public List<Survey> getAllSurveys() {
         List<SurveyEntity> surveyEntities = surveyRepository.findAll();
-        
+
         return surveyEntities.stream()
-                .map(surveyEntity -> entityToSurvey(surveyEntity))
+                .map(this::entityToSurvey)
                 .collect(Collectors.toList());
     }
 
@@ -34,9 +34,8 @@ public class SurveyService {
 
     public Survey getSurvey(String id) {
         SurveyEntity surveyEntity = surveyRepository.findOne(id);
-        Survey survey = entityToSurvey(surveyEntity);
 
-        return survey;
+        return entityToSurvey(surveyEntity);
     }
 
     private SurveyEntity surveyToEntity(Survey survey) {
@@ -47,8 +46,8 @@ public class SurveyService {
         surveyEntity.setOwner(survey.getOwner());
         surveyEntity.setCreatedAt(DateTime.now());
         surveyEntity.setQuestions(survey.getQuestions().stream()
-                .map(question -> questionToEntity(question))
-                .collect(Collectors.toSet())
+                .map(this::questionToEntity)
+                .collect(Collectors.toList())
         );
 
         return surveyEntity;
@@ -62,7 +61,7 @@ public class SurveyService {
         survey.setOwner(surveyEntity.getOwner());
         survey.setCreatedAt(surveyEntity.getCreatedAt());
         survey.setQuestions(surveyEntity.getQuestions().stream()
-                .map(questionEntity -> entityToQuestion(questionEntity))
+                .map(this::entityToQuestion)
                 .collect(Collectors.toList())
         );
 
