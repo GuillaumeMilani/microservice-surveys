@@ -92,3 +92,29 @@ hs_err_pid*
 
 # End of https://www.gitignore.io/api/java,intellij+all
 
+=======
+# Latex file
+*.aux
+*.glo
+*.idx
+*.log
+*.toc
+*.ist
+*.acn
+*.acr
+*.alg
+*.bbl
+*.pdf
+*.blg
+*.dvi
+*.glg
+*.gls
+*.ilg
+*.ind
+*.lof
+*.lot
+*.maf
+*.mtc
+*.mtc1
+*.out
+*.synctex.gz

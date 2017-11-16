@@ -1,4 +1,8 @@
 # microservice-surveys
+
+# Docker-compose
+En utilisant `docker-compose up --build` à la racine du mico-service, on peut lancer un serveur *mango* ainsi que *mango-express*, qui sera en écoute sur le port **8081** afin d'accéder à la base de donnée. 
+
 # Features
 ## Création de sondage
 - [ ] Titre du sondage
