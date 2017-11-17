@@ -1,6 +1,6 @@
 package io.lozzikit.survey.api.spec.helpers;
 
-import io.avalia.fruits.api.DefaultApi;
+import io.lozzikit.survey.api.SurveyApi;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -10,17 +10,18 @@ import java.util.Properties;
  */
 public class Environment {
 
-    private DefaultApi api = new DefaultApi();
+    private SurveyApi api = new SurveyApi();
 
     public Environment() throws IOException {
         Properties properties = new Properties();
         properties.load(this.getClass().getClassLoader().getResourceAsStream("environment.properties"));
-        String url = properties.getProperty("io.avalia.fruits.server.url");
+        //String url = properties.getProperty("io.lozzikit.surveys.server.url");
+        String url = "localhost";
         api.getApiClient().setBasePath(url);
 
     }
 
-    public DefaultApi getApi() {
+    public SurveyApi getApi() {
         return api;
     }
 
