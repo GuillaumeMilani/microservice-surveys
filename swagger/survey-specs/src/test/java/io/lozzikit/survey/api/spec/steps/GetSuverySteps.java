@@ -44,7 +44,7 @@ public class GetSuverySteps {
         try {
            ApiResponse lastApiResponse = api.addSurveyWithHttpInfo(survey);
             if(lastApiResponse.getStatusCode() == 201) {
-                ID = ??
+              //  ID = ??
             } else {
                 throw new IllegalArgumentException("unknown response");
             }
