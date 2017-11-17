@@ -39,7 +39,7 @@ paths:
               $ref: "#/definitions/Survey"
       security:
       - api_key: []
-  /survey:
+  /surveys:
     post:
       tags:
       - "survey"
@@ -63,7 +63,7 @@ paths:
           description: "Invalid input"
       security:
       - api_key: []
-  /survey/{surveyId}:
+  /surveys/{surveyId}:
     get:
       tags:
       - "survey"
