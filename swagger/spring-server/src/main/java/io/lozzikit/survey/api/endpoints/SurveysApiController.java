@@ -4,6 +4,7 @@ import io.lozzikit.survey.api.SurveysApi;
 import io.lozzikit.survey.api.model.Survey;
 import io.lozzikit.survey.services.SurveyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
@@ -18,6 +19,6 @@ public class SurveysApiController implements SurveysApi {
     public ResponseEntity<List<Survey>> getSurveys() {
         List<Survey> surveys = surveyService.getAllSurveys();
 
-        return ResponseEntity.ok().body(surveys);
+        return new ResponseEntity<>(surveys, HttpStatus.OK);
     }
 }

@@ -28,8 +28,6 @@ paths:
       - "survey"
       summary: "Get all surveys"
       operationId: "getSurveys"
-      consumes:
-      - "application/json"
       produces:
       - "application/json"
       responses:
@@ -60,7 +58,7 @@ paths:
           $ref: "#/definitions/Survey"
       responses:
         201:
-          description: "Survey created"
+          description: "Return the id of the created survey"
         405:
           description: "Invalid input"
       security:

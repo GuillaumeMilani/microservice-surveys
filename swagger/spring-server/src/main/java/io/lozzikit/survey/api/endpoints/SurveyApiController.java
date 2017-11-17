@@ -9,6 +9,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @Controller
 public class SurveyApiController implements SurveyApi {
@@ -16,10 +20,14 @@ public class SurveyApiController implements SurveyApi {
     SurveyService surveyService;
 
     @Override
-    public ResponseEntity<Void> addSurvey(Survey body) {
+    public ResponseEntity<Void> addSurvey(@RequestBody Survey body) {
         String newSurveyId = surveyService.saveSurvey(body);
 
-        return ResponseEntity.status(HttpStatus.OK).build();
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest().path("/{id}")
+                .buildAndExpand(newSurveyId).toUri();
+
+        return ResponseEntity.created(location).build();
     }
 
     @Override
@@ -27,9 +35,9 @@ public class SurveyApiController implements SurveyApi {
         Survey survey = surveyService.getSurvey(surveyId);
 
         if (survey == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
-            return ResponseEntity.status(HttpStatus.OK).body(survey);
+            return new ResponseEntity<>(survey, HttpStatus.OK);
         }
     }
 }
