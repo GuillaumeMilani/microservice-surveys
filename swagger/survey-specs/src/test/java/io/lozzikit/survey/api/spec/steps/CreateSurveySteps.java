@@ -58,11 +58,7 @@ public class CreateSurveySteps {
 
     @Then("^I receive a (\\d+) status code")
     public void i_receive_a_status_code(int arg1) throws Throwable {
-        if(survey == null) {
-            Assert.assertEquals(405, lastStatusCode);
-        } else {
-            Assert.assertEquals(201, lastStatusCode);
-        }
+            Assert.assertEquals(arg1, lastStatusCode);
     }
 
     @Given("^I have a wrong survey payload$")

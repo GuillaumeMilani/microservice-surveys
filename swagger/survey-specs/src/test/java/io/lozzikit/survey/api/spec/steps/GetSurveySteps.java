@@ -16,7 +16,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * Created by Tony on 17.11.2017.
  */
-public class GetSuverySteps {
+public class GetSurveySteps {
     private Environment environment;
     private SurveyApi api;
     private String ID;
@@ -28,13 +28,13 @@ public class GetSuverySteps {
     private boolean lastApiCallThrewException;
     private int lastStatusCode;
 
-    public GetSuverySteps() {
+    public GetSurveySteps() {
         this.environment = environment;
         this.api = environment.getApi();
     }
 
 
-    @Given("^I know a survey ID$")
+    @Given("^I know a survey id$")
     public void iKnowASurveyID() throws Throwable {
         Survey survey = new io.lozzikit.survey.api.dto.Survey();
         try {
@@ -50,11 +50,11 @@ public class GetSuverySteps {
     }
 
     @Given("^I know a invalid survey id$")
-    public void i_know_a_invalid_suvery_id() {
+    public void i_know_a_invalid_survey_id() {
         ID = invalidID;
     }
 
-    @Given("^I know a survey ID that is not used$")
+    @Given("^I know a unknown survey id$")
     public void i_know_a_survey_id_that_is_not_used() {
         ID = unknownID;
     }
@@ -72,17 +72,5 @@ public class GetSuverySteps {
             lastApiException = e;
             lastStatusCode = lastApiException.getCode();
         }
-    }
-
-    @Then("^I receive a (\\d+) status code$")
-    public void i_receive_a_status_code(int arg1) throws Throwable {
-        if (ID.equals(unknownID)) {
-            assertEquals(404, lastStatusCode);
-        } else if (ID.equals(invalidID)) {
-            assertEquals(400, lastStatusCode);
-        } else {
-            assertEquals(201, lastStatusCode);
-        }
-
     }
 }
