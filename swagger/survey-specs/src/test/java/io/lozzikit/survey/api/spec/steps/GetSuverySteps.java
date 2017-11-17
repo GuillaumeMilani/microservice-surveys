@@ -33,10 +33,6 @@ public class GetSuverySteps {
         this.api = environment.getApi();
     }
 
-    @Given("^there is a Surveys server$")
-    public void there_is_a_Surveys_server() throws Throwable {
-        Assert.assertNotNull(api);
-    }
 
     @Given("^I know a survey ID$")
     public void iKnowASurveyID() throws Throwable {
@@ -63,7 +59,7 @@ public class GetSuverySteps {
         ID = unknownID;
     }
 
-    @When("^I GET it to the /survey/{ID} endpoint$")
+    @When("^I GET it to the /survey/ID endpoint$")
     public void iGETItToTheSurveyIDEndpoint() throws Throwable {
         try {
             lastApiResponse = api.getSurveyByIdWithHttpInfo(ID);
