@@ -3,10 +3,6 @@ package io.lozzikit.survey.api.spec.steps;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import io.avalia.fruits.ApiException;
-import io.avalia.fruits.ApiResponse;
-import io.avalia.fruits.api.DefaultApi;
-import io.avalia.fruits.api.dto.Fruit;
 import io.lozzikit.survey.api.spec.helpers.Environment;
 
 import static org.junit.Assert.assertNotNull;
@@ -17,7 +13,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class CreationSteps {
 
-    private Environment environment;
+   /* private Environment environment;
     private DefaultApi api;
 
     Fruit fruit;
@@ -62,5 +58,6 @@ public class CreationSteps {
     public void i_receive_a_status_code(int arg1) throws Throwable {
         assertEquals(201, lastStatusCode);
     }
+    */
 
 }
