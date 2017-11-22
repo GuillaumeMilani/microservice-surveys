@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class SurveysApiController implements SurveysApi {
     }
 
     @Override
-    public ResponseEntity<Void> addSurvey(@RequestBody Survey body) {
+    public ResponseEntity<Void> addSurvey(@Valid @RequestBody Survey body) {
         String newSurveyId = surveyService.saveSurvey(body);
 
         URI location = ServletUriComponentsBuilder
