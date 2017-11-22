@@ -4,7 +4,12 @@ Feature: Creation of Survey
     Given there is a Surveys server
 
   Scenario: create a survey
-    Given I have a survey payload
+    Given I have an empty survey payload
+    When I POST it to the /survey endpoint
+    Then I receive a 405 status code
+
+  Scenario: create a survey
+    Given I have a survey with an owner payload
     When I POST it to the /survey endpoint
     Then I receive a 201 status code
 
