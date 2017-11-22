@@ -1,13 +1,11 @@
 package io.lozzikit.survey.api.spec.steps;
 
-import cucumber.api.PendingException;
 import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import io.lozzikit.survey.*;
-import io.lozzikit.survey.api.spec.helpers.Environment;
-import io.lozzikit.survey.api.SurveyApi;
+import io.lozzikit.survey.ApiException;
+import io.lozzikit.survey.ApiResponse;
 import io.lozzikit.survey.api.dto.Survey;
+import io.lozzikit.survey.api.spec.helpers.Environment;
 import io.lozzikit.survey.api.spec.helpers.HTTPRequest;
 import org.junit.Assert;
 
@@ -17,23 +15,18 @@ import java.util.logging.Logger;
 /**
  * Created by Tony on 16.11.2017.
  */
-public class CreateSurveySteps {
-
-    private Environment environment;
-    private SurveyApi api;
+public class CreateSurveySteps extends SurveySteps {
     private Survey survey;
 
     private ApiResponse lastApiResponse;
     private ApiException lastApiException;
     private boolean lastApiCallThrewException;
-    private int lastStatusCode;
 
     private String payload;
     private String contentType = "application/json";
 
     public CreateSurveySteps(Environment environment) {
-        this.environment = environment;
-        this.api = environment.getApi();
+        super(environment);
     }
 
     @Given("^there is a Surveys server$")
@@ -53,18 +46,13 @@ public class CreateSurveySteps {
             lastApiResponse = api.addSurveyWithHttpInfo(survey);
             lastApiCallThrewException = false;
             lastApiException = null;
-            lastStatusCode = lastApiResponse.getStatusCode();
+            environment.setLastStatusCode(lastApiResponse.getStatusCode());
         } catch (ApiException e) {
             lastApiCallThrewException = true;
             lastApiResponse = null;
             lastApiException = e;
-            lastStatusCode = lastApiException.getCode();
+            environment.setLastStatusCode(lastApiException.getCode());
         }
-    }
-
-    @Then("^I receive a (\\d+) status code")
-    public void i_receive_a_status_code(int arg1) throws Throwable {
-            Assert.assertEquals(arg1, lastStatusCode);
     }
 
     @Given("^I have a wrong body survey payload$")
@@ -181,9 +169,9 @@ public class CreateSurveySteps {
 
     @When("^I custom POST it to the /survey endpoint$")
     public void iCustomPOSTItToTheSurveyEndpoint() throws Throwable {
-        HTTPRequest.HTTPResponse response = HTTPRequest.sendPostRequest(api.getApiClient().getBasePath() + "/survey",payload,contentType);
+        HTTPRequest.HTTPResponse response = HTTPRequest.sendPostRequest(api.getApiClient().getBasePath() + "/survey", payload, contentType);
         Logger log = Logger.getLogger("Create Survey Step");
-        log.log(Level.SEVERE,response.getContent());
-        lastStatusCode = response.getStatusCode();
+        log.log(Level.SEVERE, response.getContent());
+        environment.setLastStatusCode(response.getStatusCode());
     }
 }
