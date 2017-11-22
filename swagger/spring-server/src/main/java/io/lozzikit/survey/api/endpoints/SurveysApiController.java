@@ -1,10 +1,12 @@
 package io.lozzikit.survey.api.endpoints;
 
 import io.lozzikit.survey.api.SurveysApi;
+import io.lozzikit.survey.api.exceptions.NotFoundException;
 import io.lozzikit.survey.api.model.Survey;
 import io.lozzikit.survey.services.SurveyService;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -36,17 +38,21 @@ public class SurveysApiController implements SurveysApi {
                 .fromCurrentRequest().path("/{id}")
                 .buildAndExpand(newSurveyId).toUri();
 
-        return ResponseEntity.created(location).build();
+        // We use the header Last-Modified to feedback the client the creation date
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.LAST_MODIFIED, body.getCreatedAt().toString());
+
+        return ResponseEntity.created(location).headers(headers).build();
     }
 
     @Override
     public ResponseEntity<Survey> getSurveyById(@ApiParam(value = "ID of survey to return", required = true) @PathVariable("surveyId") String surveyId) {
-        Survey survey = surveyService.getSurvey(surveyId);
+        try {
+            Survey survey = surveyService.getSurvey(surveyId);
 
-        if (survey == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else {
             return new ResponseEntity<>(survey, HttpStatus.OK);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 }
