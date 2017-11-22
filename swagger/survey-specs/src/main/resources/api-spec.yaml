@@ -59,7 +59,7 @@ paths:
       responses:
         201:
           description: "Return the id of the created survey"
-        405:
+        400:
           description: "Invalid input"
       security:
       - api_key: []
