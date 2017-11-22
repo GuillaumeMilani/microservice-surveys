@@ -86,7 +86,7 @@ public class CreateSurveySteps extends SurveySteps {
                 "}";
     }
 
-    @Given("^I have a wrong title survey payload$")
+    @Given("^I have a int title survey payload$")
     public void iHaveAWrongTitleSurveyPayload() throws Throwable {
         payload = "{\n" +
                 "  \"owner\": 1,\n" +
@@ -102,7 +102,7 @@ public class CreateSurveySteps extends SurveySteps {
                 "}";
     }
 
-    @Given("^I have a wrong description survey payload$")
+    @Given("^I have a int description survey payload$")
     public void iHaveAWrongDescriptionSurveyPayload() throws Throwable {
         payload = "{\n" +
                 "  \"owner\": 1,\n" +
@@ -118,7 +118,7 @@ public class CreateSurveySteps extends SurveySteps {
                 "}";
     }
 
-    @Given("^I have a wrong created survey payload$")
+    @Given("^I have a int created survey payload$")
     public void iHaveAWrongCreatedSurveyPayload() throws Throwable {
         payload = "{\n" +
                 "  \"owner\": 1,\n" +
@@ -134,7 +134,7 @@ public class CreateSurveySteps extends SurveySteps {
                 "}";
     }
 
-    @Given("^I have a wrong questions survey payload$")
+    @Given("^I have a int questions survey payload$")
     public void iHaveAWrongQuestionsSurveyPayload() throws Throwable {
         payload = "{\n" +
                 "  \"owner\": 1,\n" +
