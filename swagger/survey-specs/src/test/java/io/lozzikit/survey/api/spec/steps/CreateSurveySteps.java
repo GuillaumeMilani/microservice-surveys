@@ -34,7 +34,7 @@ public class CreateSurveySteps extends SurveySteps {
         Assert.assertNotNull(api);
     }
 
-    @Given("^I have a survey payload$")
+    @Given("^I have an empty survey payload$")
     public void i_have_a_survey_payload() {
         survey = new io.lozzikit.survey.api.dto.Survey();
     }
@@ -86,7 +86,7 @@ public class CreateSurveySteps extends SurveySteps {
                 "}";
     }
 
-    @Given("^I have a wrong title survey payload$")
+    @Given("^I have a int title survey payload$")
     public void iHaveAWrongTitleSurveyPayload() throws Throwable {
         payload = "{\n" +
                 "  \"owner\": 1,\n" +
@@ -102,7 +102,7 @@ public class CreateSurveySteps extends SurveySteps {
                 "}";
     }
 
-    @Given("^I have a wrong description survey payload$")
+    @Given("^I have a int description survey payload$")
     public void iHaveAWrongDescriptionSurveyPayload() throws Throwable {
         payload = "{\n" +
                 "  \"owner\": 1,\n" +
@@ -118,7 +118,7 @@ public class CreateSurveySteps extends SurveySteps {
                 "}";
     }
 
-    @Given("^I have a wrong created survey payload$")
+    @Given("^I have a int created survey payload$")
     public void iHaveAWrongCreatedSurveyPayload() throws Throwable {
         payload = "{\n" +
                 "  \"owner\": 1,\n" +
@@ -134,7 +134,7 @@ public class CreateSurveySteps extends SurveySteps {
                 "}";
     }
 
-    @Given("^I have a wrong questions survey payload$")
+    @Given("^I have a int questions survey payload$")
     public void iHaveAWrongQuestionsSurveyPayload() throws Throwable {
         payload = "{\n" +
                 "  \"owner\": 1,\n" +
@@ -169,9 +169,15 @@ public class CreateSurveySteps extends SurveySteps {
 
     @When("^I custom POST it to the /survey endpoint$")
     public void iCustomPOSTItToTheSurveyEndpoint() throws Throwable {
-        HTTPRequest.HTTPResponse response = HTTPRequest.sendPostRequest(api.getApiClient().getBasePath() + "/survey", payload, contentType);
+        HTTPRequest.HTTPResponse response = HTTPRequest.sendPostRequest(api.getApiClient().getBasePath() + "/surveys",payload,contentType);
         Logger log = Logger.getLogger("Create Survey Step");
         log.log(Level.SEVERE, response.getContent());
         environment.setLastStatusCode(response.getStatusCode());
+    }
+
+    @Given("^I have a survey with an owner payload$")
+    public void iHaveASurveyWithAnOwnerPayload() throws Throwable {
+        survey = new io.lozzikit.survey.api.dto.Survey();
+        survey.setOwner((long) 1);
     }
 }
