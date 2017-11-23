@@ -39,10 +39,9 @@ public class CreateSurveySteps extends SurveySteps {
         survey = new io.lozzikit.survey.api.dto.Survey();
     }
 
-    @When("^I POST it to the /survey endpoint$")
-    public void i_POST_it_to_the_survey_endpoint() {
+    @When("^I POST its payload to the /survey endpoint$")
+    public void iPOSTItsPayloadToTheSurveyEndpoint() {
         try {
-
             lastApiResponse = api.addSurveyWithHttpInfo(survey);
             lastApiCallThrewException = false;
             lastApiException = null;
@@ -55,8 +54,8 @@ public class CreateSurveySteps extends SurveySteps {
         }
     }
 
-    @Given("^I have a wrong body survey payload$")
-    public void iHaveAWrongBodySurveyPayload() throws Throwable {
+    @Given("^I have a survey payload without owner$")
+    public void iHaveASurveyPayloadWithoutOwner() throws Throwable {
         payload = "{\n" +
                 "  \"createdAt\": \"2017-11-17T14:38:21.677Z\",\n" +
                 "  \"status\": \"draft\",\n" +
@@ -70,10 +69,10 @@ public class CreateSurveySteps extends SurveySteps {
                 "}";
     }
 
-    @Given("^I have a wrong owner survey payload$")
-    public void iHaveAWrongOwnerSurveyPayload() throws Throwable {
+    @Given("^I have a survey payload with wrong owner type$")
+    public void iHaveAPayloadWithWrongOwnerType() throws Throwable {
         payload = "{\n" +
-                "  \"owner\": \"asd\",\n" +
+                "  \"owner\": \"THIS IS AN INVALID OWNER ID\",\n" +
                 "  \"createdAt\": \"2017-11-17T14:38:21.677Z\",\n" +
                 "  \"status\": \"draft\",\n" +
                 "  \"title\": \"string\",\n" +
@@ -81,70 +80,6 @@ public class CreateSurveySteps extends SurveySteps {
                 "  \"questions\": [\n" +
                 "    {\n" +
                 "      \"question\": \"string\"\n" +
-                "    }\n" +
-                "  ]\n" +
-                "}";
-    }
-
-    @Given("^I have a int title survey payload$")
-    public void iHaveAWrongTitleSurveyPayload() throws Throwable {
-        payload = "{\n" +
-                "  \"owner\": 1,\n" +
-                "  \"createdAt\": \"2017-11-17T14:38:21.677Z\",\n" +
-                "  \"status\": \"draft\",\n" +
-                "  \"title\": 1234,\n" +
-                "  \"description\": \"string\",\n" +
-                "  \"questions\": [\n" +
-                "    {\n" +
-                "      \"question\": \"string\"\n" +
-                "    }\n" +
-                "  ]\n" +
-                "}";
-    }
-
-    @Given("^I have a int description survey payload$")
-    public void iHaveAWrongDescriptionSurveyPayload() throws Throwable {
-        payload = "{\n" +
-                "  \"owner\": 1,\n" +
-                "  \"createdAt\": \"2017-11-17T14:38:21.677Z\",\n" +
-                "  \"status\": \"draft\",\n" +
-                "  \"title\": \"string\",\n" +
-                "  \"description\": 1234,\n" +
-                "  \"questions\": [\n" +
-                "    {\n" +
-                "      \"question\": \"string\"\n" +
-                "    }\n" +
-                "  ]\n" +
-                "}";
-    }
-
-    @Given("^I have a int created survey payload$")
-    public void iHaveAWrongCreatedSurveyPayload() throws Throwable {
-        payload = "{\n" +
-                "  \"owner\": 1,\n" +
-                "  \"createdAt\": \"201717T14:38:21.677Z\",\n" +
-                "  \"status\": \"draft\",\n" +
-                "  \"title\": \"string\",\n" +
-                "  \"description\": \"string\",\n" +
-                "  \"questions\": [\n" +
-                "    {\n" +
-                "      \"question\": \"string\"\n" +
-                "    }\n" +
-                "  ]\n" +
-                "}";
-    }
-
-    @Given("^I have a int questions survey payload$")
-    public void iHaveAWrongQuestionsSurveyPayload() throws Throwable {
-        payload = "{\n" +
-                "  \"owner\": 1,\n" +
-                "  \"createdAt\": \"2017-11-17T14:38:21.677Z\",\n" +
-                "  \"status\": \"draft\",\n" +
-                "  \"title\": \"string\",\n" +
-                "  \"description\": \"string\",\n" +
-                "  \"questions\": [\n" +
-                "    {\n" +
-                "      \"question\": 1234\n" +
                 "    }\n" +
                 "  ]\n" +
                 "}";
@@ -169,13 +104,13 @@ public class CreateSurveySteps extends SurveySteps {
 
     @When("^I custom POST it to the /survey endpoint$")
     public void iCustomPOSTItToTheSurveyEndpoint() throws Throwable {
-        HTTPRequest.HTTPResponse response = HTTPRequest.sendPostRequest(api.getApiClient().getBasePath() + "/surveys",payload,contentType);
+        HTTPRequest.HTTPResponse response = HTTPRequest.sendPostRequest(api.getApiClient().getBasePath() + "/surveys", payload, contentType);
         Logger log = Logger.getLogger("Create Survey Step");
         log.log(Level.SEVERE, response.getContent());
         environment.setLastStatusCode(response.getStatusCode());
     }
 
-    @Given("^I have a survey with an owner payload$")
+    @Given("^I have a survey with only the owner property set$")
     public void iHaveASurveyWithAnOwnerPayload() throws Throwable {
         survey = new io.lozzikit.survey.api.dto.Survey();
         survey.setOwner((long) 1);
