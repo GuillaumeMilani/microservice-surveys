@@ -20,7 +20,6 @@ import static org.junit.Assert.assertEquals;
  */
 public class GetSurveySteps extends SurveySteps {
     private String Id;
-    private String unknownId = "-1";
     private Survey survey;
 
     public GetSurveySteps(Environment environment) {
@@ -50,13 +49,13 @@ public class GetSurveySteps extends SurveySteps {
         }
     }
 
-    @Given("^I know a unknown survey id$")
-    public void iKnowASurveyIdThatIsNotUsed() {
-        Id = unknownId;
+    @Given("^I know an id that doesn't match any survey$")
+    public void iKnowAnIdThatDoesntMatchAnySurvey() {
+        Id = "THIS ID DOESN'T MATCH ANY SURVEY";
     }
 
-    @When("^I GET it to the /survey/ID endpoint$")
-    public void iGETItToTheSurveyIDEndpoint() throws Throwable {
+    @When("^I GET it from the /survey/ID endpoint$")
+    public void iGETItFromTheSurveyIDEndpoint() throws Throwable {
         try {
             lastApiResponse = api.getSurveyByIdWithHttpInfo(Id);
             lastApiCallThrewException = false;

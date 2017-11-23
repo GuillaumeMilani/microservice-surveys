@@ -36,5 +36,6 @@
     <orderEntry type="library" name="Maven: joda-time:joda-time:2.9.4" level="project" />
     <orderEntry type="library" name="Maven: com.brsanthu:migbase64:2.2" level="project" />
     <orderEntry type="library" name="Maven: io.swagger:swagger-annotations:1.5.9" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-web:4.3.9.RELEASE" level="project" />
   </component>
 </module>
