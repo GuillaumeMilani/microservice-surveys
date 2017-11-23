@@ -1,6 +1,7 @@
 package io.lozzikit.survey.api.endpoints;
 
 import io.lozzikit.survey.api.SurveysApi;
+import io.lozzikit.survey.api.exceptions.NotFoundException;
 import io.lozzikit.survey.api.model.Survey;
 import io.lozzikit.survey.services.SurveyService;
 import io.swagger.annotations.ApiParam;
@@ -41,12 +42,12 @@ public class SurveysApiController implements SurveysApi {
 
     @Override
     public ResponseEntity<Survey> getSurveyById(@ApiParam(value = "ID of survey to return", required = true) @PathVariable("surveyId") String surveyId) {
-        Survey survey = surveyService.getSurvey(surveyId);
+        try {
+            Survey survey = surveyService.getSurvey(surveyId);
 
-        if (survey == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else {
             return new ResponseEntity<>(survey, HttpStatus.OK);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 }

@@ -3,18 +3,13 @@ Feature: Get a Survey
   Background:
     Given there is a Surveys server
 
-  Scenario: get a known survey with valid id
+  Scenario: get a known survey with valid URL
     Given I know a survey id
-    When I GET it to the /survey/ID endpoint
+    When I GET it from the /survey/ID endpoint
     Then I receive a 200 status code
     And I receive the correct survey
 
-  Scenario: get a survey with invalid id
-    Given I know a invalid survey id
-    When I GET it to the /survey/ID endpoint
-    Then I receive a 400 status code
-
-  Scenario: get a survey with valid id not created
-    Given I know a unknown survey id
-    When I GET it to the /survey/ID endpoint
-    Then I receive a 405 status code
+  Scenario: get a survey with valid URL not created
+    Given I know an id that doesn't match any survey
+    When I GET it from the /survey/ID endpoint
+    Then I receive a 404 status code

@@ -1,5 +1,6 @@
 package io.lozzikit.survey.services;
 
+import io.lozzikit.survey.api.exceptions.NotFoundException;
 import io.lozzikit.survey.api.model.Question;
 import io.lozzikit.survey.api.model.Survey;
 import io.lozzikit.survey.entities.QuestionEntity;
@@ -26,14 +27,20 @@ public class SurveyService {
     }
 
     public String saveSurvey(Survey survey) {
+        survey.setCreatedAt(DateTime.now());
+
         SurveyEntity surveyEntity = surveyToEntity(survey);
 
         surveyRepository.save(surveyEntity);
         return surveyEntity.getId();
     }
 
-    public Survey getSurvey(String id) {
+    public Survey getSurvey(String id) throws NotFoundException {
         SurveyEntity surveyEntity = surveyRepository.findOne(id);
+
+        if (null == surveyEntity) {
+            throw new NotFoundException(404, "Survey not found");
+        }
 
         return entityToSurvey(surveyEntity);
     }
@@ -44,7 +51,7 @@ public class SurveyService {
         surveyEntity.setTitle(survey.getTitle());
         surveyEntity.setDescription(survey.getDescription());
         surveyEntity.setOwner(survey.getOwner());
-        surveyEntity.setCreatedAt(DateTime.now());
+        surveyEntity.setCreatedAt(survey.getCreatedAt());
         surveyEntity.setQuestions(survey.getQuestions().stream()
                 .map(this::questionToEntity)
                 .collect(Collectors.toList())

@@ -10,6 +10,7 @@ import java.util.Properties;
  */
 public class Environment {
 
+    private int lastStatusCode;
     private SurveyApi api = new SurveyApi();
 
     public Environment() throws IOException {
@@ -25,4 +26,11 @@ public class Environment {
     }
 
 
+    public int getLastStatusCode() {
+        return lastStatusCode;
+    }
+
+    public void setLastStatusCode(int lastStatusCode) {
+        this.lastStatusCode = lastStatusCode;
+    }
 }
