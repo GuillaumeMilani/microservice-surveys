@@ -7,7 +7,6 @@ import io.lozzikit.survey.ApiException;
 import io.lozzikit.survey.ApiResponse;
 import io.lozzikit.survey.api.dto.Survey;
 import io.lozzikit.survey.api.spec.helpers.Environment;
-import org.joda.time.DateTime;
 import org.junit.Assert;
 
 import java.util.List;
@@ -35,9 +34,6 @@ public class GetSurveySteps extends SurveySteps {
             if (lastApiResponse.getStatusCode() == 201) {
                 Map<String, List<String>> responseHeaders = lastApiResponse.getHeaders();
                 String surveyUrl = responseHeaders.get("Location").get(0);
-
-                String creationDate = responseHeaders.get("Last-Modified").get(0);
-                survey.setCreatedAt(new DateTime(creationDate));
 
                 String[] splittedUrl = surveyUrl.split("/");
                 Id = splittedUrl[splittedUrl.length - 1];
@@ -72,6 +68,10 @@ public class GetSurveySteps extends SurveySteps {
     @And("^I receive the correct survey$")
     public void iReceiveTheCorrectSurvey() throws Throwable {
         Survey receivedSurvey = (Survey) lastApiResponse.getData();
+
+        // Erase the properties set by the server before doing assertEquals
+        receivedSurvey.setCreatedAt(null);
+
         assertEquals(survey, receivedSurvey);
     }
 }
