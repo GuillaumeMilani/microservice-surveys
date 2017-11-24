@@ -7,7 +7,6 @@ import io.lozzikit.survey.ApiException;
 import io.lozzikit.survey.ApiResponse;
 import io.lozzikit.survey.api.dto.Survey;
 import io.lozzikit.survey.api.spec.helpers.Environment;
-import org.joda.time.DateTime;
 import org.junit.Assert;
 
 import java.util.List;
@@ -20,7 +19,6 @@ import static org.junit.Assert.assertEquals;
  */
 public class GetSurveySteps extends SurveySteps {
     private String Id;
-    private String unknownId = "-1";
     private Survey survey;
 
     public GetSurveySteps(Environment environment) {
@@ -37,9 +35,6 @@ public class GetSurveySteps extends SurveySteps {
                 Map<String, List<String>> responseHeaders = lastApiResponse.getHeaders();
                 String surveyUrl = responseHeaders.get("Location").get(0);
 
-                String creationDate = responseHeaders.get("Last-Modified").get(0);
-                survey.setCreatedAt(new DateTime(creationDate));
-
                 String[] splittedUrl = surveyUrl.split("/");
                 Id = splittedUrl[splittedUrl.length - 1];
             } else {
@@ -50,13 +45,13 @@ public class GetSurveySteps extends SurveySteps {
         }
     }
 
-    @Given("^I know a unknown survey id$")
-    public void iKnowASurveyIdThatIsNotUsed() {
-        Id = unknownId;
+    @Given("^I know an id that doesn't match any survey$")
+    public void iKnowAnIdThatDoesntMatchAnySurvey() {
+        Id = "THIS ID DOESN'T MATCH ANY SURVEY";
     }
 
-    @When("^I GET it to the /survey/ID endpoint$")
-    public void iGETItToTheSurveyIDEndpoint() throws Throwable {
+    @When("^I GET it from the /survey/ID endpoint$")
+    public void iGETItFromTheSurveyIDEndpoint() throws Throwable {
         try {
             lastApiResponse = api.getSurveyByIdWithHttpInfo(Id);
             lastApiCallThrewException = false;
@@ -73,6 +68,10 @@ public class GetSurveySteps extends SurveySteps {
     @And("^I receive the correct survey$")
     public void iReceiveTheCorrectSurvey() throws Throwable {
         Survey receivedSurvey = (Survey) lastApiResponse.getData();
+
+        // Erase the properties set by the server before doing assertEquals
+        receivedSurvey.setCreatedAt(null);
+
         assertEquals(survey, receivedSurvey);
     }
 }

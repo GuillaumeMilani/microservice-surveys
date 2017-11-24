@@ -1,7 +1,7 @@
 # microservice-surveys
 
 # Docker-compose
-En utilisant `docker-compose up --build` à la racine du mico-service, on peut lancer un serveur *mongo* ainsi que *mongo-express*, qui sera en écoute sur le port **8081** afin d'accéder à la base de donnée. 
+En utilisant `docker-compose up --build` à la racine du micro-service, on peut lancer un serveur *mongo* ainsi que *mongo-express*, qui sera en écoute sur le port **8081** afin d'accéder à la base de donnée. 
 
 # Features
 ## Création de sondage

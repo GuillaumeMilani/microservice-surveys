@@ -6,7 +6,6 @@ import io.lozzikit.survey.api.model.Survey;
 import io.lozzikit.survey.services.SurveyService;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -48,11 +47,7 @@ public class SurveysApiController implements SurveysApi {
                 .fromCurrentRequest().path("/{id}")
                 .buildAndExpand(newSurveyId).toUri();
 
-        // We use the header Last-Modified to feedback the client the creation date
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.LAST_MODIFIED, body.getCreatedAt().toString());
-
-        return ResponseEntity.created(location).headers(headers).build();
+        return ResponseEntity.created(location).build();
     }
 
     @Override
