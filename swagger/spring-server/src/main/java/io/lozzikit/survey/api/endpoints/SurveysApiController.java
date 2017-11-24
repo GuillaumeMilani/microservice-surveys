@@ -35,10 +35,6 @@ public class SurveysApiController implements SurveysApi {
         return null;
     }
 
-    public ResponseEntity<Void> modifySurvey(String surveyId) {
-        return null;
-    }
-
     @Override
     public ResponseEntity<Void> addSurvey(@Valid @RequestBody Survey body) {
         String newSurveyId = surveyService.saveSurvey(body);
