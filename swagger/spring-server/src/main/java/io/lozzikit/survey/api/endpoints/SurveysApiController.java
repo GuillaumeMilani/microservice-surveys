@@ -31,6 +31,16 @@ public class SurveysApiController implements SurveysApi {
     }
 
     @Override
+    public ResponseEntity<Void> modifySurvey(String surveyId) {
+        try {
+            Survey survey = surveyService.getSurvey(surveyId);
+        } catch (NotFoundException e) {
+            return null;
+        }
+        return null;
+    }
+
+    @Override
     public ResponseEntity<Void> addSurvey(@Valid @RequestBody Survey body) {
         String newSurveyId = surveyService.saveSurvey(body);
 
