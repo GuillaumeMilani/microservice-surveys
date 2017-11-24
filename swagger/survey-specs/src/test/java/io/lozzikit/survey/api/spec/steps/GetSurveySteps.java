@@ -28,7 +28,7 @@ public class GetSurveySteps extends SurveySteps {
     @Given("^I know a survey id$")
     public void iKnowASurveyId() throws Throwable {
         survey = new io.lozzikit.survey.api.dto.Survey();
-        survey.setOwner(0L);
+        survey.setUser(0L);
         try {
             ApiResponse lastApiResponse = api.addSurveyWithHttpInfo(survey);
             if (lastApiResponse.getStatusCode() == 201) {
@@ -70,7 +70,7 @@ public class GetSurveySteps extends SurveySteps {
         Survey receivedSurvey = (Survey) lastApiResponse.getData();
 
         // Erase the properties set by the server before doing assertEquals
-        receivedSurvey.setCreatedAt(null);
+        receivedSurvey.setDatetime(null);
 
         assertEquals(survey, receivedSurvey);
     }

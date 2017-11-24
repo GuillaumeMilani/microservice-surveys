@@ -113,6 +113,6 @@ public class CreateSurveySteps extends SurveySteps {
     @Given("^I have a survey with only the owner property set$")
     public void iHaveASurveyWithAnOwnerPayload() throws Throwable {
         survey = new io.lozzikit.survey.api.dto.Survey();
-        survey.setOwner((long) 1);
+        survey.setUser((long) 1);
     }
 }
