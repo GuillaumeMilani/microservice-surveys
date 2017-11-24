@@ -49,6 +49,7 @@ public class SurveyService {
         SurveyEntity surveyEntity = new SurveyEntity();
 
         surveyEntity.setTitle(survey.getTitle());
+        surveyEntity.setStatus(survey.getStatus());
         surveyEntity.setDescription(survey.getDescription());
         surveyEntity.setOwner(survey.getUser());
         surveyEntity.setCreatedAt(survey.getDatetime());
@@ -64,6 +65,7 @@ public class SurveyService {
         Survey survey = new Survey();
 
         survey.setTitle(surveyEntity.getTitle());
+        survey.setStatus(surveyEntity.getStatus());
         survey.setDescription(surveyEntity.getDescription());
         survey.setUser(surveyEntity.getOwner());
         survey.setDatetime(surveyEntity.getCreatedAt());
