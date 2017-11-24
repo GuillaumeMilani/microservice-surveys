@@ -30,12 +30,12 @@ public class SurveysApiController implements SurveysApi {
     }
 
     @Override
+    public ResponseEntity<Void> modifySurvey(String surveyId, Survey body) {
+        // TODO MUst implement
+        return null;
+    }
+
     public ResponseEntity<Void> modifySurvey(String surveyId) {
-        try {
-            Survey survey = surveyService.getSurvey(surveyId);
-        } catch (NotFoundException e) {
-            return null;
-        }
         return null;
     }
 
