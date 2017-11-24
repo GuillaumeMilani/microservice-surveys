@@ -1,6 +1,7 @@
 package io.lozzikit.survey.api.spec.helpers;
 
 import io.lozzikit.survey.api.SurveyApi;
+import io.lozzikit.survey.api.dto.Survey;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -10,6 +11,7 @@ import java.util.Properties;
  */
 public class Environment {
 
+    private Survey survey;
     private int lastStatusCode;
     private SurveyApi api = new SurveyApi();
 
@@ -32,5 +34,13 @@ public class Environment {
 
     public void setLastStatusCode(int lastStatusCode) {
         this.lastStatusCode = lastStatusCode;
+    }
+
+    public Survey getSurvey() {
+        return survey;
+    }
+
+    public void setSurvey(Survey survey) {
+        this.survey = survey;
     }
 }

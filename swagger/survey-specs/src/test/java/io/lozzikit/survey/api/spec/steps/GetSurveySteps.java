@@ -19,7 +19,6 @@ import static org.junit.Assert.assertEquals;
  */
 public class GetSurveySteps extends SurveySteps {
     private String Id;
-    private Survey survey;
 
     public GetSurveySteps(Environment environment) {
         super(environment);
@@ -27,10 +26,8 @@ public class GetSurveySteps extends SurveySteps {
 
     @Given("^I know a survey id$")
     public void iKnowASurveyId() throws Throwable {
-        survey = new io.lozzikit.survey.api.dto.Survey();
-        survey.setUser(0L);
         try {
-            ApiResponse lastApiResponse = api.addSurveyWithHttpInfo(survey);
+            ApiResponse lastApiResponse = api.addSurveyWithHttpInfo(environment.getSurvey());
             if (lastApiResponse.getStatusCode() == 201) {
                 Map<String, List<String>> responseHeaders = lastApiResponse.getHeaders();
                 String surveyUrl = responseHeaders.get("Location").get(0);
@@ -72,6 +69,6 @@ public class GetSurveySteps extends SurveySteps {
         // Erase the properties set by the server before doing assertEquals
         receivedSurvey.setDatetime(null);
 
-        assertEquals(survey, receivedSurvey);
+        assertEquals(environment.getSurvey(), receivedSurvey);
     }
 }
