@@ -21,6 +21,25 @@
         <sourceDirectory>src/main/java</sourceDirectory>
         <plugins>
             <plugin>
+                <groupId>com.googlecode.maven-download-plugin</groupId>
+                <artifactId>download-maven-plugin</artifactId>
+                <version>1.4.0</version>
+                <executions>
+                    <execution>
+                        <id>fetch-swagger-hub</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>wget</goal>
+                        </goals>
+                        <configuration>
+                            <url>https://api.swaggerhub.com/apis/proteck/AMT/1.0.0</url>
+                            <outputFileName>api-spec.json</outputFileName>
+                            <outputDirectory>${basedir}/src/main/resources/</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
@@ -44,7 +63,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${basedir}/src/main/resources/api-spec.yaml</inputSpec>
+                            <inputSpec>${basedir}/src/main/resources/api-spec.json</inputSpec>
                             <language>spring</language>
                             <configOptions>
                                 <useBeanValidation>true</useBeanValidation>
