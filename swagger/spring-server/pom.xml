@@ -32,9 +32,11 @@
                             <goal>wget</goal>
                         </goals>
                         <configuration>
-                            <url>https://api.swaggerhub.com/apis/proteck/AMT/1.0.0</url>
+                            <url>https://api.swaggerhub.com/apis/proteck/AMT/1.3</url>
                             <outputFileName>api-spec.json</outputFileName>
                             <outputDirectory>${basedir}/src/main/resources/</outputDirectory>
+                            <skipCache>true</skipCache>
+                            <overwrite>true</overwrite>
                         </configuration>
                     </execution>
                 </executions>
