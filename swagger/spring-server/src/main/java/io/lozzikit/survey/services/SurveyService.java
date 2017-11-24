@@ -27,7 +27,7 @@ public class SurveyService {
     }
 
     public String saveSurvey(Survey survey) {
-        survey.setCreatedAt(DateTime.now());
+        survey.setDatetime(DateTime.now());
 
         SurveyEntity surveyEntity = surveyToEntity(survey);
 
@@ -50,8 +50,8 @@ public class SurveyService {
 
         surveyEntity.setTitle(survey.getTitle());
         surveyEntity.setDescription(survey.getDescription());
-        surveyEntity.setOwner(survey.getOwner());
-        surveyEntity.setCreatedAt(survey.getCreatedAt());
+        surveyEntity.setOwner(survey.getUser());
+        surveyEntity.setCreatedAt(survey.getDatetime());
         surveyEntity.setQuestions(survey.getQuestions().stream()
                 .map(this::questionToEntity)
                 .collect(Collectors.toList())
@@ -65,8 +65,8 @@ public class SurveyService {
 
         survey.setTitle(surveyEntity.getTitle());
         survey.setDescription(surveyEntity.getDescription());
-        survey.setOwner(surveyEntity.getOwner());
-        survey.setCreatedAt(surveyEntity.getCreatedAt());
+        survey.setUser(surveyEntity.getOwner());
+        survey.setDatetime(surveyEntity.getCreatedAt());
         survey.setQuestions(surveyEntity.getQuestions().stream()
                 .map(this::entityToQuestion)
                 .collect(Collectors.toList())

@@ -30,6 +30,16 @@ public class SurveysApiController implements SurveysApi {
     }
 
     @Override
+    public ResponseEntity<Void> modifySurvey(String surveyId, Survey body) {
+        // TODO MUst implement
+        return null;
+    }
+
+    public ResponseEntity<Void> modifySurvey(String surveyId) {
+        return null;
+    }
+
+    @Override
     public ResponseEntity<Void> addSurvey(@Valid @RequestBody Survey body) {
         String newSurveyId = surveyService.saveSurvey(body);
 
