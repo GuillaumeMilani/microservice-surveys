@@ -22,14 +22,22 @@ public class SurveyService {
         List<SurveyEntity> surveyEntities = surveyRepository.findAll();
 
         return surveyEntities.stream()
-                .map(this::entityToSurvey)
+                .map(this::entityToDTO)
                 .collect(Collectors.toList());
     }
 
-    public String saveSurvey(Survey survey) {
+    public String createSurvey(Survey survey) {
         survey.setDatetime(DateTime.now());
+        return saveSurvey(survey);
+    }
 
-        SurveyEntity surveyEntity = surveyToEntity(survey);
+    public String saveSurvey(Survey survey) {
+        return updateSurvey(survey, null);
+    }
+
+    public String updateSurvey(Survey survey, String id) {
+        SurveyEntity surveyEntity = DTOToEntity(survey);
+        surveyEntity.setId(id);
 
         surveyRepository.save(surveyEntity);
         return surveyEntity.getId();
@@ -42,26 +50,10 @@ public class SurveyService {
             throw new NotFoundException(404, "Survey not found");
         }
 
-        return entityToSurvey(surveyEntity);
+        return entityToDTO(surveyEntity);
     }
 
-    private SurveyEntity surveyToEntity(Survey survey) {
-        SurveyEntity surveyEntity = new SurveyEntity();
-
-        surveyEntity.setTitle(survey.getTitle());
-        surveyEntity.setStatus(survey.getStatus());
-        surveyEntity.setDescription(survey.getDescription());
-        surveyEntity.setOwner(survey.getUser());
-        surveyEntity.setCreatedAt(survey.getDatetime());
-        surveyEntity.setQuestions(survey.getQuestions().stream()
-                .map(this::questionToEntity)
-                .collect(Collectors.toList())
-        );
-
-        return surveyEntity;
-    }
-
-    private Survey entityToSurvey(SurveyEntity surveyEntity) {
+    private Survey entityToDTO(SurveyEntity surveyEntity) {
         Survey survey = new Survey();
 
         survey.setTitle(surveyEntity.getTitle());
@@ -70,24 +62,42 @@ public class SurveyService {
         survey.setUser(surveyEntity.getOwner());
         survey.setDatetime(surveyEntity.getCreatedAt());
         survey.setQuestions(surveyEntity.getQuestions().stream()
-                .map(this::entityToQuestion)
+                .map(this::entityToDTO)
                 .collect(Collectors.toList())
         );
 
         return survey;
     }
 
-    private QuestionEntity questionToEntity(Question question) {
+    private Question entityToDTO(QuestionEntity questionEntity) {
+        Question question = new Question();
+        question.setQuestion(questionEntity.getQuestion());
+
+        return question;
+    }
+
+    private SurveyEntity DTOToEntity(Survey survey) {
+        SurveyEntity surveyEntity = new SurveyEntity();
+
+        surveyEntity.setTitle(survey.getTitle());
+        surveyEntity.setStatus(survey.getStatus());
+        surveyEntity.setDescription(survey.getDescription());
+        surveyEntity.setOwner(survey.getUser());
+        surveyEntity.setCreatedAt(survey.getDatetime());
+        surveyEntity.setQuestions(survey.getQuestions().stream()
+                .map(this::DTOToEntity)
+                .collect(Collectors.toList())
+        );
+
+        return surveyEntity;
+    }
+
+    private QuestionEntity DTOToEntity(Question question) {
         QuestionEntity questionEntity = new QuestionEntity();
         questionEntity.setQuestion(question.getQuestion());
 
         return questionEntity;
     }
 
-    private Question entityToQuestion(QuestionEntity questionEntity) {
-        Question question = new Question();
-        question.setQuestion(questionEntity.getQuestion());
 
-        return question;
-    }
 }

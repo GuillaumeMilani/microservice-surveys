@@ -35,12 +35,16 @@ public class SurveyEntity implements Serializable {
         return id;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public Status getStatus() {
         return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public long getOwner() {
