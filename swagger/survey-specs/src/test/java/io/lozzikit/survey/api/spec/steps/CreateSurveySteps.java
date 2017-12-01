@@ -4,8 +4,7 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 import io.lozzikit.survey.ApiException;
 import io.lozzikit.survey.ApiResponse;
-import io.lozzikit.survey.api.dto.Status;
-import io.lozzikit.survey.api.dto.Survey;
+import io.lozzikit.survey.api.dto.NewSurvey;
 import io.lozzikit.survey.api.spec.helpers.Environment;
 import io.lozzikit.survey.api.spec.helpers.HTTPRequest;
 import org.junit.Assert;
@@ -35,13 +34,13 @@ public class CreateSurveySteps extends SurveySteps {
 
     @Given("^I have an empty survey payload$")
     public void i_have_a_survey_payload() {
-        environment.setSurvey(new io.lozzikit.survey.api.dto.Survey());
+        environment.setNewSurvey(new NewSurvey());
     }
 
     @When("^I POST its payload to the /survey endpoint$")
     public void iPOSTItsPayloadToTheSurveyEndpoint() {
         try {
-            lastApiResponse = api.addSurveyWithHttpInfo(environment.getSurvey());
+            lastApiResponse = api.addSurveyWithHttpInfo(environment.getNewSurvey());
             lastApiCallThrewException = false;
             lastApiException = null;
             environment.setLastStatusCode(lastApiResponse.getStatusCode());
@@ -56,8 +55,6 @@ public class CreateSurveySteps extends SurveySteps {
     @Given("^I have a survey payload without user")
     public void iHaveASurveyPayloadWithoutUser() throws Throwable {
         payload = "{\n" +
-                "  \"createdAt\": \"2017-11-17T14:38:21.677Z\",\n" +
-                "  \"status\": \"draft\",\n" +
                 "  \"title\": \"string\",\n" +
                 "  \"description\": \"string\",\n" +
                 "  \"questions\": [\n" +
@@ -72,8 +69,6 @@ public class CreateSurveySteps extends SurveySteps {
     public void iHaveAPayloadWithWrongUserType() throws Throwable {
         payload = "{\n" +
                 "  \"user\": \"THIS IS AN INVALID USER ID\",\n" +
-                "  \"createdAt\": \"2017-11-17T14:38:21.677Z\",\n" +
-                "  \"status\": \"draft\",\n" +
                 "  \"title\": \"string\",\n" +
                 "  \"description\": \"string\",\n" +
                 "  \"questions\": [\n" +
@@ -89,8 +84,6 @@ public class CreateSurveySteps extends SurveySteps {
         contentType = "text/plain";
         payload = "{\n" +
                 "  \"user\": 1,\n" +
-                "  \"createdAt\": \"2017-11-17T14:38:21.677Z\",\n" +
-                "  \"status\": \"draft\",\n" +
                 "  \"title\": \"string\",\n" +
                 "  \"description\": \"asdf\",\n" +
                 "  \"questions\": [\n" +
@@ -111,9 +104,8 @@ public class CreateSurveySteps extends SurveySteps {
 
     @Given("^I have a survey with the mandatory properties set$")
     public void iHaveASurveyWithOnlyTheUserPropertySet() throws Throwable {
-        Survey survey = new io.lozzikit.survey.api.dto.Survey();
+        NewSurvey survey = new NewSurvey();
         survey.setUser(1L);
-        survey.setStatus(Status.DRAFT);
-        environment.setSurvey(survey);
+        environment.setNewSurvey(survey);
     }
 }

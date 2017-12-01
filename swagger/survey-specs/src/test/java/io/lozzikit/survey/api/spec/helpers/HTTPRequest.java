@@ -35,19 +35,15 @@ public class HTTPRequest {
             br.close();
             connection.disconnect();
 
-            return new HTTPResponse(connection.getResponseCode(),jsonString.toString());
+            return new HTTPResponse(connection.getResponseCode(), jsonString.toString());
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return new HTTPResponse(statusCode,null);
+            return new HTTPResponse(statusCode, null);
         } catch (ProtocolException e) {
-            e.printStackTrace();
-            return new HTTPResponse(statusCode,null);
+            return new HTTPResponse(statusCode, null);
         } catch (MalformedURLException e) {
-            e.printStackTrace();
-            return new HTTPResponse(statusCode,null);
+            return new HTTPResponse(statusCode, null);
         } catch (IOException e) {
-            e.printStackTrace();
-            return new HTTPResponse(statusCode,null);
+            return new HTTPResponse(statusCode, null);
         }
     }
 

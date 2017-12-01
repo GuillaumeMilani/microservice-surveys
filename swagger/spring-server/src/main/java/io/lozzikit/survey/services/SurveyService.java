@@ -1,8 +1,10 @@
 package io.lozzikit.survey.services;
 
 import io.lozzikit.survey.api.exceptions.NotFoundException;
+import io.lozzikit.survey.api.model.ExhaustiveSurvey;
+import io.lozzikit.survey.api.model.NewSurvey;
 import io.lozzikit.survey.api.model.Question;
-import io.lozzikit.survey.api.model.Survey;
+import io.lozzikit.survey.api.model.Status;
 import io.lozzikit.survey.entities.QuestionEntity;
 import io.lozzikit.survey.entities.SurveyEntity;
 import io.lozzikit.survey.repositories.SurveyRepository;
@@ -18,7 +20,7 @@ public class SurveyService {
     @Autowired
     SurveyRepository surveyRepository;
 
-    public List<Survey> getAllSurveys() {
+    public List<ExhaustiveSurvey> getAllSurveys() {
         List<SurveyEntity> surveyEntities = surveyRepository.findAll();
 
         return surveyEntities.stream()
@@ -26,16 +28,14 @@ public class SurveyService {
                 .collect(Collectors.toList());
     }
 
-    public String createSurvey(Survey survey) {
-        survey.setDatetime(DateTime.now());
-        return saveSurvey(survey);
+    public String createSurvey(NewSurvey survey) {
+        SurveyEntity surveyEntity = DTOToEntity(survey);
+
+        surveyRepository.save(surveyEntity);
+        return surveyEntity.getId();
     }
 
-    public String saveSurvey(Survey survey) {
-        return updateSurvey(survey, null);
-    }
-
-    public String updateSurvey(Survey survey, String id) {
+    public String updateSurvey(ExhaustiveSurvey survey, String id) {
         SurveyEntity surveyEntity = DTOToEntity(survey);
         surveyEntity.setId(id);
 
@@ -43,7 +43,7 @@ public class SurveyService {
         return surveyEntity.getId();
     }
 
-    public Survey getSurvey(String id) throws NotFoundException {
+    public ExhaustiveSurvey getSurvey(String id) throws NotFoundException {
         SurveyEntity surveyEntity = surveyRepository.findOne(id);
 
         if (null == surveyEntity) {
@@ -53,8 +53,8 @@ public class SurveyService {
         return entityToDTO(surveyEntity);
     }
 
-    private Survey entityToDTO(SurveyEntity surveyEntity) {
-        Survey survey = new Survey();
+    private ExhaustiveSurvey entityToDTO(SurveyEntity surveyEntity) {
+        ExhaustiveSurvey survey = new ExhaustiveSurvey();
 
         survey.setTitle(surveyEntity.getTitle());
         survey.setStatus(surveyEntity.getStatus());
@@ -76,7 +76,7 @@ public class SurveyService {
         return question;
     }
 
-    private SurveyEntity DTOToEntity(Survey survey) {
+    private SurveyEntity DTOToEntity(ExhaustiveSurvey survey) {
         SurveyEntity surveyEntity = new SurveyEntity();
 
         surveyEntity.setTitle(survey.getTitle());
@@ -92,12 +92,28 @@ public class SurveyService {
         return surveyEntity;
     }
 
+    private SurveyEntity DTOToEntity(NewSurvey survey) {
+        SurveyEntity surveyEntity = new SurveyEntity();
+
+        // Server-set properties
+        surveyEntity.setStatus(Status.DRAFT);
+        surveyEntity.setCreatedAt(DateTime.now());
+
+        surveyEntity.setTitle(survey.getTitle());
+        surveyEntity.setDescription(survey.getDescription());
+        surveyEntity.setOwner(survey.getUser());
+        surveyEntity.setQuestions(survey.getQuestions().stream()
+                .map(this::DTOToEntity)
+                .collect(Collectors.toList())
+        );
+
+        return surveyEntity;
+    }
+
     private QuestionEntity DTOToEntity(Question question) {
         QuestionEntity questionEntity = new QuestionEntity();
         questionEntity.setQuestion(question.getQuestion());
 
         return questionEntity;
     }
-
-
 }

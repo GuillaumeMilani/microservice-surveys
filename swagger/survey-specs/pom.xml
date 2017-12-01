@@ -38,7 +38,7 @@
                             <goal>wget</goal>
                         </goals>
                         <configuration>
-                            <url>https://api.swaggerhub.com/apis/proteck/AMT/1.4</url>
+                            <url>https://api.swaggerhub.com/apis/proteck/AMT/1.4.1</url>
                             <outputFileName>api-spec.json</outputFileName>
                             <outputDirectory>${basedir}/src/main/resources/</outputDirectory>
                             <skipCache>true</skipCache>
@@ -50,7 +50,7 @@
             <plugin>
                 <groupId>io.swagger</groupId>
                 <artifactId>swagger-codegen-maven-plugin</artifactId>
-                <version>2.2.1</version>
+                <version>2.2.2</version>
                 <executions>
                     <execution>
                         <goals>
