@@ -17,9 +17,10 @@ public class UpdateSurveySteps extends SurveySteps {
         super(environment);
     }
 
-    private void updateSurveyStatus(Status status) throws Throwable {
+    @When("^I set the survey to (OPENED|CLOSED|DRAFT)$")
+    public void iSetTheSurveyToOPENED(String status) throws Throwable {
         try {
-            lastApiResponse = api.changeSurveysStatusWithHttpInfo(environment.getLastId(), status);
+            lastApiResponse = api.changeSurveysStatusWithHttpInfo(environment.getLastId(), Status.valueOf(status));
             lastApiCallThrewException = false;
             lastApiException = null;
             environment.setLastStatusCode(lastApiResponse.getStatusCode());
@@ -29,20 +30,5 @@ public class UpdateSurveySteps extends SurveySteps {
             lastApiException = e;
             environment.setLastStatusCode(lastApiException.getCode());
         }
-    }
-
-    @When("^I set the survey to OPENED$")
-    public void iSetTheSurveyToOPENED() throws Throwable {
-        updateSurveyStatus(Status.OPENED);
-    }
-
-    @When("^I set the survey to CLOSED$")
-    public void iSetTheSurveyToCLOSED() throws Throwable {
-        updateSurveyStatus(Status.CLOSED);
-    }
-
-    @When("^I set the survey to DRAFT")
-    public void iSetTheSurveyToDRAFT() throws Throwable {
-        updateSurveyStatus(Status.DRAFT);
     }
 }
