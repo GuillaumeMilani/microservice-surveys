@@ -17,7 +17,7 @@ public class UpdateSurveySteps extends SurveySteps {
         super(environment);
     }
 
-    @When("^I set the survey to (\\w+)$")
+    @When("^I set the survey to (OPENED|CLOSED|DRAFT)$")
     public void iSetTheSurveyToOPENED(String status) throws Throwable {
         try {
             lastApiResponse = api.changeSurveysStatusWithHttpInfo(environment.getLastId(), Status.valueOf(status));
