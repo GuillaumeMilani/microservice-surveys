@@ -7,10 +7,9 @@ import io.lozzikit.survey.ApiResponse;
 import io.lozzikit.survey.api.dto.NewSurvey;
 import io.lozzikit.survey.api.spec.helpers.Environment;
 import io.lozzikit.survey.api.spec.helpers.HTTPRequest;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.entity.ContentType;
 import org.junit.Assert;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Created by Tony on 16.11.2017.
@@ -21,7 +20,7 @@ public class CreateSurveySteps extends SurveySteps {
     private boolean lastApiCallThrewException;
 
     private String payload;
-    private String contentType = "application/json";
+    private ContentType contentType = ContentType.APPLICATION_JSON;
 
     public CreateSurveySteps(Environment environment) {
         super(environment);
@@ -81,7 +80,7 @@ public class CreateSurveySteps extends SurveySteps {
 
     @Given("^I have a wrong content type survey payload$")
     public void iHaveAWrongContentTypeSurveyPayload() throws Throwable {
-        contentType = "text/plain";
+        contentType = ContentType.TEXT_PLAIN;
         payload = "{\n" +
                 "  \"user\": 1,\n" +
                 "  \"title\": \"string\",\n" +
@@ -96,10 +95,9 @@ public class CreateSurveySteps extends SurveySteps {
 
     @When("^I custom POST it to the /survey endpoint$")
     public void iCustomPOSTItToTheSurveyEndpoint() throws Throwable {
-        HTTPRequest.HTTPResponse response = HTTPRequest.sendPostRequest(api.getApiClient().getBasePath() + "/surveys", payload, contentType);
-        Logger log = Logger.getLogger("Create Survey Step");
-        log.log(Level.SEVERE, response.getContent());
-        environment.setLastStatusCode(response.getStatusCode());
+        CloseableHttpResponse response = HTTPRequest.sendPostRequest(api.getApiClient().getBasePath() + "/surveys", payload, contentType);
+        environment.setLastStatusCode(response.getStatusLine().getStatusCode());
+        response.close();
     }
 
     @Given("^I have a survey with the mandatory properties set$")

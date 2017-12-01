@@ -26,3 +26,7 @@ Feature: Update a Survey
     When I set the survey to OPENED
     When I set the survey to DRAFT
     Then I receive a 400 status code
+
+  Scenario: send an incorrect status : FAIL
+    When I custom PATCH an incorrect status
+    Then I receive a 400 status code

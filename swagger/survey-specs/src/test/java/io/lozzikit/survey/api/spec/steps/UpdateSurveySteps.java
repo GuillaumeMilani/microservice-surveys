@@ -5,6 +5,10 @@ import io.lozzikit.survey.ApiException;
 import io.lozzikit.survey.ApiResponse;
 import io.lozzikit.survey.api.dto.Status;
 import io.lozzikit.survey.api.spec.helpers.Environment;
+import io.lozzikit.survey.api.spec.helpers.HTTPRequest;
+import org.apache.http.client.methods.CloseableHttpResponse;
+
+import java.io.IOException;
 
 /**
  * @author Maxime Guillod
@@ -30,5 +34,13 @@ public class UpdateSurveySteps extends SurveySteps {
             lastApiException = e;
             environment.setLastStatusCode(lastApiException.getCode());
         }
+    }
+
+    @When("^I custom PATCH an incorrect status$")
+    public void iSetTheSurveyToAnIncorrectStatus() throws IOException {
+        String payload = "THIS IS AN INCORRECT STATUS";
+        CloseableHttpResponse response = HTTPRequest.sendPatchRequest(api.getApiClient().getBasePath() + "/surveys/" + environment.getLastId() + "/status", payload);
+        environment.setLastStatusCode(response.getStatusLine().getStatusCode());
+        response.close();
     }
 }
