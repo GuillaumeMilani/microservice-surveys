@@ -1,5 +1,6 @@
 package io.lozzikit.survey.api.spec.steps;
 
+import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
@@ -34,6 +35,7 @@ public class GetSurveySteps extends SurveySteps {
 
                 String[] splittedUrl = surveyUrl.split("/");
                 Id = splittedUrl[splittedUrl.length - 1];
+                environment.setLastId(Id);
             } else {
                 throw new IllegalArgumentException("unknown response");
             }
