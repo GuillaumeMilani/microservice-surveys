@@ -14,6 +14,7 @@ public class Environment {
     private Survey survey;
     private int lastStatusCode;
     private SurveyApi api = new SurveyApi();
+    private String lastId;
 
     public Environment() throws IOException {
         Properties properties = new Properties();
@@ -42,5 +43,13 @@ public class Environment {
 
     public void setSurvey(Survey survey) {
         this.survey = survey;
+    }
+
+    public String getLastId() {
+        return lastId;
+    }
+
+    public void setLastId(String lastId) {
+        this.lastId = lastId;
     }
 }
