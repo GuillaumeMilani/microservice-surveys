@@ -5,10 +5,12 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 import io.lozzikit.survey.ApiException;
 import io.lozzikit.survey.ApiResponse;
-import io.lozzikit.survey.api.dto.Survey;
+import io.lozzikit.survey.api.dto.ExhaustiveSurvey;
+import io.lozzikit.survey.api.dto.NewSurvey;
 import io.lozzikit.survey.api.spec.helpers.Environment;
 import org.junit.Assert;
 
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 
@@ -19,24 +21,28 @@ import static org.junit.Assert.assertEquals;
  */
 public class GetSurveySteps extends SurveySteps {
     private String Id;
-    private Survey survey;
 
     public GetSurveySteps(Environment environment) {
         super(environment);
     }
 
+    private NewSurvey exhaustiveToNewSurvey(ExhaustiveSurvey exhaustiveSurvey) {
+        NewSurvey newSurvey = new NewSurvey();
+
+        return newSurvey;
+    }
+
     @Given("^I know a survey id$")
     public void iKnowASurveyId() throws Throwable {
-        survey = new io.lozzikit.survey.api.dto.Survey();
-        survey.setOwner(0L);
         try {
-            ApiResponse lastApiResponse = api.addSurveyWithHttpInfo(survey);
+            ApiResponse lastApiResponse = api.addSurveyWithHttpInfo(environment.getNewSurvey());
             if (lastApiResponse.getStatusCode() == 201) {
                 Map<String, List<String>> responseHeaders = lastApiResponse.getHeaders();
                 String surveyUrl = responseHeaders.get("Location").get(0);
 
                 String[] splittedUrl = surveyUrl.split("/");
                 Id = splittedUrl[splittedUrl.length - 1];
+                environment.setLastId(Id);
             } else {
                 throw new IllegalArgumentException("unknown response");
             }
@@ -67,11 +73,18 @@ public class GetSurveySteps extends SurveySteps {
 
     @And("^I receive the correct survey$")
     public void iReceiveTheCorrectSurvey() throws Throwable {
-        Survey receivedSurvey = (Survey) lastApiResponse.getData();
+        ExhaustiveSurvey receivedSurvey = (ExhaustiveSurvey) lastApiResponse.getData();
 
-        // Erase the properties set by the server before doing assertEquals
-        receivedSurvey.setCreatedAt(null);
+        // Compare only common properties
 
-        assertEquals(survey, receivedSurvey);
+        NewSurvey newSurvey = environment.getNewSurvey();
+        Class className = newSurvey.getClass();
+
+        for (Method method : className.getDeclaredMethods()) {
+            if (method.getName().startsWith("get") || method.getName().startsWith("is")) {
+                Method receivedSurveyMethod = receivedSurvey.getClass().getMethod(method.getName());
+                assertEquals(method.invoke(newSurvey), receivedSurveyMethod.invoke(receivedSurvey));
+            }
+        }
     }
 }

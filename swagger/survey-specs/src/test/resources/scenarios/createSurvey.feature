@@ -9,7 +9,7 @@ Feature: Creation of Survey
     Then I receive a 400 status code
 
   Scenario: create a survey
-    Given I have a survey with only the owner property set
+    Given I have a survey with the mandatory properties set
     When I POST its payload to the /survey endpoint
     Then I receive a 201 status code
 
@@ -19,11 +19,11 @@ Feature: Creation of Survey
     Then I receive a 415 status code
 
   Scenario: create a wrong survey with wrong body
-    Given I have a survey payload without owner
+    Given I have a survey payload without user
     When I custom POST it to the /survey endpoint
     Then I receive a 400 status code
 
-  Scenario: create a survey with wrong owner type
-    Given I have a survey payload with wrong owner type
+  Scenario: create a survey with wrong user type
+    Given I have a survey payload with wrong user type
     When I custom POST it to the /survey endpoint
     Then I receive a 400 status code

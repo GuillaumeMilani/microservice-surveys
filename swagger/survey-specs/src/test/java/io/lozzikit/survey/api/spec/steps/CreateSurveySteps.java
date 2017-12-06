@@ -4,26 +4,23 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 import io.lozzikit.survey.ApiException;
 import io.lozzikit.survey.ApiResponse;
-import io.lozzikit.survey.api.dto.Survey;
+import io.lozzikit.survey.api.dto.NewSurvey;
 import io.lozzikit.survey.api.spec.helpers.Environment;
 import io.lozzikit.survey.api.spec.helpers.HTTPRequest;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.entity.ContentType;
 import org.junit.Assert;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Created by Tony on 16.11.2017.
  */
 public class CreateSurveySteps extends SurveySteps {
-    private Survey survey;
-
     private ApiResponse lastApiResponse;
     private ApiException lastApiException;
     private boolean lastApiCallThrewException;
 
     private String payload;
-    private String contentType = "application/json";
+    private ContentType contentType = ContentType.APPLICATION_JSON;
 
     public CreateSurveySteps(Environment environment) {
         super(environment);
@@ -36,13 +33,13 @@ public class CreateSurveySteps extends SurveySteps {
 
     @Given("^I have an empty survey payload$")
     public void i_have_a_survey_payload() {
-        survey = new io.lozzikit.survey.api.dto.Survey();
+        environment.setNewSurvey(new NewSurvey());
     }
 
     @When("^I POST its payload to the /survey endpoint$")
     public void iPOSTItsPayloadToTheSurveyEndpoint() {
         try {
-            lastApiResponse = api.addSurveyWithHttpInfo(survey);
+            lastApiResponse = api.addSurveyWithHttpInfo(environment.getNewSurvey());
             lastApiCallThrewException = false;
             lastApiException = null;
             environment.setLastStatusCode(lastApiResponse.getStatusCode());
@@ -54,11 +51,9 @@ public class CreateSurveySteps extends SurveySteps {
         }
     }
 
-    @Given("^I have a survey payload without owner$")
-    public void iHaveASurveyPayloadWithoutOwner() throws Throwable {
+    @Given("^I have a survey payload without user")
+    public void iHaveASurveyPayloadWithoutUser() throws Throwable {
         payload = "{\n" +
-                "  \"createdAt\": \"2017-11-17T14:38:21.677Z\",\n" +
-                "  \"status\": \"draft\",\n" +
                 "  \"title\": \"string\",\n" +
                 "  \"description\": \"string\",\n" +
                 "  \"questions\": [\n" +
@@ -69,12 +64,10 @@ public class CreateSurveySteps extends SurveySteps {
                 "}";
     }
 
-    @Given("^I have a survey payload with wrong owner type$")
-    public void iHaveAPayloadWithWrongOwnerType() throws Throwable {
+    @Given("^I have a survey payload with wrong user type$")
+    public void iHaveAPayloadWithWrongUserType() throws Throwable {
         payload = "{\n" +
-                "  \"owner\": \"THIS IS AN INVALID OWNER ID\",\n" +
-                "  \"createdAt\": \"2017-11-17T14:38:21.677Z\",\n" +
-                "  \"status\": \"draft\",\n" +
+                "  \"user\": \"THIS IS AN INVALID USER ID\",\n" +
                 "  \"title\": \"string\",\n" +
                 "  \"description\": \"string\",\n" +
                 "  \"questions\": [\n" +
@@ -87,11 +80,9 @@ public class CreateSurveySteps extends SurveySteps {
 
     @Given("^I have a wrong content type survey payload$")
     public void iHaveAWrongContentTypeSurveyPayload() throws Throwable {
-        contentType = "text/plain";
+        contentType = ContentType.TEXT_PLAIN;
         payload = "{\n" +
-                "  \"owner\": 1,\n" +
-                "  \"createdAt\": \"2017-11-17T14:38:21.677Z\",\n" +
-                "  \"status\": \"draft\",\n" +
+                "  \"user\": 1,\n" +
                 "  \"title\": \"string\",\n" +
                 "  \"description\": \"asdf\",\n" +
                 "  \"questions\": [\n" +
@@ -104,15 +95,15 @@ public class CreateSurveySteps extends SurveySteps {
 
     @When("^I custom POST it to the /survey endpoint$")
     public void iCustomPOSTItToTheSurveyEndpoint() throws Throwable {
-        HTTPRequest.HTTPResponse response = HTTPRequest.sendPostRequest(api.getApiClient().getBasePath() + "/surveys", payload, contentType);
-        Logger log = Logger.getLogger("Create Survey Step");
-        log.log(Level.SEVERE, response.getContent());
-        environment.setLastStatusCode(response.getStatusCode());
+        CloseableHttpResponse response = HTTPRequest.sendPostRequest(api.getApiClient().getBasePath() + "/surveys", payload, contentType);
+        environment.setLastStatusCode(response.getStatusLine().getStatusCode());
+        response.close();
     }
 
-    @Given("^I have a survey with only the owner property set$")
-    public void iHaveASurveyWithAnOwnerPayload() throws Throwable {
-        survey = new io.lozzikit.survey.api.dto.Survey();
-        survey.setOwner((long) 1);
+    @Given("^I have a survey with the mandatory properties set$")
+    public void iHaveASurveyWithOnlyTheUserPropertySet() throws Throwable {
+        NewSurvey survey = new NewSurvey();
+        survey.setUser(1L);
+        environment.setNewSurvey(survey);
     }
 }
