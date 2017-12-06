@@ -1,8 +1,10 @@
 package io.lozzikit.survey.services;
 
 import io.lozzikit.survey.api.exceptions.NotFoundException;
+import io.lozzikit.survey.api.model.ExhaustiveSurvey;
+import io.lozzikit.survey.api.model.NewSurvey;
 import io.lozzikit.survey.api.model.Question;
-import io.lozzikit.survey.api.model.Survey;
+import io.lozzikit.survey.api.model.Status;
 import io.lozzikit.survey.entities.QuestionEntity;
 import io.lozzikit.survey.entities.SurveyEntity;
 import io.lozzikit.survey.repositories.SurveyRepository;
@@ -18,74 +20,100 @@ public class SurveyService {
     @Autowired
     SurveyRepository surveyRepository;
 
-    public List<Survey> getAllSurveys() {
+    public List<ExhaustiveSurvey> getAllSurveys() {
         List<SurveyEntity> surveyEntities = surveyRepository.findAll();
 
         return surveyEntities.stream()
-                .map(this::entityToSurvey)
+                .map(this::entityToDTO)
                 .collect(Collectors.toList());
     }
 
-    public String saveSurvey(Survey survey) {
-        survey.setCreatedAt(DateTime.now());
-
-        SurveyEntity surveyEntity = surveyToEntity(survey);
+    public String createSurvey(NewSurvey survey) {
+        SurveyEntity surveyEntity = DTOToEntity(survey);
 
         surveyRepository.save(surveyEntity);
         return surveyEntity.getId();
     }
 
-    public Survey getSurvey(String id) throws NotFoundException {
+    public String updateSurvey(ExhaustiveSurvey survey, String id) {
+        SurveyEntity surveyEntity = DTOToEntity(survey);
+        surveyEntity.setId(id);
+
+        surveyRepository.save(surveyEntity);
+        return surveyEntity.getId();
+    }
+
+    public ExhaustiveSurvey getSurvey(String id) throws NotFoundException {
         SurveyEntity surveyEntity = surveyRepository.findOne(id);
 
         if (null == surveyEntity) {
             throw new NotFoundException(404, "Survey not found");
         }
 
-        return entityToSurvey(surveyEntity);
+        return entityToDTO(surveyEntity);
     }
 
-    private SurveyEntity surveyToEntity(Survey survey) {
-        SurveyEntity surveyEntity = new SurveyEntity();
-
-        surveyEntity.setTitle(survey.getTitle());
-        surveyEntity.setDescription(survey.getDescription());
-        surveyEntity.setOwner(survey.getOwner());
-        surveyEntity.setCreatedAt(survey.getCreatedAt());
-        surveyEntity.setQuestions(survey.getQuestions().stream()
-                .map(this::questionToEntity)
-                .collect(Collectors.toList())
-        );
-
-        return surveyEntity;
-    }
-
-    private Survey entityToSurvey(SurveyEntity surveyEntity) {
-        Survey survey = new Survey();
+    private ExhaustiveSurvey entityToDTO(SurveyEntity surveyEntity) {
+        ExhaustiveSurvey survey = new ExhaustiveSurvey();
 
         survey.setTitle(surveyEntity.getTitle());
+        survey.setStatus(surveyEntity.getStatus());
         survey.setDescription(surveyEntity.getDescription());
-        survey.setOwner(surveyEntity.getOwner());
-        survey.setCreatedAt(surveyEntity.getCreatedAt());
+        survey.setUser(surveyEntity.getOwner());
+        survey.setDatetime(surveyEntity.getCreatedAt());
         survey.setQuestions(surveyEntity.getQuestions().stream()
-                .map(this::entityToQuestion)
+                .map(this::entityToDTO)
                 .collect(Collectors.toList())
         );
 
         return survey;
     }
 
-    private QuestionEntity questionToEntity(Question question) {
-        QuestionEntity questionEntity = new QuestionEntity();
-        questionEntity.setQuestion(question.getQuestion());
-
-        return questionEntity;
-    }
-
-    private Question entityToQuestion(QuestionEntity questionEntity) {
+    private Question entityToDTO(QuestionEntity questionEntity) {
         Question question = new Question();
         question.setQuestion(questionEntity.getQuestion());
 
         return question;
+    }
+
+    private SurveyEntity DTOToEntity(ExhaustiveSurvey survey) {
+        SurveyEntity surveyEntity = new SurveyEntity();
+
+        surveyEntity.setTitle(survey.getTitle());
+        surveyEntity.setStatus(survey.getStatus());
+        surveyEntity.setDescription(survey.getDescription());
+        surveyEntity.setOwner(survey.getUser());
+        surveyEntity.setCreatedAt(survey.getDatetime());
+        surveyEntity.setQuestions(survey.getQuestions().stream()
+                .map(this::DTOToEntity)
+                .collect(Collectors.toList())
+        );
+
+        return surveyEntity;
+    }
+
+    private SurveyEntity DTOToEntity(NewSurvey survey) {
+        SurveyEntity surveyEntity = new SurveyEntity();
+
+        // Server-set properties
+        surveyEntity.setStatus(Status.DRAFT);
+        surveyEntity.setCreatedAt(DateTime.now());
+
+        surveyEntity.setTitle(survey.getTitle());
+        surveyEntity.setDescription(survey.getDescription());
+        surveyEntity.setOwner(survey.getUser());
+        surveyEntity.setQuestions(survey.getQuestions().stream()
+                .map(this::DTOToEntity)
+                .collect(Collectors.toList())
+        );
+
+        return surveyEntity;
+    }
+
+    private QuestionEntity DTOToEntity(Question question) {
+        QuestionEntity questionEntity = new QuestionEntity();
+        questionEntity.setQuestion(question.getQuestion());
+
+        return questionEntity;
     }
 }
