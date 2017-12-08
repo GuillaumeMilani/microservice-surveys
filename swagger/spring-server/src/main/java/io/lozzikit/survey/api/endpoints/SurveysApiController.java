@@ -2,11 +2,9 @@ package io.lozzikit.survey.api.endpoints;
 
 import io.lozzikit.survey.api.SurveysApi;
 import io.lozzikit.survey.api.exceptions.NotFoundException;
-import io.lozzikit.survey.api.model.Event;
-import io.lozzikit.survey.api.model.ExhaustiveSurvey;
-import io.lozzikit.survey.api.model.NewSurvey;
-import io.lozzikit.survey.api.model.Status;
+import io.lozzikit.survey.api.model.*;
 import io.lozzikit.survey.services.EventService;
+import io.lozzikit.survey.services.SurveyResponsesService;
 import io.lozzikit.survey.services.SurveyService;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +27,9 @@ public class SurveysApiController implements SurveysApi {
     @Autowired
     EventService eventService;
 
+    @Autowired
+    SurveyResponsesService surveyResponsesService;
+
     @Override
     public ResponseEntity<List<ExhaustiveSurvey>> getSurveys() {
         List<ExhaustiveSurvey> surveys = surveyService.getAllSurveys();
@@ -36,6 +37,14 @@ public class SurveysApiController implements SurveysApi {
         return new ResponseEntity<>(surveys, HttpStatus.OK);
     }
 
+    @Override
+    public ResponseEntity<Void> postSurveysResponses(@PathVariable("surveyId") String surveyId, @Valid @RequestBody SurveyResponses body) {
+        surveyResponsesService.createResponses(body);
+
+        // TODO : validation
+
+        return ResponseEntity.status(201).build();
+    }
 
     @Override
     public ResponseEntity<Void> addSurvey(@Valid @RequestBody NewSurvey body) {
