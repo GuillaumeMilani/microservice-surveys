@@ -17,6 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -39,9 +40,39 @@ public class SurveysApiController implements SurveysApi {
 
     @Override
     public ResponseEntity<Void> postSurveysResponses(@PathVariable("surveyId") String surveyId, @Valid @RequestBody SurveyResponses body) {
-        surveyResponsesService.createResponses(body);
+        try {
+            ExhaustiveSurvey exhaustiveSurvey = surveyService.getSurvey(surveyId);
+            Status status = exhaustiveSurvey.getStatus();
 
-        // TODO : validation
+            if (status.equals(Status.DRAFT) || status.equals(Status.CLOSED)) {
+                return ResponseEntity.status(403).build();
+            }
+
+            List<Question> questions = exhaustiveSurvey.getQuestions();
+            List<Answer> answers = body.getAnswers();
+
+            if (answers.size() != questions.size()) {
+                return ResponseEntity.status(400).build();
+            }
+
+            List<Integer> answersNumber = new ArrayList<>(answers.size());
+            for (Answer a: answers) {
+                answersNumber.add(a.getQuestionNumber());
+            }
+
+            List<Integer> questionsNumber = new ArrayList<>(questions.size());
+            for (Question q: questions) {
+                questionsNumber.add(q.getNumber());
+            }
+
+            if (!questionsNumber.containsAll(answersNumber)) {
+                return ResponseEntity.status(400).build();
+            }
+        } catch (NotFoundException e) {
+            return ResponseEntity.status(404).build();
+        }
+
+        surveyResponsesService.createResponses(body);
 
         return ResponseEntity.status(201).build();
     }
