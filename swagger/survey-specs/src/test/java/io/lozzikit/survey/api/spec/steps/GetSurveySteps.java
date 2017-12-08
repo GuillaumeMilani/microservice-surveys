@@ -92,4 +92,14 @@ public class GetSurveySteps extends SurveySteps {
             }
         }
     }
+
+    /**
+     * a a wrong id into environment.lastId
+     *
+     * @throws Throwable
+     */
+    @Given("^I have a wrong id$")
+    public void iHaveAWrongId() throws Throwable {
+        environment.setLastId("thisIsAWrongSurveyId");
+    }
 }
