@@ -32,6 +32,11 @@ public class GetSurveySteps extends SurveySteps {
         return newSurvey;
     }
 
+    /**
+     * Set the id into environment.lastid
+     *
+     * @throws Throwable
+     */
     @Given("^I know a survey id$")
     public void iKnowASurveyId() throws Throwable {
         try {
