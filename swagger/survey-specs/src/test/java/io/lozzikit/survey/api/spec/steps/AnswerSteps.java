@@ -1,7 +1,5 @@
 package io.lozzikit.survey.api.spec.steps;
 
-import cucumber.api.PendingException;
-import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
 import io.lozzikit.survey.ApiException;
 import io.lozzikit.survey.ApiResponse;
@@ -39,20 +37,6 @@ public class AnswerSteps extends SurveySteps {
             lastApiException = e;
             environment.setLastStatusCode(lastApiException.getCode());
         }
-    }
-
-    @And("^The answer is corrected stored$")
-    public void theAnswerIsCorrectedStored() throws Throwable {
-
-        // TODO
-        throw new PendingException();
-    }
-
-    @When("^I post a malformed anser$")
-    public void iPostAMalformedAnser() throws Throwable {
-
-        // TODO
-        throw new PendingException();
     }
 
     /**

@@ -10,12 +10,6 @@ Feature: Answer a Survey
     And I post this answer
     Then I receive a 201 status code
 
-  Scenario: answer a Survey
-    When I create a correct answer
-    And I post this answer
-    Then I receive a 201 status code
-    And The answer is corrected stored
-
   Scenario: answer a unknown survey
     Given I have a wrong id
     When I create a correct answer
