@@ -21,9 +21,10 @@ public class AnswerSteps extends SurveySteps {
     @When("^I post this answer$")
     public void iPostThisAnswer() throws Throwable {
         String id = environment.getLastId();
-        Answer answer = environment.getLastAnswer();
+        Answer answer = environment.getNewAnswer();
 
         SurveyResponses responses = new SurveyResponses();
+        responses.setSurveyId(id);
         responses.addAnswersItem(answer);
 
         try {
@@ -50,7 +51,7 @@ public class AnswerSteps extends SurveySteps {
         answer.setQuestionNumber(0);
         answer.setAnswer("My Answer");
 
-        environment.setLastAnswer(answer);
+        environment.setNewAnswer(answer);
     }
 
     /**
@@ -64,6 +65,6 @@ public class AnswerSteps extends SurveySteps {
         answer.setQuestionNumber(-1);
         answer.setAnswer(null);
 
-        environment.setLastAnswer(answer);
+        environment.setNewAnswer(answer);
     }
 }

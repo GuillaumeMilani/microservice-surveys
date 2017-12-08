@@ -65,6 +65,7 @@ public class SurveysApiController implements SurveysApi {
                 questionsNumber.add(q.getNumber());
             }
 
+            // TODO Gabirel : all elements into questionNumber is null if content is correct
             if (!questionsNumber.containsAll(answersNumber)) {
                 return ResponseEntity.status(400).build();
             }
