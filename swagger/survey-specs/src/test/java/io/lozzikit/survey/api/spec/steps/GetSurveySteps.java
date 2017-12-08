@@ -32,6 +32,11 @@ public class GetSurveySteps extends SurveySteps {
         return newSurvey;
     }
 
+    /**
+     * Set the id into environment.lastid
+     *
+     * @throws Throwable
+     */
     @Given("^I know a survey id$")
     public void iKnowASurveyId() throws Throwable {
         try {
@@ -86,5 +91,15 @@ public class GetSurveySteps extends SurveySteps {
                 assertEquals(method.invoke(newSurvey), receivedSurveyMethod.invoke(receivedSurvey));
             }
         }
+    }
+
+    /**
+     * a a wrong id into environment.lastId
+     *
+     * @throws Throwable
+     */
+    @Given("^I have a wrong id$")
+    public void iHaveAWrongId() throws Throwable {
+        environment.setLastId("thisIsAWrongSurveyId");
     }
 }
