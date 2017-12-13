@@ -31,10 +31,25 @@ public class SurveysApiController implements SurveysApi {
     @Autowired
     SurveyResponsesService surveyResponsesService;
 
-    private String buildSelfLink(String id) {
-        return ServletUriComponentsBuilder
+    private Link buildSelfLink(String id) {
+        Link link = new Link();
+        link.setRel("self");
+        link.setHref(ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}")
-                .buildAndExpand(id).toUri().toString();
+                .buildAndExpand(id).toUri().toString());
+
+        return link;
+    }
+
+    private Link buildListLink() {
+        Link link = new Link();
+        link.setRel("list");
+
+        link.setHref(ServletUriComponentsBuilder
+                .fromCurrentContextPath().path("/surveys")
+                .build().toUri().toString());
+
+        return link;
     }
 
     @Override
@@ -132,6 +147,9 @@ public class SurveysApiController implements SurveysApi {
     public ResponseEntity<ExhaustiveSurvey> getSurveyById(@ApiParam(value = "ID of survey to return", required = true) @PathVariable("surveyId") String surveyId) {
         try {
             ExhaustiveSurvey survey = surveyService.getSurvey(surveyId);
+
+            // Add list link
+            survey.getLinks().add(buildListLink());
 
             return new ResponseEntity<>(survey, HttpStatus.OK);
         } catch (NotFoundException e) {
