@@ -44,43 +44,45 @@ public class SurveysApiController implements SurveysApi {
             ExhaustiveSurvey exhaustiveSurvey = surveyService.getSurvey(surveyId);
             Status status = exhaustiveSurvey.getStatus();
 
-            if (status.equals(Status.DRAFT) || status.equals(Status.CLOSED)) {
-                return ResponseEntity.status(403).build();
+            if (!status.equals(Status.OPENED)) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             }
 
             List<Question> questions = exhaustiveSurvey.getQuestions();
             List<Answer> answers = body.getAnswers();
 
             if (answers.size() != questions.size()) {
-                return ResponseEntity.status(400).build();
+                return ResponseEntity.badRequest().build();
             }
 
             List<Integer> answersNumber = new ArrayList<>(answers.size());
-            for (Answer a: answers) {
+            for (Answer a : answers) {
                 answersNumber.add(a.getQuestionNumber());
             }
 
             List<Integer> questionsNumber = new ArrayList<>(questions.size());
-            for (Question q: questions) {
+            for (Question q : questions) {
                 questionsNumber.add(q.getNumber());
             }
 
             // TODO Gabirel : all elements into questionNumber is null if content is correct
             if (!questionsNumber.containsAll(answersNumber)) {
-                return ResponseEntity.status(400).build();
+                return ResponseEntity.badRequest().build();
             }
         } catch (NotFoundException e) {
-            return ResponseEntity.status(404).build();
+            return ResponseEntity.notFound().build();
         }
 
         surveyResponsesService.createResponses(body);
 
-        return ResponseEntity.status(201).build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @Override
     public ResponseEntity<Void> addSurvey(@Valid @RequestBody NewSurvey body) {
         String newSurveyId = surveyService.createSurvey(body);
+
+        // TODO: Ensure question number uniqueness. Has to be done programmatically (no way with Mongo)
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}")

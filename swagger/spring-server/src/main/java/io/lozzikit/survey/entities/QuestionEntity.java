@@ -1,11 +1,8 @@
 package io.lozzikit.survey.entities;
 
-import org.springframework.data.mongodb.core.index.Indexed;
-
 public class QuestionEntity {
     private String question;
-    
-    @Indexed(unique = true)
+
     private Integer number;
 
     public String getQuestion() {
