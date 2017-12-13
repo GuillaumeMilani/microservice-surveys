@@ -72,6 +72,7 @@ public class SurveyService {
     private Question entityToDTO(QuestionEntity questionEntity) {
         Question question = new Question();
         question.setQuestion(questionEntity.getQuestion());
+        question.setNumber(questionEntity.getNumber());
 
         return question;
     }
@@ -113,6 +114,7 @@ public class SurveyService {
     private QuestionEntity DTOToEntity(Question question) {
         QuestionEntity questionEntity = new QuestionEntity();
         questionEntity.setQuestion(question.getQuestion());
+        questionEntity.setNumber(question.getNumber());
 
         return questionEntity;
     }
