@@ -31,9 +31,16 @@ public class SurveysApiController implements SurveysApi {
     @Autowired
     SurveyResponsesService surveyResponsesService;
 
+    private String buildSelfLink(String id) {
+        return ServletUriComponentsBuilder
+                .fromCurrentRequest().path("/{id}")
+                .buildAndExpand(id).toUri().toString();
+    }
+
     @Override
     public ResponseEntity<List<ExhaustiveSurvey>> getSurveys() {
-        List<ExhaustiveSurvey> surveys = surveyService.getAllSurveys();
+
+        List<ExhaustiveSurvey> surveys = surveyService.getAllSurveys(this::buildSelfLink);
 
         return new ResponseEntity<>(surveys, HttpStatus.OK);
     }
@@ -65,7 +72,6 @@ public class SurveysApiController implements SurveysApi {
                 questionsNumber.add(q.getNumber());
             }
 
-            // TODO Gabirel : all elements into questionNumber is null if content is correct
             if (!questionsNumber.containsAll(answersNumber)) {
                 return ResponseEntity.badRequest().build();
             }

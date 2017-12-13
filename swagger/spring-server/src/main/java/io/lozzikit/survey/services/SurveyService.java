@@ -1,10 +1,7 @@
 package io.lozzikit.survey.services;
 
 import io.lozzikit.survey.api.exceptions.NotFoundException;
-import io.lozzikit.survey.api.model.ExhaustiveSurvey;
-import io.lozzikit.survey.api.model.NewSurvey;
-import io.lozzikit.survey.api.model.Question;
-import io.lozzikit.survey.api.model.Status;
+import io.lozzikit.survey.api.model.*;
 import io.lozzikit.survey.entities.QuestionEntity;
 import io.lozzikit.survey.entities.SurveyEntity;
 import io.lozzikit.survey.repositories.SurveyRepository;
@@ -12,7 +9,9 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,11 +19,21 @@ public class SurveyService {
     @Autowired
     SurveyRepository surveyRepository;
 
-    public List<ExhaustiveSurvey> getAllSurveys() {
+    public List<ExhaustiveSurvey> getAllSurveys(Function<String, String> selfUrlCreation) {
         List<SurveyEntity> surveyEntities = surveyRepository.findAll();
 
         return surveyEntities.stream()
-                .map(this::entityToDTO)
+                .map(entity -> {
+                    ExhaustiveSurvey survey = entityToDTO(entity);
+
+                    Link selfLink = new Link();
+                    selfLink.setRel("self");
+                    selfLink.setHref(selfUrlCreation.apply(entity.getId()));
+
+                    survey.getLinks().add(selfLink);
+
+                    return survey;
+                })
                 .collect(Collectors.toList());
     }
 
@@ -65,6 +74,8 @@ public class SurveyService {
                 .map(this::entityToDTO)
                 .collect(Collectors.toList())
         );
+
+        survey.setLinks(new LinkedList<>());
 
         return survey;
     }
