@@ -68,6 +68,7 @@ public class GetSurveySteps extends SurveySteps {
             lastApiCallThrewException = false;
             lastApiException = null;
             environment.setLastStatusCode(lastApiResponse.getStatusCode());
+            environment.setExhaustiveSurvey((ExhaustiveSurvey) lastApiResponse.getData());
         } catch (ApiException e) {
             lastApiCallThrewException = true;
             lastApiResponse = null;
@@ -78,7 +79,7 @@ public class GetSurveySteps extends SurveySteps {
 
     @And("^I receive the correct survey$")
     public void iReceiveTheCorrectSurvey() throws Throwable {
-        ExhaustiveSurvey receivedSurvey = (ExhaustiveSurvey) lastApiResponse.getData();
+        ExhaustiveSurvey receivedSurvey = environment.getExhaustiveSurvey();
 
         // Compare only common properties
 
