@@ -15,8 +15,9 @@ public class SurveyResponsesService {
     @Autowired
     ResponsesRepository responsesRepository;
 
-    public void createResponses(SurveyResponses responses) {
+    public void createResponses(SurveyResponses responses, String surveyId) {
         SurveyResponsesEntity surveyResponsesEntity = DTOToEntity(responses);
+        surveyResponsesEntity.setId(surveyId);
 
         responsesRepository.save(responses);
     }
@@ -24,7 +25,6 @@ public class SurveyResponsesService {
     private SurveyResponses entityToDTO(SurveyResponsesEntity responsesEntity) {
         SurveyResponses responses = new SurveyResponses();
 
-        responses.setSurveyId(responsesEntity.getSurveyId());
         responses.setAnswers(responsesEntity.getAnswers().stream()
                 .map(this::entityToDTO)
                 .collect(Collectors.toList())
@@ -44,7 +44,6 @@ public class SurveyResponsesService {
     private SurveyResponsesEntity DTOToEntity(SurveyResponses responses) {
         SurveyResponsesEntity responsesEntity = new SurveyResponsesEntity();
 
-        responsesEntity.setSurveyId(responses.getSurveyId());
         responsesEntity.setAnswers(responses.getAnswers().stream()
                 .map(this::DTOToEntity)
                 .collect(Collectors.toList())

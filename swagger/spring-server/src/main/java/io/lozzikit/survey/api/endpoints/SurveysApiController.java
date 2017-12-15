@@ -17,8 +17,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class SurveysApiController implements SurveysApi {
@@ -77,15 +77,9 @@ public class SurveysApiController implements SurveysApi {
                 return ResponseEntity.badRequest().build();
             }
 
-            List<Integer> answersNumber = new ArrayList<>(answers.size());
-            for (Answer a : answers) {
-                answersNumber.add(a.getQuestionNumber());
-            }
+            List<Integer> answersNumber = answers.stream().map(Answer::getQuestionNumber).collect(Collectors.toList());
 
-            List<Integer> questionsNumber = new ArrayList<>(questions.size());
-            for (Question q : questions) {
-                questionsNumber.add(q.getNumber());
-            }
+            List<Integer> questionsNumber = questions.stream().map(Question::getNumber).collect(Collectors.toList());
 
             if (!questionsNumber.containsAll(answersNumber)) {
                 return ResponseEntity.badRequest().build();
@@ -94,7 +88,7 @@ public class SurveysApiController implements SurveysApi {
             return ResponseEntity.notFound().build();
         }
 
-        surveyResponsesService.createResponses(body);
+        surveyResponsesService.createResponses(body, surveyId);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

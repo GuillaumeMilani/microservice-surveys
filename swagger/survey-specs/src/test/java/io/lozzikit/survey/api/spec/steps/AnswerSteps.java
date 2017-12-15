@@ -24,7 +24,6 @@ public class AnswerSteps extends SurveySteps {
         Answer answer = environment.getNewAnswer();
 
         SurveyResponses responses = new SurveyResponses();
-        responses.setSurveyId(id);
         responses.addAnswersItem(answer);
 
         try {
