@@ -1,5 +1,6 @@
 package io.lozzikit.survey.api.spec.steps;
 
+import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
@@ -102,5 +103,41 @@ public class GetSurveySteps extends SurveySteps {
     @Given("^I have a wrong id$")
     public void iHaveAWrongId() throws Throwable {
         environment.setLastId("thisIsAWrongSurveyId");
+    }
+
+    @When("^I GET it from the /surveys endpoint$")
+    public void iGETItFromTheSurveysEndpoint() throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        throw new PendingException();
+    }
+
+    @And("^I receive no survey$")
+    public void iReceiveNoSurvey() throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        throw new PendingException();
+    }
+
+    @And("^I receive the posted survey$")
+    public void iReceiveThePostedSurvey() throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        throw new PendingException();
+    }
+
+    @Given("^I have many surveys with the mandatory properties set$")
+    public void iHaveManySurveysWithTheMandatoryPropertiesSet() throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        throw new PendingException();
+    }
+
+    @And("^I post them to the /survey endpoint$")
+    public void iPostThemToTheSurveyEndpoint() throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        throw new PendingException();
+    }
+
+    @And("^i receive the posted surveys$")
+    public void iReceiveThePostedSurveys() throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        throw new PendingException();
     }
 }
