@@ -40,12 +40,11 @@ public class SurveyService {
         return surveyEntity.getId();
     }
 
-    public String updateSurvey(ExhaustiveSurvey survey, String id) {
+    public void updateSurvey(ExhaustiveSurvey survey, String id) {
         SurveyEntity surveyEntity = DTOToEntity(survey);
         surveyEntity.setId(id);
 
         surveyRepository.save(surveyEntity);
-        return surveyEntity.getId();
     }
 
     public ExhaustiveSurvey getSurvey(String id) throws NotFoundException {
