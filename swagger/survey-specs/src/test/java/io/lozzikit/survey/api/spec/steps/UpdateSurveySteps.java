@@ -1,14 +1,18 @@
 package io.lozzikit.survey.api.spec.steps;
 
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
 import io.lozzikit.survey.ApiException;
 import io.lozzikit.survey.ApiResponse;
+import io.lozzikit.survey.api.dto.ExhaustiveSurvey;
 import io.lozzikit.survey.api.dto.Status;
 import io.lozzikit.survey.api.spec.helpers.Environment;
 import io.lozzikit.survey.api.spec.helpers.HTTPRequest;
 import org.apache.http.client.methods.CloseableHttpResponse;
 
 import java.io.IOException;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Maxime Guillod
@@ -42,5 +46,12 @@ public class UpdateSurveySteps extends SurveySteps {
         CloseableHttpResponse response = HTTPRequest.sendPatchRequest(api.getApiClient().getBasePath() + "/surveys/" + environment.getLastId() + "/status", payload);
         environment.setLastStatusCode(response.getStatusLine().getStatusCode());
         response.close();
+    }
+
+    @And("^The survey has the status (OPENED|CLOSED|DRAFT)$")
+    public void theSurveyHasTheStatus(String status) {
+        ExhaustiveSurvey survey = environment.getExhaustiveSurvey();
+
+        assertEquals(Status.valueOf(status), survey.getStatus());
     }
 }

@@ -1,6 +1,7 @@
 package io.lozzikit.survey.api.spec.helpers;
 
 import io.lozzikit.survey.api.SurveyApi;
+import io.lozzikit.survey.api.dto.Answer;
 import io.lozzikit.survey.api.dto.ExhaustiveSurvey;
 import io.lozzikit.survey.api.dto.NewSurvey;
 
@@ -17,6 +18,7 @@ public class Environment {
     private int lastStatusCode;
     private SurveyApi api = new SurveyApi();
     private String lastId;
+    private Answer newAnswer;
 
     public Environment() throws IOException {
         Properties properties = new Properties();
@@ -61,5 +63,13 @@ public class Environment {
 
     public void setNewSurvey(NewSurvey newSurvey) {
         this.newSurvey = newSurvey;
+    }
+
+    public Answer getNewAnswer() {
+        return newAnswer;
+    }
+
+    public void setNewAnswer(Answer newAnswer) {
+        this.newAnswer = newAnswer;
     }
 }

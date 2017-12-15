@@ -1,10 +1,7 @@
 package io.lozzikit.survey.services;
 
 import io.lozzikit.survey.api.exceptions.NotFoundException;
-import io.lozzikit.survey.api.model.ExhaustiveSurvey;
-import io.lozzikit.survey.api.model.NewSurvey;
-import io.lozzikit.survey.api.model.Question;
-import io.lozzikit.survey.api.model.Status;
+import io.lozzikit.survey.api.model.*;
 import io.lozzikit.survey.entities.QuestionEntity;
 import io.lozzikit.survey.entities.SurveyEntity;
 import io.lozzikit.survey.repositories.SurveyRepository;
@@ -12,7 +9,9 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,11 +19,17 @@ public class SurveyService {
     @Autowired
     SurveyRepository surveyRepository;
 
-    public List<ExhaustiveSurvey> getAllSurveys() {
+    public List<ExhaustiveSurvey> getAllSurveys(Function<String, Link> selfLinkCreation) {
         List<SurveyEntity> surveyEntities = surveyRepository.findAll();
 
         return surveyEntities.stream()
-                .map(this::entityToDTO)
+                .map(entity -> {
+                    ExhaustiveSurvey survey = entityToDTO(entity);
+
+                    survey.getLinks().add(selfLinkCreation.apply(entity.getId()));
+
+                    return survey;
+                })
                 .collect(Collectors.toList());
     }
 
@@ -35,12 +40,11 @@ public class SurveyService {
         return surveyEntity.getId();
     }
 
-    public String updateSurvey(ExhaustiveSurvey survey, String id) {
+    public void updateSurvey(ExhaustiveSurvey survey, String id) {
         SurveyEntity surveyEntity = DTOToEntity(survey);
         surveyEntity.setId(id);
 
         surveyRepository.save(surveyEntity);
-        return surveyEntity.getId();
     }
 
     public ExhaustiveSurvey getSurvey(String id) throws NotFoundException {
@@ -66,12 +70,15 @@ public class SurveyService {
                 .collect(Collectors.toList())
         );
 
+        survey.setLinks(new LinkedList<>());
+
         return survey;
     }
 
     private Question entityToDTO(QuestionEntity questionEntity) {
         Question question = new Question();
         question.setQuestion(questionEntity.getQuestion());
+        question.setNumber(questionEntity.getNumber());
 
         return question;
     }
@@ -113,6 +120,7 @@ public class SurveyService {
     private QuestionEntity DTOToEntity(Question question) {
         QuestionEntity questionEntity = new QuestionEntity();
         questionEntity.setQuestion(question.getQuestion());
+        questionEntity.setNumber(question.getNumber());
 
         return questionEntity;
     }

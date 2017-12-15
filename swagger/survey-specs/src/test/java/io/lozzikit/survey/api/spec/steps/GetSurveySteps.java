@@ -32,6 +32,11 @@ public class GetSurveySteps extends SurveySteps {
         return newSurvey;
     }
 
+    /**
+     * Set the id into environment.lastid
+     *
+     * @throws Throwable
+     */
     @Given("^I know a survey id$")
     public void iKnowASurveyId() throws Throwable {
         try {
@@ -63,6 +68,7 @@ public class GetSurveySteps extends SurveySteps {
             lastApiCallThrewException = false;
             lastApiException = null;
             environment.setLastStatusCode(lastApiResponse.getStatusCode());
+            environment.setExhaustiveSurvey((ExhaustiveSurvey) lastApiResponse.getData());
         } catch (ApiException e) {
             lastApiCallThrewException = true;
             lastApiResponse = null;
@@ -73,7 +79,7 @@ public class GetSurveySteps extends SurveySteps {
 
     @And("^I receive the correct survey$")
     public void iReceiveTheCorrectSurvey() throws Throwable {
-        ExhaustiveSurvey receivedSurvey = (ExhaustiveSurvey) lastApiResponse.getData();
+        ExhaustiveSurvey receivedSurvey = environment.getExhaustiveSurvey();
 
         // Compare only common properties
 
@@ -86,5 +92,15 @@ public class GetSurveySteps extends SurveySteps {
                 assertEquals(method.invoke(newSurvey), receivedSurveyMethod.invoke(receivedSurvey));
             }
         }
+    }
+
+    /**
+     * a a wrong id into environment.lastId
+     *
+     * @throws Throwable
+     */
+    @Given("^I have a wrong id$")
+    public void iHaveAWrongId() throws Throwable {
+        environment.setLastId("thisIsAWrongSurveyId");
     }
 }

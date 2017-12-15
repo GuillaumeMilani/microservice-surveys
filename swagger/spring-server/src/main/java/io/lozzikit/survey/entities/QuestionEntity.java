@@ -1,20 +1,9 @@
 package io.lozzikit.survey.entities;
 
-import javax.persistence.Id;
-
 public class QuestionEntity {
-    @Id
-    private String id;
-
     private String question;
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
+    private Integer number;
 
     public String getQuestion() {
         return question;
@@ -22,5 +11,13 @@ public class QuestionEntity {
 
     public void setQuestion(String question) {
         this.question = question;
+    }
+
+    public Integer getNumber() {
+        return number;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
     }
 }

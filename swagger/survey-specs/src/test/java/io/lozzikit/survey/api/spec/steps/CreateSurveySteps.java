@@ -1,10 +1,12 @@
 package io.lozzikit.survey.api.spec.steps;
 
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 import io.lozzikit.survey.ApiException;
 import io.lozzikit.survey.ApiResponse;
 import io.lozzikit.survey.api.dto.NewSurvey;
+import io.lozzikit.survey.api.dto.Question;
 import io.lozzikit.survey.api.spec.helpers.Environment;
 import io.lozzikit.survey.api.spec.helpers.HTTPRequest;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -105,5 +107,20 @@ public class CreateSurveySteps extends SurveySteps {
         NewSurvey survey = new NewSurvey();
         survey.setUser(1L);
         environment.setNewSurvey(survey);
+    }
+
+    /**
+     * Add a question to the environment.newSurvey
+     *
+     * @throws Throwable
+     */
+    @And("^I add a question to the survey$")
+    public void iAddAQuestionToTheSurvey() throws Throwable {
+        NewSurvey survey = environment.getNewSurvey();
+
+        Question q1 = new Question();
+        q1.setNumber(0);
+        q1.setQuestion("THE question ?");
+        survey.addQuestionsItem(q1);
     }
 }
