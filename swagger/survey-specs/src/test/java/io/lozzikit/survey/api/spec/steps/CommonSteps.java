@@ -1,8 +1,6 @@
 package io.lozzikit.survey.api.spec.steps;
 
-import cucumber.api.PendingException;
 import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
 import io.lozzikit.survey.api.spec.helpers.Environment;
 import org.junit.Assert;
 

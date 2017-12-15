@@ -2,7 +2,6 @@ package io.lozzikit.survey.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
@@ -17,22 +16,22 @@ public class SwaggerDocumentationConfig {
 
     ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-            .title("Survey microservice")
-            .description("HEIG-VD AMT course Survey microservice")
-            .license("")
-            .licenseUrl("http://unlicense.org")
-            .termsOfServiceUrl("")
-            .version("0.1.0")
-            .contact(new Contact("","", ""))
-            .build();
+                .title("Survey microservice")
+                .description("HEIG-VD AMT course Survey microservice")
+                .license("")
+                .licenseUrl("http://unlicense.org")
+                .termsOfServiceUrl("")
+                .version("0.1.0")
+                .contact(new Contact("", "", ""))
+                .build();
     }
 
     @Bean
-    public Docket customImplementation(){
+    public Docket customImplementation() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                    .apis(RequestHandlerSelectors.basePackage("io.lozzikit.survey.api"))
-                    .build()
+                .apis(RequestHandlerSelectors.basePackage("io.lozzikit.survey.api"))
+                .build()
                 .directModelSubstitute(org.joda.time.LocalDate.class, java.sql.Date.class)
                 .directModelSubstitute(org.joda.time.DateTime.class, java.util.Date.class)
                 .apiInfo(apiInfo());
