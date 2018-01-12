@@ -3,7 +3,7 @@ services:
   mongo:
     image: mongo
     restart: always
-    container_name: amt_mongo
+    container_name: amt_surveys_mongo
     expose: 
       - 27017
     ports:
@@ -12,8 +12,20 @@ services:
     image: mongo-express
     links:
       - mongo:mongo
-    container_name: amt_mongo-express
+    container_name: amt_surveys_mongo-express
     expose:
       - 8081
     ports:
       - 8081:8081
+  server:
+    image: lozzikit/surveys
+    container_name: amt_surveys_server
+    environment:
+    - SPRING_DATA_MONGODB_HOST=mongo
+    - SPRING_DATA_MONGODB_PORT=27017
+    links:
+    - mongo:mongo
+    expose:
+      - 8080
+    ports:
+      - 8080:8080
