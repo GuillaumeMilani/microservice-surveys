@@ -12,6 +12,7 @@ import io.lozzikit.survey.api.spec.helpers.Environment;
 import org.junit.Assert;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -107,37 +108,81 @@ public class GetSurveySteps extends SurveySteps {
 
     @When("^I GET it from the /surveys endpoint$")
     public void iGETItFromTheSurveysEndpoint() throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+        try {
+            lastApiResponse = api.getSurveysWithHttpInfo();
+            lastApiCallThrewException = false;
+            lastApiException = null;
+            environment.setLastStatusCode(lastApiResponse.getStatusCode());
+            environment.setExhaustiveSurveys((List<ExhaustiveSurvey>) lastApiResponse.getData());
+        } catch (ApiException e) {
+            lastApiCallThrewException = true;
+            lastApiResponse = null;
+            lastApiException = e;
+            environment.setLastStatusCode(lastApiException.getCode());
+        }
     }
 
     @And("^I receive no survey$")
     public void iReceiveNoSurvey() throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+        assertEquals(0,environment.getExhaustiveSurveys().size());
     }
 
     @And("^I receive the posted survey$")
     public void iReceiveThePostedSurvey() throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+        List<ExhaustiveSurvey> surveys = environment.getExhaustiveSurveys();
+        assertEquals(environment.getNumberOfAddedSurvey() + 1, surveys.size());
+
+        assertEquals(environment.getNewSurvey().getUser(), surveys.get(surveys.size()-1).getUser());
     }
 
     @Given("^I have many surveys with the mandatory properties set$")
     public void iHaveManySurveysWithTheMandatoryPropertiesSet() throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+        List<NewSurvey> surveys = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            NewSurvey survey = new NewSurvey();
+            survey.setUser(Long.valueOf(i));
+            surveys.add(survey);
+        }
+        environment.setNewSurveys(surveys);
     }
 
     @And("^I post them to the /survey endpoint$")
     public void iPostThemToTheSurveyEndpoint() throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+        try {
+            for (NewSurvey newSurvey: environment.getNewSurveys()) {
+                lastApiResponse = api.addSurveyWithHttpInfo(newSurvey);
+                lastApiCallThrewException = false;
+                lastApiException = null;
+                environment.setLastStatusCode(lastApiResponse.getStatusCode());
+            }
+        } catch (ApiException e) {
+            e.printStackTrace();
+            lastApiCallThrewException = true;
+            lastApiResponse = null;
+            lastApiException = e;
+            environment.setLastStatusCode(lastApiException.getCode());
+        }
     }
 
     @And("^i receive the posted surveys$")
     public void iReceiveThePostedSurveys() throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+            List<ExhaustiveSurvey> surveys = environment.getExhaustiveSurveys();
+            assertEquals(environment.getNewSurveys().size() + environment.getNumberOfAddedSurvey(),surveys.size());
+    }
+
+    @Given("^I know how many survey is on the server$")
+    public void iKnowHowManySurveyIsOnTheServer() throws Throwable {
+        try {
+            lastApiResponse = api.getSurveysWithHttpInfo();
+            lastApiCallThrewException = false;
+            lastApiException = null;
+            environment.setLastStatusCode(lastApiResponse.getStatusCode());
+            environment.setNumberOfAddedSurvey(((List<ExhaustiveSurvey>) lastApiResponse.getData()).size());
+        } catch (ApiException e) {
+            lastApiCallThrewException = true;
+            lastApiResponse = null;
+            lastApiException = e;
+            environment.setLastStatusCode(lastApiException.getCode());
+        }
     }
 }
