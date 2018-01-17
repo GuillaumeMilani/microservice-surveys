@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ExhaustiveSurvey, SurveyService } from '../../../shared';
 
 @Component({
   selector: 'app-surveys-list',
@@ -6,10 +7,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./surveys-list.component.scss']
 })
 export class SurveysListComponent implements OnInit {
+  surveys: ExhaustiveSurvey[];
 
-  constructor() { }
+  constructor(private surveyService: SurveyService) { }
 
   ngOnInit() {
+    this.getSurveys();
+  }
+
+  getSurveys(): void {
+    this.surveyService.getSurveys().subscribe(surveys => this.surveys = surveys);
   }
 
 }
