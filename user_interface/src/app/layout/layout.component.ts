@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Message, MessageType, MessagesService } from '../shared/';
 
 @Component({
     selector: 'app-layout',
@@ -6,33 +7,16 @@ import { Component, OnInit } from '@angular/core';
     styleUrls: ['./layout.component.scss']
 })
 export class LayoutComponent implements OnInit {
-    alerts: Array<any> = [];
+    messages: Array<Message> = [];
 
-    constructor() {
-        this.alerts.push(
-            {
-                id: 1,
-                type: 'success',
-                message: `Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Voluptates est animi quibusdam praesentium quam, et perspiciatis,
-                    consectetur velit culpa molestias dignissimos
-                    voluptatum veritatis quod aliquam! Rerum placeat necessitatibus, vitae dolorum`
-            },
-            {
-                id: 2,
-                type: 'warning',
-                message: `Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Voluptates est animi quibusdam praesentium quam, et perspiciatis,
-                    consectetur velit culpa molestias dignissimos
-                    voluptatum veritatis quod aliquam! Rerum placeat necessitatibus, vitae dolorum`
-            }
-        );
+    constructor(private messagesService: MessagesService) { }
+
+    ngOnInit() {
+        this.messagesService.addMessage({ type: MessageType.info, message: "Layout : info" } as Message)
+        this.getMessages();
     }
 
-    ngOnInit() { }
-
-    public closeAlert(alert: any) {
-        const index: number = this.alerts.indexOf(alert);
-        this.alerts.splice(index, 1);
+    getMessages(): void {
+        this.messages = this.messagesService.getMessages();
     }
 }

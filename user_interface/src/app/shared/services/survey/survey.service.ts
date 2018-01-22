@@ -12,4 +12,9 @@ export class SurveyService {
   getSurveys(): Observable<ExhaustiveSurvey[]> {
     return of(SURVEYS);
   }
+
+  getSurvey(url: string): Observable<ExhaustiveSurvey> {
+    // TODO : Use the link to GET
+    return of(SURVEYS[0]);
+  }
 }
