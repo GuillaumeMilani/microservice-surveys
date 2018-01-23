@@ -150,4 +150,9 @@ public class SurveysApiController implements SurveysApi {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @Override
+    public ResponseEntity<List<SurveyResponses>> getSurveyResponses(String surveyId) {
+        return null;
+    }
 }
