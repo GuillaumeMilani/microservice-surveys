@@ -3,7 +3,7 @@ import { Question } from './question';
 import { Link } from './link';
 
 export class ExhaustiveSurvey {
-    user: User;
+    user: User = new User();
     title: string;
     description: string;
     questions: Question[];

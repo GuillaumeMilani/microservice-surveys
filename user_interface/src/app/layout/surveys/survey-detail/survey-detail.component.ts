@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { ExhaustiveSurvey, Question } from '../../../shared';
+import { ExhaustiveSurvey, Question, User } from '../../../shared';
 
 import { Location } from '@angular/common';
 
@@ -12,7 +12,7 @@ import { SurveyService, SessionService } from '../../../shared';
   styleUrls: ['./survey-detail.component.scss']
 })
 export class SurveyDetailComponent implements OnInit {
-  survey: ExhaustiveSurvey;
+  survey: ExhaustiveSurvey = new ExhaustiveSurvey();
 
   constructor(
     private surveyService: SurveyService,
