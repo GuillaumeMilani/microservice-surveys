@@ -1,3 +1,4 @@
+export * from './new-survey';
 export * from './exhaustive-survey';
 export * from './link';
 export * from './question';

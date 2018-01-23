@@ -8,6 +8,7 @@ import { MessageType } from '../../models/message';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { catchError, map, tap } from 'rxjs/operators';
+import {NewSurvey} from "../../models/new-survey";
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -44,22 +45,20 @@ export class SurveyService {
 		catchError(this.handleError<any>('updateSurveyStatus'))
 	  );
 	}
-  
+
   /** POST: add a new Survey to the server */
-	addSurvey (survey: ExhaustiveSurvey): Observable<ExhaustiveSurvey> {
-	  return this.http.post<ExhaustiveSurvey>(this.surveysURL, survey, httpOptions).pipe(
-		tap((survey: ExhaustiveSurvey) => this.log(`added surv*ey w/ title=${survey.title}`)),
-		catchError(this.handleError<ExhaustiveSurvey>('addSurvey'))
+	addSurvey (survey: NewSurvey): Observable<NewSurvey> {
+	  return this.http.post<NewSurvey>(this.surveysURL, survey, httpOptions).pipe(
+		tap(_ => this.log(`added survey`)),
+		catchError(this.handleError<NewSurvey>('addSurvey'))
 	  );
 	}
-  
-  
-  
+
   /** Log a SurveyService message with the MessageService */
 	private log(message: string) {
 	  this.messageService.addMessage({"id":1, "type":MessageType.info,"message":message});
 	}
-	
+
 	/**
 	 * Handle Http operation that failed.
 	 * Let the app continue.

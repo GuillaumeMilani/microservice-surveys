@@ -5,7 +5,9 @@ import { FormsModule }   from '@angular/forms';
 
 import { SurveysRoutingModule } from './surveys-routing.module';
 import { SurveysListComponent } from './surveys-list/surveys-list.component';
-import { SurveyDetailComponent } from './survey-detail/survey-detail.component';
+import { SurveyFormComponent } from './survey-form/survey-form.component';
+import { SurveyEditFormComponent } from './survey-edit-form/survey-edit-form.component';
+
 
 import { DndModule } from 'ng2-dnd';
 
@@ -16,6 +18,6 @@ import { DndModule } from 'ng2-dnd';
     FormsModule,
     DndModule.forRoot()
   ],
-  declarations: [SurveysListComponent, SurveyDetailComponent]
+  declarations: [SurveysListComponent, SurveyFormComponent, SurveyEditFormComponent]
 })
 export class SurveysModule { }

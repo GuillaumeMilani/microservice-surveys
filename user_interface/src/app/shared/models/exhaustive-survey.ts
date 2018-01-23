@@ -1,12 +1,7 @@
-import { User } from './user';
-import { Question } from './question';
 import { Link } from './link';
+import {NewSurvey} from "./new-survey";
 
-export class ExhaustiveSurvey {
-    user: User = new User();
-    title: string;
-    description: string;
-    questions: Question[];
+export class ExhaustiveSurvey extends NewSurvey {
     datetime: string;
     status: SurveyStatus;
     links: Link[];
