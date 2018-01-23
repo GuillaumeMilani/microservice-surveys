@@ -21,7 +21,7 @@ public class SurveyEntity implements Serializable {
 
     private Status status;
 
-    private long owner;
+    private UserEntity user;
 
     private String title;
 
@@ -47,12 +47,12 @@ public class SurveyEntity implements Serializable {
         this.status = status;
     }
 
-    public long getOwner() {
-        return owner;
+    public UserEntity getUser() {
+        return user;
     }
 
-    public void setOwner(long owner) {
-        this.owner = owner;
+    public void setUser(UserEntity user) {
+        this.user = user;
     }
 
     public String getTitle() {

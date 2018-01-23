@@ -4,6 +4,7 @@ import io.lozzikit.survey.api.exceptions.NotFoundException;
 import io.lozzikit.survey.api.model.*;
 import io.lozzikit.survey.entities.QuestionEntity;
 import io.lozzikit.survey.entities.SurveyEntity;
+import io.lozzikit.survey.entities.UserEntity;
 import io.lozzikit.survey.repositories.SurveyRepository;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +64,7 @@ public class SurveyService {
         survey.setTitle(surveyEntity.getTitle());
         survey.setStatus(surveyEntity.getStatus());
         survey.setDescription(surveyEntity.getDescription());
-        survey.setUser(surveyEntity.getOwner());
+        survey.setUser(entityToDTO(surveyEntity.getUser()));
         survey.setDatetime(surveyEntity.getCreatedAt());
         survey.setQuestions(surveyEntity.getQuestions().stream()
                 .map(this::entityToDTO)
@@ -73,6 +74,13 @@ public class SurveyService {
         survey.setLinks(new LinkedList<>());
 
         return survey;
+    }
+
+    private User entityToDTO(UserEntity userEntity) {
+        User user = new User();
+        user.setUsername(userEntity.getUsername());
+
+        return user;
     }
 
     private Question entityToDTO(QuestionEntity questionEntity) {
@@ -89,7 +97,7 @@ public class SurveyService {
         surveyEntity.setTitle(survey.getTitle());
         surveyEntity.setStatus(survey.getStatus());
         surveyEntity.setDescription(survey.getDescription());
-        surveyEntity.setOwner(survey.getUser());
+        surveyEntity.setUser(DTOToEntity(survey.getUser()));
         surveyEntity.setCreatedAt(survey.getDatetime());
         surveyEntity.setQuestions(survey.getQuestions().stream()
                 .map(this::DTOToEntity)
@@ -108,13 +116,20 @@ public class SurveyService {
 
         surveyEntity.setTitle(survey.getTitle());
         surveyEntity.setDescription(survey.getDescription());
-        surveyEntity.setOwner(survey.getUser());
+        surveyEntity.setUser(DTOToEntity(survey.getUser()));
         surveyEntity.setQuestions(survey.getQuestions().stream()
                 .map(this::DTOToEntity)
                 .collect(Collectors.toList())
         );
 
         return surveyEntity;
+    }
+
+    private UserEntity DTOToEntity(User user) {
+        UserEntity userEntity = new UserEntity();
+        userEntity.setUsername(user.getUsername());
+
+        return userEntity;
     }
 
     private QuestionEntity DTOToEntity(Question question) {
