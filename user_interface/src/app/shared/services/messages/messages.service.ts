@@ -14,7 +14,7 @@ export class MessagesService {
   }
 
   deleteMessage(id: number): void {
-    this.messages = this.messages.filter(message => message.id === id);
+    this.messages = this.messages.filter(message => message.id != id);
   }
 
   getMessages(): Message[] {

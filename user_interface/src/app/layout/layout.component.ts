@@ -12,11 +12,15 @@ export class LayoutComponent implements OnInit {
     constructor(private messagesService: MessagesService) { }
 
     ngOnInit() {
-        this.messagesService.addMessage({ type: MessageType.info, message: "Layout : info" } as Message)
         this.getMessages();
     }
 
     getMessages(): void {
         this.messages = this.messagesService.getMessages();
+    }
+
+    closeMessage(id: number): void {
+        this.messagesService.deleteMessage(id);
+        this.getMessages();
     }
 }

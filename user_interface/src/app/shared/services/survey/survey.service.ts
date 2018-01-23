@@ -11,7 +11,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 
 @Injectable()
 export class SurveyService {
-	private surveysURL = 'http://192.168.99.100:8080/api/surveys';  // URL to web api
+	private surveysURL = 'http://localhost:8080/api/surveys';  // URL to web api
   constructor(
   private http: HttpClient,
   private messageService: MessagesService) { }
