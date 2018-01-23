@@ -8,7 +8,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { SurveyService, MessagesService } from './shared/services';
+import { SurveyService, MessagesService, SessionService } from './shared/services';
 
 // AoT requires an exported function for factories
 export function createTranslateLoader(http: HttpClient) {
@@ -34,6 +34,6 @@ export function createTranslateLoader(http: HttpClient) {
     ],
     declarations: [AppComponent],
     bootstrap: [AppComponent],
-    providers: [SurveyService, MessagesService]
+    providers: [SurveyService, MessagesService, SessionService]
 })
 export class AppModule { }
