@@ -9,9 +9,14 @@ import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { catchError, map, tap } from 'rxjs/operators';
 
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+};
+
 @Injectable()
 export class SurveyService {
 	private surveysURL = 'http://localhost:8080/api/surveys';  // URL to web api
+
   constructor(
   private http: HttpClient,
   private messageService: MessagesService) { }
@@ -31,6 +36,24 @@ export class SurveyService {
     catchError(this.handleError<ExhaustiveSurvey>(`getSurvey url=${url}`))
   );
   }
+  /** Patch: change a survey status */
+  updateSurveyStatus(survey : ExhaustiveSurvey): Observable<any> {
+	  const patchUrl = `${survey.links[0].href}/status`;
+	  return this.http.put(patchUrl, survey.status, httpOptions).pipe(
+		tap(_ => this.log(`updated survey url=${survey.links[0].href}`)),
+		catchError(this.handleError<any>('updateSurveyStatus'))
+	  );
+	}
+  
+  /** POST: add a new Survey to the server */
+	addSurvey (survey: ExhaustiveSurvey): Observable<ExhaustiveSurvey> {
+	  return this.http.post<ExhaustiveSurvey>(this.surveysURL, survey, httpOptions).pipe(
+		tap((survey: ExhaustiveSurvey) => this.log(`added surv*ey w/ title=${survey.title}`)),
+		catchError(this.handleError<ExhaustiveSurvey>('addSurvey'))
+	  );
+	}
+  
+  
   
   /** Log a SurveyService message with the MessageService */
 	private log(message: string) {
