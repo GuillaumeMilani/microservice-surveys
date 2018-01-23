@@ -1,11 +1,15 @@
 <h1>Surveys <button class="btn btn-primary" routerLink="/create">Create</button></h1>
 <div class="col-sm-6">
     <div class="list-group">
-        <div *ngFor="let survey of surveys; let i = index">
-            <a routerLink="/detail" (click)="setDetailUrl(survey.links[0].href)" class="list-group-item">
+        <div *ngFor="let survey of surveys; let i = index" class="list-group-item">
+            <a routerLink="/detail" (click)="setDetailUrl(survey.links[0].href)">
                 <h4 class="list-group-item-heading">{{survey.title}}</h4>
-                <p class="list-group-item-text">{{survey.description}}</p>
             </a>
+            <p class="list-group-item-text">{{survey.description}}</p>
+            Status : {{survey.status}}
+            <button class="btn btn-success" *ngIf="survey.status === 'draft'" (click)="openSurvey(survey)">Open</button>
+            <button class="btn btn-warning" *ngIf="survey.status === 'opened'" (click)="closeSurvey(survey)">Close</button>
+            <button class="btn btn-danger" *ngIf="survey.status === 'closed'">Delete</button>
         </div>
     </div>
 </div>

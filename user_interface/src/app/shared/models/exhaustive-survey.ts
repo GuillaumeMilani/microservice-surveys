@@ -8,7 +8,7 @@ export class ExhaustiveSurvey extends NewSurvey {
 };
 
 export enum SurveyStatus {
-    draft,
-    opened,
-    closed,
+    draft = "draft",
+    opened = "opened",
+    closed = "closed",
 };

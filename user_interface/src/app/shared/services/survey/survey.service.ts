@@ -40,7 +40,8 @@ export class SurveyService {
   /** Patch: change a survey status */
   updateSurveyStatus(survey : ExhaustiveSurvey): Observable<any> {
 	  const patchUrl = `${survey.links[0].href}/status`;
-	  return this.http.put(patchUrl, survey.status, httpOptions).pipe(
+	  const body = `"${survey.status.toString()}"`;
+	  return this.http.patch(patchUrl, body, httpOptions).pipe(
 		tap(_ => this.log(`updated survey url=${survey.links[0].href}`)),
 		catchError(this.handleError<any>('updateSurveyStatus'))
 	  );

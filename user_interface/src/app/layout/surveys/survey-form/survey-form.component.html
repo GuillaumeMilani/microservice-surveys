@@ -3,12 +3,12 @@
     <form #surveyForm="ngForm">
         <fieldset class="form-group">
             <label for="title">Title</label>
-            <input type="text" class="form-control" id="title" name="title" required [(ngModel)]="survey.title">
+            <input type="text" class="form-control" id="title" name="title" required [(ngModel)]="survey.title" [disabled]="survey.status != 'draft'">
         </fieldset>
 
         <fieldset class="form-group">
             <label for="description">Description</label>
-            <input type="text" class="form-control" id="description" name="description" [(ngModel)]="survey.description">
+            <input type="text" class="form-control" id="description" name="description" [(ngModel)]="survey.description" [disabled]="survey.status != 'draft'">
         </fieldset>
 
         <fieldset class="form-group">
