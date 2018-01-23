@@ -5,14 +5,14 @@ En utilisant `docker-compose up --build` à la racine du micro-service, on peut 
 
 # Features
 ## Création de sondage
-- [ ] Titre du sondage
+- [x] Titre du sondage
 - [ ] Liste de champs
-  - [ ] Label (description du champ)
+  - [x] Label (description du champ)
   - [ ] Choix multiple
-  - [ ] Champ texte
+  - [x] Champ texte
   - [ ] Choix simple
   - [ ] Choix "autre"
-- [ ] Ordre des champs
+- [x] Ordre des champs
 - [ ] Pagination
 - [ ] Public / privé
   - [ ] Uniquement personnes avec le lien
@@ -20,11 +20,14 @@ En utilisant `docker-compose up --build` à la racine du micro-service, on peut 
   - [ ] Protection par compte utilisateur
 ### Brouillon d'un sondage
 ## Modification de sondage existant
+- [x] Changer le status
 - [ ] Uniquement en mode brouillon
 ## Fermeture de sondage
+- [x] Fermer
 - [ ] Rendre le résultat public ou non
 ## Suppression de sondage
 ## Afficher un sondage
+- [x] afficher formulaire
 -> Renvoyer l'état du sondage et le lien vers les données
 - [ ] Soit le formulaire (sondage ouvert)
 - [ ] Soit les résultats (sondage fermé, résultats accessibles)
@@ -35,9 +38,11 @@ En utilisant `docker-compose up --build` à la racine du micro-service, on peut 
   - [ ] Fermé
 - [ ] Pagination
 ## Liste publique des sondages
+- [x] getAll
 - [ ] Filtre par user
 - [ ] Pagination
 ## Participer à un sondage
+- [x] Répondre à une question
 ### Enregistrer l'état d'une réponse à un sondage
 - [ ] Retourner une URL
 ## Récupérer les réponses à un sondage
