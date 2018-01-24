@@ -63,7 +63,7 @@ public class SurveyService {
         survey.setTitle(surveyEntity.getTitle());
         survey.setStatus(surveyEntity.getStatus());
         survey.setDescription(surveyEntity.getDescription());
-        survey.setUser(surveyEntity.getOwner());
+        survey.setUser(surveyEntity.getUser());
         survey.setDatetime(surveyEntity.getCreatedAt());
         survey.setQuestions(surveyEntity.getQuestions().stream()
                 .map(this::entityToDTO)
@@ -89,7 +89,7 @@ public class SurveyService {
         surveyEntity.setTitle(survey.getTitle());
         surveyEntity.setStatus(survey.getStatus());
         surveyEntity.setDescription(survey.getDescription());
-        surveyEntity.setOwner(survey.getUser());
+        surveyEntity.setUser(survey.getUser());
         surveyEntity.setCreatedAt(survey.getDatetime());
         surveyEntity.setQuestions(survey.getQuestions().stream()
                 .map(this::DTOToEntity)
@@ -108,7 +108,7 @@ public class SurveyService {
 
         surveyEntity.setTitle(survey.getTitle());
         surveyEntity.setDescription(survey.getDescription());
-        surveyEntity.setOwner(survey.getUser());
+        surveyEntity.setUser(survey.getUser());
         surveyEntity.setQuestions(survey.getQuestions().stream()
                 .map(this::DTOToEntity)
                 .collect(Collectors.toList())

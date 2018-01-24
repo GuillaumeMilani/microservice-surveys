@@ -1,6 +1,7 @@
 package io.lozzikit.survey.entities;
 
 import io.lozzikit.survey.api.model.Status;
+import io.lozzikit.survey.api.model.User;
 import org.joda.time.DateTime;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -21,7 +22,7 @@ public class SurveyEntity implements Serializable {
 
     private Status status;
 
-    private long owner;
+    private User user;
 
     private String title;
 
@@ -47,12 +48,12 @@ public class SurveyEntity implements Serializable {
         this.status = status;
     }
 
-    public long getOwner() {
-        return owner;
+    public User getUser() {
+        return user;
     }
 
-    public void setOwner(long owner) {
-        this.owner = owner;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getTitle() {

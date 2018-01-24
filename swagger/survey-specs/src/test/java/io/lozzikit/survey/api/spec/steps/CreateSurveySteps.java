@@ -7,6 +7,7 @@ import io.lozzikit.survey.ApiException;
 import io.lozzikit.survey.ApiResponse;
 import io.lozzikit.survey.api.dto.NewSurvey;
 import io.lozzikit.survey.api.dto.Question;
+import io.lozzikit.survey.api.dto.User;
 import io.lozzikit.survey.api.spec.helpers.Environment;
 import io.lozzikit.survey.api.spec.helpers.HTTPRequest;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -105,7 +106,7 @@ public class CreateSurveySteps extends SurveySteps {
     @Given("^I have a survey with the mandatory properties set$")
     public void iHaveASurveyWithOnlyTheUserPropertySet() throws Throwable {
         NewSurvey survey = new NewSurvey();
-        survey.setUser(1L);
+        survey.setUser(new User());
         environment.setNewSurvey(survey);
     }
 
