@@ -1,10 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
-import { Question, NewSurvey } from '../../../shared';
+import {NewSurvey, Question, SurveyService} from '../../../shared';
 
-import { Location } from '@angular/common';
-
-import { SurveyService } from '../../../shared';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-survey-form',
@@ -24,7 +22,11 @@ export class SurveyFormComponent implements OnInit {
 
   addQuestion(): void {
     let newQuestion:Question = new Question();
-    let lastNumber:number = Math.max.apply(Math, this.survey.questions.map(q => q.number));
+    let lastNumber: number = 0;
+
+    if (this.survey.questions.length) {
+        lastNumber = Math.max.apply(Math, this.survey.questions.map(q => q.number));
+    }
 
     newQuestion.number = lastNumber + 1;
     this.survey.questions.push(newQuestion);
@@ -32,6 +34,10 @@ export class SurveyFormComponent implements OnInit {
 
   removeQuestion(questionNumber: number): void {
     this.survey.questions = this.survey.questions.filter(q => q.number != questionNumber);
+  }
+
+  updateQuestionNumbers(): void {
+      this.survey.questions.forEach((question, index) => question.number = index+1);
   }
 
   goBack(): void {

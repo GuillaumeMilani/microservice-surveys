@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 import { Location } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
 
 import { SurveyService, SessionService } from '../../../shared';
 import {SurveyFormComponent} from "../survey-form/survey-form.component";

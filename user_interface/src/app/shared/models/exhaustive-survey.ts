@@ -4,7 +4,7 @@ import {NewSurvey} from "./new-survey";
 export class ExhaustiveSurvey extends NewSurvey {
     datetime: string;
     status: SurveyStatus;
-    links: Link[];
+    links: Link[] = [];
 };
 
 export enum SurveyStatus {
