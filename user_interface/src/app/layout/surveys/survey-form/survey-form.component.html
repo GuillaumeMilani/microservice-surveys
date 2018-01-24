@@ -3,21 +3,18 @@
     <form #surveyForm="ngForm">
         <fieldset class="form-group">
             <label for="title">Title</label>
-            <input type="text" class="form-control" id="title" name="title" required [(ngModel)]="survey.title" [disabled]="survey.status != 'draft'">
+            <input type="text" class="form-control" id="title" name="title" required [(ngModel)]="survey.title">
         </fieldset>
 
         <fieldset class="form-group">
             <label for="description">Description</label>
-            <input type="text" class="form-control" id="description" name="description" [(ngModel)]="survey.description" [disabled]="survey.status != 'draft'">
+            <input type="text" class="form-control" id="description" name="description" [(ngModel)]="survey.description">
         </fieldset>
 
         <fieldset class="form-group">
             Questions
             <ul dnd-sortable-container [sortableData]="survey.questions" class="list-group questions">
                 <li *ngFor="let question of survey.questions" dnd-sortable [sortableIndex]="question.number" class="list-group-item question-item">
-                    <div class="col-md-1">
-                        <span class="handle navbar-toggle collapsed">=</span>
-                    </div>
                     <div class="col-md-10">
                         <input type="text" class="form-control" name="question-{{question.number}}" [(ngModel)]="question.question">
                     </div>
