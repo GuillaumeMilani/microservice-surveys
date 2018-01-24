@@ -10,13 +10,15 @@ import { of } from 'rxjs/observable/of';
 import { catchError, map, tap } from 'rxjs/operators';
 import {NewSurvey} from "../../models/new-survey";
 
+import { environment } from '../../../../environments/environment';
+
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
 
 @Injectable()
 export class SurveyService {
-	private surveysURL = 'http://localhost:8080/api/surveys';  // URL to web api
+	private surveysURL = `http://${environment.serverHost}:${environment.serverPort}/api/surveys`;  // URL to web api
 
   constructor(
   private http: HttpClient,
