@@ -152,6 +152,11 @@ public class SurveysApiController implements SurveysApi {
     }
 
     @Override
+    public ResponseEntity<List<Event>> getSurveyEvents(String surveyId) {
+        return new ResponseEntity<>(eventService.getEvents(surveyId), HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<List<SurveyResponses>> getSurveyResponses(String surveyId) {
         return null;
     }
