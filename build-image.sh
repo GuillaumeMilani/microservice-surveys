@@ -11,3 +11,16 @@ cd ../../images/server/
 
 echo "----- Building image ------"
 docker build -t lozzikit/surveys .
+
+# cd ../../
+
+# echo "----- Copying client package.JSON ------"
+# cp user_interface/package.json images/client/package.json
+# rm -rf images/client/src/
+# mkdir images/client/src
+# cp -r user_interface/* images/client/src/
+
+# cd images/client/
+
+# echo "----- Building image ------"
+# docker build -t lozzikit/surveys-client .
