@@ -5,6 +5,6 @@
         <app-survey-edit-form [setSurvey]="survey"></app-survey-edit-form>
     </div>
     <div class="col-lg-6">
-        <app-timeline *ngIf="events" [events]="events"></app-timeline>
+        <app-timeline *ngIf="events.length" [events]="events"></app-timeline>
     </div>
 </div>
