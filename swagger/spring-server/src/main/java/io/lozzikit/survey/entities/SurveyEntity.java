@@ -1,6 +1,7 @@
 package io.lozzikit.survey.entities;
 
 import io.lozzikit.survey.api.model.Status;
+import io.lozzikit.survey.api.model.User;
 import org.joda.time.DateTime;
 import org.springframework.data.mongodb.core.mapping.Document;
 

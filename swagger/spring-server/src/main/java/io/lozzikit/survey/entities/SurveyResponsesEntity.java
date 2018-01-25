@@ -1,5 +1,6 @@
 package io.lozzikit.survey.entities;
 
+import io.lozzikit.survey.api.model.User;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Id;
@@ -16,6 +17,16 @@ public class SurveyResponsesEntity implements Serializable {
     private String id;
 
     private String surveyId;
+
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     private List<AnswerEntity> answers;
 
