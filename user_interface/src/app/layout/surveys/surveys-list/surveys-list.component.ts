@@ -39,6 +39,11 @@ export class SurveysListComponent implements OnInit {
         this.surveyService.updateSurveyStatus(survey).subscribe(_ => _);
     }
 
+    deleteSurvey(survey: ExhaustiveSurvey):void {
+        this.surveyService.deleteSurvey(survey).subscribe(_ => _);
+        this.getSurveys();
+    }
+
     showDetails(survey: ExhaustiveSurvey): void {
         this.setDetailUrl(survey.links.find(link => link.rel == 'self').href);
         this.router.navigate(['/detail'], {relativeTo: this.activatedRoute});

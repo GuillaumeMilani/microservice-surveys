@@ -1,18 +1,18 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { MessagesService } from '../messages/messages.service';
-import { MessageType, NewSurvey, ExhaustiveSurvey, Event } from '../../models/';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {MessagesService} from '../messages/messages.service';
+import {MessageType, NewSurvey, ExhaustiveSurvey, Event} from '../../models/';
 
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
-import { catchError, map, tap } from 'rxjs/operators';
+import {Observable} from 'rxjs/Observable';
+import {of} from 'rxjs/observable/of';
+import {catchError, map, tap} from 'rxjs/operators';
 
-import { environment } from '../../../../environments/environment';
+import {environment} from '../../../../environments/environment';
 import {NewEvent} from "../../models/new-event";
 import {Message} from "../../models/message";
 
 const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    headers: new HttpHeaders({'Content-Type': 'application/json'})
 };
 
 @Injectable()
@@ -55,6 +55,15 @@ export class SurveyService {
         return this.http.post<NewSurvey>(this.surveysURL, survey, httpOptions).pipe(
             tap(_ => console.log(`added survey`)),
             catchError(this.handleError<NewSurvey>('addSurvey'))
+        );
+    }
+
+    /** DELETE: delete a survey from the server */
+    deleteSurvey(survey: ExhaustiveSurvey): Observable<any> {
+        const deleteUrl = survey.links.find(link => link.rel === "self").href;
+        return this.http.delete(deleteUrl).pipe(
+            tap(_ => console.log("deleted survey")),
+            catchError(this.handleError<any>("deleteSurvey"))
         );
     }
 

@@ -12,7 +12,7 @@
             <button class="btn btn-success" *ngIf="survey.status === 'draft'" (click)="openSurvey(survey)">Open</button>
             <button class="btn btn-warning" *ngIf="survey.status === 'opened'" (click)="closeSurvey(survey)">Close
             </button>
-            <button class="btn btn-danger" *ngIf="survey.status === 'closed'">Delete</button>
+            <button class="btn btn-danger" *ngIf="survey.status === 'closed'" (click)="deleteSurvey(survey)">Delete</button>
         </div>
     </div>
 </div>
