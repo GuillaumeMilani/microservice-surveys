@@ -2,10 +2,12 @@ package io.lozzikit.survey.api.spec.helpers;
 
 import io.lozzikit.survey.api.SurveyApi;
 import io.lozzikit.survey.api.dto.Answer;
+import io.lozzikit.survey.api.dto.Event;
 import io.lozzikit.survey.api.dto.ExhaustiveSurvey;
 import io.lozzikit.survey.api.dto.NewSurvey;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -14,24 +16,26 @@ import java.util.Properties;
 public class Environment {
 
     private NewSurvey newSurvey;
+    private List<NewSurvey> newSurveys;
     private ExhaustiveSurvey exhaustiveSurvey;
+    private List<ExhaustiveSurvey> exhaustiveSurveys;
     private int lastStatusCode;
     private SurveyApi api = new SurveyApi();
     private String lastId;
     private Answer newAnswer;
+    private int numberOfAddedSurvey = 0;
+    private List<Event> events;
 
     public Environment() throws IOException {
         Properties properties = new Properties();
         properties.load(this.getClass().getClassLoader().getResourceAsStream("environment.properties"));
         String url = properties.getProperty("io.lozzikit.surveys.server.url");
         api.getApiClient().setBasePath(url);
-
     }
 
     public SurveyApi getApi() {
         return api;
     }
-
 
     public int getLastStatusCode() {
         return lastStatusCode;
@@ -71,5 +75,37 @@ public class Environment {
 
     public void setNewAnswer(Answer newAnswer) {
         this.newAnswer = newAnswer;
+    }
+
+    public List<ExhaustiveSurvey> getExhaustiveSurveys() {
+        return exhaustiveSurveys;
+    }
+
+    public void setExhaustiveSurveys(List<ExhaustiveSurvey> exhaustiveSurveys) {
+        this.exhaustiveSurveys = exhaustiveSurveys;
+    }
+
+    public List<NewSurvey> getNewSurveys() {
+        return newSurveys;
+    }
+
+    public void setNewSurveys(List<NewSurvey> newSurveys) {
+        this.newSurveys = newSurveys;
+    }
+
+    public int getNumberOfAddedSurvey() {
+        return numberOfAddedSurvey;
+    }
+
+    public void setNumberOfAddedSurvey(int numberOfAddedSurvey) {
+        this.numberOfAddedSurvey = numberOfAddedSurvey;
+    }
+
+    public List<Event> getEvents() {
+        return events;
+    }
+
+    public void setEvents(List<Event> events) {
+        this.events = events;
     }
 }

@@ -17,7 +17,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Controller
@@ -35,7 +37,7 @@ public class SurveysApiController implements SurveysApi {
         Link link = new Link();
         link.setRel("self");
         link.setHref(ServletUriComponentsBuilder
-                .fromCurrentRequest().path("/{id}")
+                .fromCurrentRequestUri().path("/{id}")
                 .buildAndExpand(id).toUri().toString());
 
         return link;
@@ -52,10 +54,32 @@ public class SurveysApiController implements SurveysApi {
         return link;
     }
 
+    private Link buildEventsLink(String id) {
+        Link link = buildSelfLink(id);
+        link.setRel("events");
+        link.setHref(link.getHref() + "/events");
+
+        return link;
+    }
+
+    private Link buildEventsLinkFromDetail() {
+        Link link = new Link();
+        link.setRel("events");
+
+        link.setHref(ServletUriComponentsBuilder
+                .fromCurrentRequestUri().path("/events").toUriString());
+
+        return link;
+    }
+
     @Override
     public ResponseEntity<List<ExhaustiveSurvey>> getSurveys() {
 
-        List<ExhaustiveSurvey> surveys = surveyService.getAllSurveys(this::buildSelfLink);
+        List<Function<String, Link>> linkCreationFunctions = new ArrayList<>();
+        linkCreationFunctions.add(this::buildSelfLink);
+        linkCreationFunctions.add(this::buildEventsLink);
+
+        List<ExhaustiveSurvey> surveys = surveyService.getAllSurveys(linkCreationFunctions);
 
         return new ResponseEntity<>(surveys, HttpStatus.OK);
     }
@@ -107,10 +131,11 @@ public class SurveysApiController implements SurveysApi {
     }
 
     @Override
-    public ResponseEntity<Void> changeSurveysStatus(@PathVariable("surveyId") String surveyId, @RequestBody Status status) {
+    public ResponseEntity<Void> createSurveyEvents(@PathVariable("surveyId") String surveyId, @RequestBody NewEvent newEvent) {
         try {
             ExhaustiveSurvey survey = surveyService.getSurvey(surveyId);
             Status oldStatus = survey.getStatus();
+            Status status = newEvent.getStatus();
 
             // Update status if value changed
             // The following status changes are forbidden : closed -> any, open -> draft, draft -> closed
@@ -144,6 +169,8 @@ public class SurveysApiController implements SurveysApi {
 
             // Add list link
             survey.getLinks().add(buildListLink());
+            // Add events link
+            survey.getLinks().add(buildEventsLinkFromDetail());
 
             return new ResponseEntity<>(survey, HttpStatus.OK);
         } catch (NotFoundException e) {
@@ -152,8 +179,8 @@ public class SurveysApiController implements SurveysApi {
     }
 
     @Override
-    public ResponseEntity<List<SurveyResponses>> getSurveyResponses(@ApiParam(value = "ID of survey",required=true ) @PathVariable("surveyId") String surveyId) {
-        try {
+    public ResponseEntity<List<SurveyResponses>> getSurveyResponses(@ApiParam(value = "ID of survey", required=true ) @PathVariable("surveyId") String surveyId) {
+        /*try {
             ExhaustiveSurvey survey = surveyService.getSurvey(surveyId);
             List<ExhaustiveSurvey> surveys = surveyService.getAllSurveys(this::buildSelfLink);
 
@@ -161,7 +188,11 @@ public class SurveysApiController implements SurveysApi {
             //List<SurveyResponses> responses = survey.get
         } catch (NotFoundException e) {
             e.printStackTrace();
-        }
+        }*/
         return null;
+    }
+
+    public ResponseEntity<List<Event>> getSurveyEvents(@ApiParam(value = "ID of survey to return", required = true) @PathVariable("surveyId") String surveyId) {
+        return new ResponseEntity<>(eventService.getEvents(surveyId), HttpStatus.OK);
     }
 }

@@ -1,14 +1,17 @@
-package io.lozzikit.survey.api.spec.steps;
+package io.lozzikit.survey.api.spec.steps.events;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
 import io.lozzikit.survey.ApiException;
 import io.lozzikit.survey.ApiResponse;
 import io.lozzikit.survey.api.dto.ExhaustiveSurvey;
+import io.lozzikit.survey.api.dto.NewEvent;
 import io.lozzikit.survey.api.dto.Status;
 import io.lozzikit.survey.api.spec.helpers.Environment;
 import io.lozzikit.survey.api.spec.helpers.HTTPRequest;
+import io.lozzikit.survey.api.spec.steps.surveys.SurveySteps;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.entity.ContentType;
 
 import java.io.IOException;
 
@@ -17,18 +20,20 @@ import static org.junit.Assert.assertEquals;
 /**
  * @author Maxime Guillod
  */
-public class UpdateSurveySteps extends SurveySteps {
+public class CreateStatusEventSteps extends SurveySteps {
 
     private ApiResponse apiResponse;
 
-    public UpdateSurveySteps(Environment environment) {
+    public CreateStatusEventSteps(Environment environment) {
         super(environment);
     }
 
     @When("^I set the survey to (OPENED|CLOSED|DRAFT)$")
     public void iSetTheSurveyToOPENED(String status) throws Throwable {
         try {
-            lastApiResponse = api.changeSurveysStatusWithHttpInfo(environment.getLastId(), Status.valueOf(status));
+            NewEvent newEvent = new NewEvent();
+            newEvent.setStatus(Status.valueOf(status));
+            lastApiResponse = api.createSurveyEventsWithHttpInfo(environment.getLastId(), newEvent);
             lastApiCallThrewException = false;
             lastApiException = null;
             environment.setLastStatusCode(lastApiResponse.getStatusCode());
@@ -40,10 +45,10 @@ public class UpdateSurveySteps extends SurveySteps {
         }
     }
 
-    @When("^I custom PATCH an incorrect status$")
+    @When("^I custom POST an incorrect status$")
     public void iSetTheSurveyToAnIncorrectStatus() throws IOException {
-        String payload = "THIS IS AN INCORRECT STATUS";
-        CloseableHttpResponse response = HTTPRequest.sendPatchRequest(api.getApiClient().getBasePath() + "/surveys/" + environment.getLastId() + "/status", payload);
+        String payload = "{ status: \"THIS IS AN INCORRECT STATUS\" }";
+        CloseableHttpResponse response = HTTPRequest.sendPostRequest(api.getApiClient().getBasePath() + "/surveys/" + environment.getLastId() + "/events", payload, ContentType.APPLICATION_JSON);
         environment.setLastStatusCode(response.getStatusLine().getStatusCode());
         response.close();
     }

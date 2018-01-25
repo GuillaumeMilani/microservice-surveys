@@ -22,7 +22,7 @@ public class SurveyEntity implements Serializable {
 
     private Status status;
 
-    private User user;
+    private UserEntity user;
 
     private String title;
 
@@ -48,11 +48,11 @@ public class SurveyEntity implements Serializable {
         this.status = status;
     }
 
-    public User getUser() {
+    public UserEntity getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserEntity user) {
         this.user = user;
     }
 
