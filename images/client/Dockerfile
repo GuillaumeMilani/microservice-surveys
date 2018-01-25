@@ -17,4 +17,4 @@ RUN npm install
 COPY user_interface/ /usr/src/app
 
 # Serve the app
-CMD ["npm", "start", "--", "--env=docker"]
+CMD ["npm", "start", "--", "--env=docker", "--host=0.0.0.0"]
