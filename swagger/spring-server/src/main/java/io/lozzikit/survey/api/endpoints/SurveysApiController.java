@@ -67,7 +67,7 @@ public class SurveysApiController implements SurveysApi {
         link.setRel("events");
 
         link.setHref(ServletUriComponentsBuilder
-                .fromCurrentRequestUri().path("/status").toUriString());
+                .fromCurrentRequestUri().path("/events").toUriString());
 
         return link;
     }
