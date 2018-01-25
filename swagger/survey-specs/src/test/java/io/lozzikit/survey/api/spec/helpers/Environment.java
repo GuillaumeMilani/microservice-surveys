@@ -7,6 +7,7 @@ import io.lozzikit.survey.api.dto.ExhaustiveSurvey;
 import io.lozzikit.survey.api.dto.NewSurvey;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -22,6 +23,8 @@ public class Environment {
     private Answer newAnswer;
     private int numberOfAddedSurvey = 0;
     private List<Event> events;
+    private List<ExhaustiveSurvey> exhaustiveSurveys;
+    private List<NewSurvey> newSurveys;
 
     public Environment() throws IOException {
         Properties properties = new Properties();
