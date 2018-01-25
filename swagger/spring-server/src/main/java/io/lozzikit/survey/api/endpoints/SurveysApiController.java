@@ -163,6 +163,22 @@ public class SurveysApiController implements SurveysApi {
     }
 
     @Override
+    public ResponseEntity<ExhaustiveSurvey> deleteSurveyById(@PathVariable("surveyId") String surveyId) {
+        if (null == surveyId) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        try {
+            surveyService.getSurvey(surveyId);
+            surveyService.deleteSurvey(surveyId);
+
+            return ResponseEntity.ok().build();
+        } catch (NotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @Override
     public ResponseEntity<ExhaustiveSurvey> getSurveyById(@ApiParam(value = "ID of survey to return", required = true) @PathVariable("surveyId") String surveyId) {
         try {
             ExhaustiveSurvey survey = surveyService.getSurvey(surveyId);
