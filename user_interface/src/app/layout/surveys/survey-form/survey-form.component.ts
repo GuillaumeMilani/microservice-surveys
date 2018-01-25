@@ -46,11 +46,11 @@ export class SurveyFormComponent implements OnInit {
     }
 
     goBack(): void {
-        localStorage.removeItem("surveyDetailUrl");
         this.location.back();
     }
 
     save(survey: NewSurvey): void {
         this.surveyService.addSurvey(survey).subscribe(newSurvey => null);
+        this.goBack();
     }
 }

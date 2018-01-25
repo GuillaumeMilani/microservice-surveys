@@ -7,17 +7,14 @@ import {Event} from "../../../shared/";
     styleUrls: ['./timeline.component.scss']
 })
 export class TimelineComponent implements OnInit {
-    events: Event[] = [];
+    @Input()
+    events: Event[];
 
     constructor() {
     }
 
-    @Input()
-    setEvents(events: Event[]): void {
-        this.events = events;
-    }
-
     ngOnInit() {
+        this.events = this.events.reverse();
     }
 
 }

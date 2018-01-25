@@ -1,8 +1,10 @@
+<h1>Detail</h1>
+<button (click)="goBack()" class="btn">Back</button>
 <div class="row">
     <div class="col-lg-6">
         <app-survey-edit-form [setSurvey]="survey"></app-survey-edit-form>
     </div>
     <div class="col-lg-6">
-        <app-timeline [setEvents]="events"></app-timeline>
+        <app-timeline *ngIf="events" [events]="events"></app-timeline>
     </div>
 </div>

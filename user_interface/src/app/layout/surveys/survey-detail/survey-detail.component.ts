@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {SessionService} from "../../../shared/services/session/session.service";
+import {Location} from '@angular/common';
+
 import {SurveyService} from "../../../shared/services/survey/survey.service";
-import {NewSurvey} from "../../../shared/models/new-survey";
-import {Event} from "../../../shared/models/";
+import {NewSurvey, Event} from "../../../shared/models";
 
 @Component({
     selector: 'app-survey-detail',
@@ -11,10 +11,10 @@ import {Event} from "../../../shared/models/";
 })
 export class SurveyDetailComponent implements OnInit {
     survey: NewSurvey = new NewSurvey();
-    events: Event[] = [];
+    events: Event[];
 
-    constructor(private sessionService: SessionService,
-                private surveyService: SurveyService) {
+    constructor(private surveyService: SurveyService,
+                private location: Location) {
     }
 
     ngOnInit() {
@@ -26,5 +26,10 @@ export class SurveyDetailComponent implements OnInit {
             });
         } else {
         }
+    }
+
+    goBack(): void {
+        localStorage.removeItem("surveyDetailUrl");
+        this.location.back();
     }
 }
