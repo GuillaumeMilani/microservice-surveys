@@ -1,0 +1,119 @@
+\newcommand\auteur{Milani Guillaume, Clavien Tony, Luthier Gabriel \& Guillod Maxime}
+\newcommand\cours{AMT}
+\newcommand\ecole{IL - TIC - HEIG-VD}
+\newcommand\domaine{Microservice}
+\newcommand\titre{Surveys}
+\newcommand{\inlineCode}[1]{\lstinline[basicstyle=\ttfamily\color{black}]|#1|}
+
+\newcommand{\f}[1]{\lstinputlisting[caption=#1]{../#1}}
+
+
+\documentclass[a4paper,11pt]{article}
+%
+\author{\auteur}
+\title{\titre}
+\date{\today}
+
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{multicol}
+\usepackage{color}
+\usepackage{enumerate}
+\usepackage[utf8]{inputenc}
+\usepackage[frenchb]{babel}
+\usepackage{float}
+\usepackage{listingsutf8}
+\usepackage{geometry}
+\usepackage{amssymb,mathtools,pifont} 
+\usepackage{enumitem}
+\usepackage{xspace}
+\geometry{verbose,tmargin=2.5cm,bmargin=2cm,lmargin=2cm,rmargin=2.5cm}
+\selectlanguage{frenchb}
+\frenchbsetup{StandardLists=true}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\setlength\parindent{0pt}
+
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+%
+\floatname{algorithm}{Algorithme}
+\algrenewcommand\algorithmicrequire{\textbf{Données :}}
+\algrenewcommand\algorithmicensure{\textbf{Résultat :}}
+%
+\algnewcommand\algorithmicto{\textbf{to}}
+\algrenewtext{For}[3]{\algorithmicfor\ #1 $\gets$ #2 \algorithmicto\ #3 \algorithmicdo}
+%
+\algrenewcommand{\algorithmiccomment}[1]{\hfill{\color{blue}$\triangleright$ #1}}
+
+% headers & footers
+\pagestyle{fancy}
+
+\lhead{\domaine}
+\rhead{\titre}
+
+\lfoot{\auteur}
+\cfoot{}
+\rfoot{\thepage}
+\lstset{
+	inputencoding=utf8/latin1,
+	breaklines=true, 
+	language=bash,  
+	basicstyle=\small, 
+	numbers=left,   
+	firstnumber=1,
+	numberfirstline=true, 
+	keywordstyle=\color{blue}\ttfamily,
+	stringstyle=\color{red}\ttfamily,
+	commentstyle=\color{black}\ttfamily,
+	morecomment=[l][\color{magenta}]{\#},
+	showstringspaces=false,
+	xleftmargin=1cm,
+	tabsize=4,
+}
+
+\begin{document}
+	
+	% Entete première page
+	\thispagestyle{empty}
+	%
+	\noindent \cours \hfill \ecole{} \newline
+	\noindent \auteur \hfill \today \newline
+	\hrule
+	\vspace{7mm}
+	\noindent {\large \bf \domaine } \hfill \titre {\large \bf }\\[3mm]
+	\hrule
+	
+	\section{Introduction}
+	Vous trouverez dans ce document toutes les informations relatives à l'installation ainsi qu'au lancement de notre micro-service \textit{Surveys}. 
+	
+	\section{Pré-requis}
+		\subsection{Docker}
+		Pour commencer, vous devez installer sur votre machine \textit{Docker} afin de pouvoir lancer en toute simplicité notre service \textit{Surveys}. En effet, nous utilisons \textit{Docker} afin de lancer notre base de données \textbf{MongoDB}, éventuellement \textit{Mongo-Express} afin de visualiser le contenu de notre base de données, et bien entendu, \textit{Surveys}, notre micro-service.
+		
+		\subsection{Maven}
+		Si vous souhaitez installer notre service en compilant le code source, vous aurez besoin d'avoir dockerBuild.sh\textit{Maven} installé sur votre machine pour la compilation de notre \textit{.jar}.
+		
+	\section{Installation code source}
+		Pour créer un exécutable \textit{.jar} afin de pouvoir lancer notre service, vous pouvez lancer notre script \textit{bash} afin de compiler automatiquement ce dernier.
+		
+		\f{dockerBuild.sh}
+	
+	\section{Lancement du service}
+	\subsection{Script}
+	La méthode la plus simple pour lancer notre service \textit{Surveys} avec la base de donnée \textit{Mongo} ainsi que \textit{Mongo-Express} pour la visualisation des données, et de lancer le script \textbf{bash} suivant : 
+	
+	\f{dockerRun.sh}
+	
+	\subsection{Docker-compose}
+	Vous pouvez également utiliser notre fichier \textit{docker-compose.yml} afin de lancer les services que vous souhaitez.
+	
+	\f{docker-compose.yml}
+	
+	En utilisant la commande suivante, vous pouvez par exemple lancer uniquement \textit{Mongo} ainsi que notre service \textit{Surveys} : 
+	\inlineCode{docker-compose mongo server}
+
+
+\end{document}
+
