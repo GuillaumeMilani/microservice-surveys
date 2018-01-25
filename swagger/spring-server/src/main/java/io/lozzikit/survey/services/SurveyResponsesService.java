@@ -25,21 +25,10 @@ public class SurveyResponsesService {
         responsesRepository.save(responses);
     }
 
-    public List<SurveyResponses> getAllSurveyResponses(Function<String, Link> selfLinkCreation) {
-        List<SurveyResponses> surveyResponsesEntities = null;
-        /*
-        surveyResponsesEntities = responsesRepository.findAll();
-
-        return responsesEntities.stream()
-                .map(entity -> {
-                    ExhaustiveSurveyResponses survey = entityToDTO(entity);
-
-                    survey.getLinks().add(selfLinkCreation.apply(entity.getId()));
-
-                    return survey;
-                })
-                .collect(Collectors.toList());*/
-        return surveyResponsesEntities;
+    public List<SurveyResponses> getAllSurveyResponses(String surveyId) {
+        return responsesRepository.findAll().stream()
+                        .filter(response -> response.getSurveyId().equals(surveyId))
+                        .collect(Collectors.toList());
     }
 
 

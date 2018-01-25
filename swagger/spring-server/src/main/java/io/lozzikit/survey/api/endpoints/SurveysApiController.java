@@ -179,17 +179,10 @@ public class SurveysApiController implements SurveysApi {
     }
 
     @Override
-    public ResponseEntity<List<SurveyResponses>> getSurveyResponses(@ApiParam(value = "ID of survey", required=true ) @PathVariable("surveyId") String surveyId) {
-        /*try {
-            ExhaustiveSurvey survey = surveyService.getSurvey(surveyId);
-            List<ExhaustiveSurvey> surveys = surveyService.getAllSurveys(this::buildSelfLink);
+    public ResponseEntity<List<SurveyResponses>> getSurveyResponses(@ApiParam(value = "ID of survey", required = true) @PathVariable("surveyId") String surveyId) {
+        List<SurveyResponses> responses = surveyResponsesService.getAllSurveyResponses(surveyId);
 
-            List<SurveyResponses> responses = surveyResponsesService.getAllSurveyResponses(this::buildSelfLink);
-            //List<SurveyResponses> responses = survey.get
-        } catch (NotFoundException e) {
-            e.printStackTrace();
-        }*/
-        return null;
+        return new ResponseEntity<>(responses, HttpStatus.OK);
     }
 
     public ResponseEntity<List<Event>> getSurveyEvents(@ApiParam(value = "ID of survey to return", required = true) @PathVariable("surveyId") String surveyId) {
