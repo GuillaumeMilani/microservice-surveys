@@ -20,14 +20,14 @@ public class SurveyService {
     @Autowired
     SurveyRepository surveyRepository;
 
-    public List<ExhaustiveSurvey> getAllSurveys(Function<String, Link> selfLinkCreation) {
+    public List<ExhaustiveSurvey> getAllSurveys(List<Function<String, Link>> linkCreationFunctions) {
         List<SurveyEntity> surveyEntities = surveyRepository.findAll();
 
         return surveyEntities.stream()
                 .map(entity -> {
                     ExhaustiveSurvey survey = entityToDTO(entity);
 
-                    survey.getLinks().add(selfLinkCreation.apply(entity.getId()));
+                    linkCreationFunctions.forEach(function -> survey.getLinks().add(function.apply(entity.getId())));
 
                     return survey;
                 })

@@ -2,6 +2,7 @@ package io.lozzikit.survey.api.spec.helpers;
 
 import io.lozzikit.survey.api.SurveyApi;
 import io.lozzikit.survey.api.dto.Answer;
+import io.lozzikit.survey.api.dto.Event;
 import io.lozzikit.survey.api.dto.ExhaustiveSurvey;
 import io.lozzikit.survey.api.dto.NewSurvey;
 
@@ -23,6 +24,7 @@ public class Environment {
     private String lastId;
     private Answer newAnswer;
     private int numberOfAddedSurvey = 0;
+    private List<Event> events;
 
     public Environment() throws IOException {
         Properties properties = new Properties();
@@ -100,5 +102,13 @@ public class Environment {
 
     public void setNumberOfAddedSurvey(int numberOfAddedSurvey) {
         this.numberOfAddedSurvey = numberOfAddedSurvey;
+    }
+
+    public List<Event> getEvents() {
+        return events;
+    }
+
+    public void setEvents(List<Event> events) {
+        this.events = events;
     }
 }

@@ -1,4 +1,4 @@
-package io.lozzikit.survey.api.spec.steps;
+package io.lozzikit.survey.api.spec.steps.events;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
@@ -8,6 +8,7 @@ import io.lozzikit.survey.api.dto.ExhaustiveSurvey;
 import io.lozzikit.survey.api.dto.Status;
 import io.lozzikit.survey.api.spec.helpers.Environment;
 import io.lozzikit.survey.api.spec.helpers.HTTPRequest;
+import io.lozzikit.survey.api.spec.steps.surveys.SurveySteps;
 import org.apache.http.client.methods.CloseableHttpResponse;
 
 import java.io.IOException;
