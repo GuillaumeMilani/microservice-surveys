@@ -1,5 +1,6 @@
-package io.lozzikit.survey.api.spec.steps.surveys;
+package io.lozzikit.survey.api.spec.steps;
 
+import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
@@ -7,7 +8,6 @@ import io.lozzikit.survey.ApiException;
 import io.lozzikit.survey.ApiResponse;
 import io.lozzikit.survey.api.dto.ExhaustiveSurvey;
 import io.lozzikit.survey.api.dto.NewSurvey;
-import io.lozzikit.survey.api.dto.User;
 import io.lozzikit.survey.api.spec.helpers.Environment;
 import org.junit.Assert;
 
@@ -124,7 +124,7 @@ public class GetSurveySteps extends SurveySteps {
 
     @And("^I receive no survey$")
     public void iReceiveNoSurvey() throws Throwable {
-        assertEquals(0, environment.getExhaustiveSurveys().size());
+        assertEquals(0,environment.getExhaustiveSurveys().size());
     }
 
     @And("^I receive the posted survey$")
@@ -132,7 +132,7 @@ public class GetSurveySteps extends SurveySteps {
         List<ExhaustiveSurvey> surveys = environment.getExhaustiveSurveys();
         assertEquals(environment.getNumberOfAddedSurvey() + 1, surveys.size());
 
-        assertEquals(environment.getNewSurvey().getUser(), surveys.get(surveys.size() - 1).getUser());
+        assertEquals(environment.getNewSurvey().getUser(), surveys.get(surveys.size()-1).getUser());
     }
 
     @Given("^I have many surveys with the mandatory properties set$")
@@ -140,9 +140,7 @@ public class GetSurveySteps extends SurveySteps {
         List<NewSurvey> surveys = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             NewSurvey survey = new NewSurvey();
-            User user = new User();
-            user.setUsername(String.valueOf(i));
-            survey.setUser(user);
+            survey.setUser(Long.valueOf(i));
             surveys.add(survey);
         }
         environment.setNewSurveys(surveys);
@@ -151,7 +149,7 @@ public class GetSurveySteps extends SurveySteps {
     @And("^I post them to the /survey endpoint$")
     public void iPostThemToTheSurveyEndpoint() throws Throwable {
         try {
-            for (NewSurvey newSurvey : environment.getNewSurveys()) {
+            for (NewSurvey newSurvey: environment.getNewSurveys()) {
                 lastApiResponse = api.addSurveyWithHttpInfo(newSurvey);
                 lastApiCallThrewException = false;
                 lastApiException = null;
@@ -168,8 +166,8 @@ public class GetSurveySteps extends SurveySteps {
 
     @And("^i receive the posted surveys$")
     public void iReceiveThePostedSurveys() throws Throwable {
-        List<ExhaustiveSurvey> surveys = environment.getExhaustiveSurveys();
-        assertEquals(environment.getNewSurveys().size() + environment.getNumberOfAddedSurvey(), surveys.size());
+            List<ExhaustiveSurvey> surveys = environment.getExhaustiveSurveys();
+            assertEquals(environment.getNewSurveys().size() + environment.getNumberOfAddedSurvey(),surveys.size());
     }
 
     @Given("^I know how many survey is on the server$")

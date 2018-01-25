@@ -16,15 +16,15 @@ import java.util.Properties;
 public class Environment {
 
     private NewSurvey newSurvey;
+    private List<NewSurvey> newSurveys;
     private ExhaustiveSurvey exhaustiveSurvey;
+    private List<ExhaustiveSurvey> exhaustiveSurveys;
     private int lastStatusCode;
     private SurveyApi api = new SurveyApi();
     private String lastId;
     private Answer newAnswer;
     private int numberOfAddedSurvey = 0;
     private List<Event> events;
-    private List<ExhaustiveSurvey> exhaustiveSurveys;
-    private List<NewSurvey> newSurveys;
 
     public Environment() throws IOException {
         Properties properties = new Properties();
