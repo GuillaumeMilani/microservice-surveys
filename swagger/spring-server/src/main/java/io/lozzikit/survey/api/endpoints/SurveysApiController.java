@@ -163,6 +163,22 @@ public class SurveysApiController implements SurveysApi {
     }
 
     @Override
+    public ResponseEntity<ExhaustiveSurvey> deleteSurveyById(@PathVariable("surveyId") String surveyId) {
+        if (null == surveyId) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        try {
+            surveyService.getSurvey(surveyId);
+            surveyService.deleteSurvey(surveyId);
+
+            return ResponseEntity.ok().build();
+        } catch (NotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @Override
     public ResponseEntity<ExhaustiveSurvey> getSurveyById(@ApiParam(value = "ID of survey to return", required = true) @PathVariable("surveyId") String surveyId) {
         try {
             ExhaustiveSurvey survey = surveyService.getSurvey(surveyId);
@@ -179,13 +195,13 @@ public class SurveysApiController implements SurveysApi {
     }
 
     @Override
-    public ResponseEntity<List<Event>> getSurveyEvents(@ApiParam(value = "ID of survey to return", required = true) @PathVariable("surveyId") String surveyId) {
-        return new ResponseEntity<>(eventService.getEvents(surveyId), HttpStatus.OK);
+    public ResponseEntity<List<SurveyResponses>> getSurveyResponses(@ApiParam(value = "ID of survey", required = true) @PathVariable("surveyId") String surveyId) {
+        List<SurveyResponses> responses = surveyResponsesService.getAllSurveyResponses(surveyId);
+
+        return new ResponseEntity<>(responses, HttpStatus.OK);
     }
 
-
-    @Override
-    public ResponseEntity<List<SurveyResponses>> getSurveyResponses(String surveyId) {
-        return null;
+    public ResponseEntity<List<Event>> getSurveyEvents(@ApiParam(value = "ID of survey to return", required = true) @PathVariable("surveyId") String surveyId) {
+        return new ResponseEntity<>(eventService.getEvents(surveyId), HttpStatus.OK);
     }
 }

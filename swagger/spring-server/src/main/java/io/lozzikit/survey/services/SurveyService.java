@@ -58,6 +58,10 @@ public class SurveyService {
         return entityToDTO(surveyEntity);
     }
 
+    public void deleteSurvey(String id) {
+        surveyRepository.delete(id);
+    }
+
     private ExhaustiveSurvey entityToDTO(SurveyEntity surveyEntity) {
         ExhaustiveSurvey survey = new ExhaustiveSurvey();
 

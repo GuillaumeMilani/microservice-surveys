@@ -18,4 +18,9 @@ public abstract class SurveySteps {
         this.environment = environment;
         this.api = environment.getApi();
     }
+
+    protected String extractId(String url) {
+        String[] splittedUrl = url.split("/");
+        return splittedUrl[splittedUrl.length - 1];
+    }
 }
