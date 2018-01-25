@@ -57,7 +57,7 @@ public class SurveysApiController implements SurveysApi {
     private Link buildEventsLink(String id) {
         Link link = buildSelfLink(id);
         link.setRel("events");
-        link.setHref(link.getHref() + "/status");
+        link.setHref(link.getHref() + "/events");
 
         return link;
     }
