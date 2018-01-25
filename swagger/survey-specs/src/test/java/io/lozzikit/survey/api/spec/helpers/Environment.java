@@ -31,13 +31,11 @@ public class Environment {
         properties.load(this.getClass().getClassLoader().getResourceAsStream("environment.properties"));
         String url = properties.getProperty("io.lozzikit.surveys.server.url");
         api.getApiClient().setBasePath(url);
-
     }
 
     public SurveyApi getApi() {
         return api;
     }
-
 
     public int getLastStatusCode() {
         return lastStatusCode;
@@ -94,7 +92,6 @@ public class Environment {
     public void setNewSurveys(List<NewSurvey> newSurveys) {
         this.newSurveys = newSurveys;
     }
-
 
     public int getNumberOfAddedSurvey() {
         return numberOfAddedSurvey;

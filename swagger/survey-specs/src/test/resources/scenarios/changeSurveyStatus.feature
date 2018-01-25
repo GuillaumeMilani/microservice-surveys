@@ -32,5 +32,5 @@ Feature: Update a Survey
     Then I receive a 400 status code
 
   Scenario: send an incorrect status : FAIL
-    When I custom PATCH an incorrect status
+    When I custom POST an incorrect status
     Then I receive a 400 status code

@@ -131,10 +131,11 @@ public class SurveysApiController implements SurveysApi {
     }
 
     @Override
-    public ResponseEntity<Void> changeSurveysStatus(@PathVariable("surveyId") String surveyId, @RequestBody Status status) {
+    public ResponseEntity<Void> createSurveyEvents(@PathVariable("surveyId") String surveyId, @RequestBody NewEvent newEvent) {
         try {
             ExhaustiveSurvey survey = surveyService.getSurvey(surveyId);
             Status oldStatus = survey.getStatus();
+            Status status = newEvent.getStatus();
 
             // Update status if value changed
             // The following status changes are forbidden : closed -> any, open -> draft, draft -> closed

@@ -1,4 +1,4 @@
-package io.lozzikit.survey.api.spec.steps.events;
+package io.lozzikit.survey.api.spec.steps.surveys;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
@@ -9,7 +9,6 @@ import io.lozzikit.survey.api.dto.ExhaustiveSurvey;
 import io.lozzikit.survey.api.dto.NewSurvey;
 import io.lozzikit.survey.api.dto.User;
 import io.lozzikit.survey.api.spec.helpers.Environment;
-import io.lozzikit.survey.api.spec.steps.surveys.SurveySteps;
 import org.junit.Assert;
 
 import java.lang.reflect.Method;
