@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {SessionService} from "../../../shared/services/session/session.service";
 import {SurveyService} from "../../../shared/services/survey/survey.service";
 import {NewSurvey} from "../../../shared/models/new-survey";
-import {Event} from "../../../shared/models/event";
+import {Event} from "../../../shared/models/";
 
 @Component({
     selector: 'app-survey-detail',

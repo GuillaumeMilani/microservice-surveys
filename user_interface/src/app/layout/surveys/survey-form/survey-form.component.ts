@@ -46,6 +46,7 @@ export class SurveyFormComponent implements OnInit {
     }
 
     goBack(): void {
+        localStorage.removeItem("surveyDetailUrl");
         this.location.back();
     }
 

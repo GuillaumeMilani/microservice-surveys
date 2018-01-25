@@ -23,8 +23,9 @@ export class SurveyEditFormComponent extends SurveyFormComponent {
     }
 
     getSurvey(): void {
-        if (this.sessionService.getDetailUrl()) {
-            this.surveyService.getSurvey(this.sessionService.getDetailUrl()).subscribe(survey => this.survey = survey);
+        let url = localStorage.getItem("surveyDetailUrl");
+        if (url) {
+            this.surveyService.getSurvey(url).subscribe(survey => this.survey = survey);
         } else {
         }
     }

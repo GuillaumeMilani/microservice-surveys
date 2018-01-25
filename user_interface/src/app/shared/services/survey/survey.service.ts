@@ -1,15 +1,14 @@
 import { Injectable } from '@angular/core';
-import { ExhaustiveSurvey } from '../../models';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MessagesService } from '../messages/messages.service';
-import { MessageType } from '../../models/message';
+import { MessageType, NewSurvey, ExhaustiveSurvey, Event } from '../../models/';
 
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { catchError, map, tap } from 'rxjs/operators';
-import {NewSurvey} from "../../models/new-survey";
 
 import { environment } from '../../../../environments/environment';
+import {NewEvent} from "../../models/new-event";
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -40,10 +39,12 @@ export class SurveyService {
 
     /** PATCH: change a survey status */
     updateSurveyStatus(survey: ExhaustiveSurvey): Observable<any> {
-        const patchUrl = `${survey.links.find(link => link.rel === "events").href}`;
-        const body = `"${survey.status.toString()}"`;
-        return this.http.patch(patchUrl, body, httpOptions).pipe(
-            tap(_ => this.log(`updated survey url=${patchUrl}`)),
+        const postUrl = `${survey.links.find(link => link.rel === "events").href}`;
+        const newEvent: NewEvent = new NewEvent();
+        newEvent.status = survey.status;
+
+        return this.http.post(postUrl, newEvent, httpOptions).pipe(
+            tap(_ => this.log(`updated survey url=${postUrl}`)),
             catchError(this.handleError<any>('updateSurveyStatus'))
         );
     }
