@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {ExhaustiveSurvey, SurveyService, SessionService} from '../../../shared';
+import {Router, ActivatedRoute} from '@angular/router';
+import {ExhaustiveSurvey, SurveyService} from '../../../shared';
 import {SurveyStatus} from "../../../shared/models/exhaustive-survey";
 
 @Component({
@@ -11,7 +12,8 @@ export class SurveysListComponent implements OnInit {
     surveys: ExhaustiveSurvey[];
 
     constructor(private surveyService: SurveyService,
-                private sessionService: SessionService) {
+                private router: Router,
+                private activatedRoute: ActivatedRoute) {
     }
 
     ngOnInit() {
@@ -23,7 +25,8 @@ export class SurveysListComponent implements OnInit {
     }
 
     setDetailUrl(url: string): void {
-        this.sessionService.setDetailUrl(url);
+        localStorage.setItem("surveyDetailUrl", url);
+        // this.sessionService.setDetailUrl(url);
     }
 
     openSurvey(survey: ExhaustiveSurvey): void {
@@ -34,5 +37,10 @@ export class SurveysListComponent implements OnInit {
     closeSurvey(survey: ExhaustiveSurvey): void {
         survey.status = SurveyStatus.closed;
         this.surveyService.updateSurveyStatus(survey).subscribe(_ => _);
+    }
+
+    showDetails(survey: ExhaustiveSurvey): void {
+        this.setDetailUrl(survey.links.find(link => link.rel == 'self').href);
+        this.router.navigate(['/detail'], {relativeTo: this.activatedRoute});
     }
 }

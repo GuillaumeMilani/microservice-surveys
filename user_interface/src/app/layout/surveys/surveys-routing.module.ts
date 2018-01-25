@@ -2,11 +2,11 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { SurveysListComponent } from './surveys-list/surveys-list.component';
 import { SurveyFormComponent } from './survey-form/survey-form.component';
-import {SurveyEditFormComponent} from "./survey-edit-form/survey-edit-form.component";
+import {SurveyDetailComponent} from "./survey-detail/survey-detail.component";
 
 const routes: Routes = [
   { path: '', component: SurveysListComponent },
-  { path: 'detail', component: SurveyEditFormComponent },
+  { path: 'detail', component: SurveyDetailComponent },
   { path: 'create', component: SurveyFormComponent }
 ];
 

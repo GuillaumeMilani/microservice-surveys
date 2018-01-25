@@ -1,50 +1,55 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+
 
 import {NewSurvey, Question, SurveyService} from '../../../shared';
 
 import {Location} from '@angular/common';
 
 @Component({
-  selector: 'app-survey-form',
-  templateUrl: './survey-form.component.html',
-  styleUrls: ['./survey-form.component.scss']
+    selector: 'app-survey-form',
+    templateUrl: './survey-form.component.html',
+    styleUrls: ['./survey-form.component.scss']
 })
 export class SurveyFormComponent implements OnInit {
-  survey: NewSurvey = new NewSurvey();
+    survey: NewSurvey = new NewSurvey();
 
-  constructor(
-    protected surveyService: SurveyService,
-    protected location: Location
-  ) { }
-
-  ngOnInit() {
-  }
-
-  addQuestion(): void {
-    let newQuestion:Question = new Question();
-    let lastNumber: number = 0;
-
-    if (this.survey.questions.length) {
-        lastNumber = Math.max.apply(Math, this.survey.questions.map(q => q.number));
+    constructor(protected surveyService: SurveyService,
+                protected location: Location) {
     }
 
-    newQuestion.number = lastNumber + 1;
-    this.survey.questions.push(newQuestion);
-  }
+    ngOnInit() {
+    }
 
-  removeQuestion(questionNumber: number): void {
-    this.survey.questions = this.survey.questions.filter(q => q.number != questionNumber);
-  }
+    @Input()
+    setSurvey(survey: NewSurvey): void {
+        this.survey = survey;
+    }
 
-  updateQuestionNumbers(): void {
-      this.survey.questions.forEach((question, index) => question.number = index+1);
-  }
+    addQuestion(): void {
+        let newQuestion: Question = new Question();
+        let lastNumber: number = 0;
 
-  goBack(): void {
-    this.location.back();
-  }
+        if (this.survey.questions.length) {
+            lastNumber = Math.max.apply(Math, this.survey.questions.map(q => q.number));
+        }
 
-  save(survey: NewSurvey): void {
-      this.surveyService.addSurvey(survey).subscribe(newSurvey => null);
-  }
+        newQuestion.number = lastNumber + 1;
+        this.survey.questions.push(newQuestion);
+    }
+
+    removeQuestion(questionNumber: number): void {
+        this.survey.questions = this.survey.questions.filter(q => q.number != questionNumber);
+    }
+
+    updateQuestionNumbers(): void {
+        this.survey.questions.forEach((question, index) => question.number = index + 1);
+    }
+
+    goBack(): void {
+        this.location.back();
+    }
+
+    save(survey: NewSurvey): void {
+        this.surveyService.addSurvey(survey).subscribe(newSurvey => null);
+    }
 }
