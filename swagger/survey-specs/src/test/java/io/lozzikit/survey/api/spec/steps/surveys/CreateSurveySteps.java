@@ -72,6 +72,27 @@ public class CreateSurveySteps extends SurveySteps {
         environment.setNewSurvey(newSurvey);
     }
 
+    @Given("^I have a survey payload with correct questions numbers$")
+    public void iHaveASurveyPayloadWithCorrectQuestionsNumbers() throws Throwable {
+        NewSurvey newSurvey = new NewSurvey();
+        newSurvey.setUser(new User());
+
+        Question question1 = new Question();
+        question1.setNumber(0);
+
+        Question question2 = new Question();
+        question2.setNumber(1);
+
+        Question question3 = new Question();
+        question3.setNumber(2);
+
+        newSurvey.addQuestionsItem(question1);
+        newSurvey.addQuestionsItem(question2);
+        newSurvey.addQuestionsItem(question3);
+
+        environment.setNewSurvey(newSurvey);
+    }
+
     @When("^I POST its payload to the /survey endpoint$")
     public void iPOSTItsPayloadToTheSurveyEndpoint() {
         try {
