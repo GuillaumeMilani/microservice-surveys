@@ -8,6 +8,7 @@ import io.lozzikit.survey.repositories.ResponsesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -17,9 +18,13 @@ public class SurveyResponsesService {
 
     public void createResponses(SurveyResponses responses, String surveyId) {
         SurveyResponsesEntity surveyResponsesEntity = DTOToEntity(responses);
-        surveyResponsesEntity.setId(surveyId);
+        surveyResponsesEntity.setSurveyId(surveyId);
 
-        responsesRepository.save(responses);
+        responsesRepository.save(surveyResponsesEntity);
+    }
+
+    public List<SurveyResponses> getAllSurveyResponses(String surveyId) {
+        return responsesRepository.findBySurveyId(surveyId).stream().map(this::entityToDTO).collect(Collectors.toList());
     }
 
     private SurveyResponses entityToDTO(SurveyResponsesEntity responsesEntity) {
@@ -44,6 +49,7 @@ public class SurveyResponsesService {
     private SurveyResponsesEntity DTOToEntity(SurveyResponses responses) {
         SurveyResponsesEntity responsesEntity = new SurveyResponsesEntity();
 
+        responsesEntity.setUser(responses.getUser());
         responsesEntity.setAnswers(responses.getAnswers().stream()
                 .map(this::DTOToEntity)
                 .collect(Collectors.toList())

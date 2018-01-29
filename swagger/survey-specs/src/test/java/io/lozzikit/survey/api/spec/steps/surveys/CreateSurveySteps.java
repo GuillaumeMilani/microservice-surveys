@@ -1,4 +1,4 @@
-package io.lozzikit.survey.api.spec.steps;
+package io.lozzikit.survey.api.spec.steps.surveys;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
@@ -7,6 +7,7 @@ import io.lozzikit.survey.ApiException;
 import io.lozzikit.survey.ApiResponse;
 import io.lozzikit.survey.api.dto.NewSurvey;
 import io.lozzikit.survey.api.dto.Question;
+import io.lozzikit.survey.api.dto.User;
 import io.lozzikit.survey.api.spec.helpers.Environment;
 import io.lozzikit.survey.api.spec.helpers.HTTPRequest;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -36,6 +37,60 @@ public class CreateSurveySteps extends SurveySteps {
     @Given("^I have an empty survey payload$")
     public void i_have_a_survey_payload() {
         environment.setNewSurvey(new NewSurvey());
+    }
+
+    @Given("^I have a survey payload with first question not zero$")
+    public void iHaveASurveyWithFirstQuestionNotZero() {
+        NewSurvey newSurvey = new NewSurvey();
+        newSurvey.setUser(new User());
+        Question question = new Question();
+        question.setNumber(1);
+
+        newSurvey.addQuestionsItem(question);
+
+        environment.setNewSurvey(newSurvey);
+    }
+
+    @Given("^I have a survey payload with not consecutive questions numbers$")
+    public void iHaveASurveyWithNotConsecutiveQuestionsNumbers() {
+        NewSurvey newSurvey = new NewSurvey();
+        newSurvey.setUser(new User());
+
+        Question question1 = new Question();
+        question1.setNumber(0);
+
+        Question question2 = new Question();
+        question2.setNumber(1);
+
+        Question question3 = new Question();
+        question2.setNumber(3);
+
+        newSurvey.addQuestionsItem(question1);
+        newSurvey.addQuestionsItem(question2);
+        newSurvey.addQuestionsItem(question3);
+
+        environment.setNewSurvey(newSurvey);
+    }
+
+    @Given("^I have a survey payload with correct questions numbers$")
+    public void iHaveASurveyPayloadWithCorrectQuestionsNumbers() throws Throwable {
+        NewSurvey newSurvey = new NewSurvey();
+        newSurvey.setUser(new User());
+
+        Question question1 = new Question();
+        question1.setNumber(0);
+
+        Question question2 = new Question();
+        question2.setNumber(1);
+
+        Question question3 = new Question();
+        question3.setNumber(2);
+
+        newSurvey.addQuestionsItem(question1);
+        newSurvey.addQuestionsItem(question2);
+        newSurvey.addQuestionsItem(question3);
+
+        environment.setNewSurvey(newSurvey);
     }
 
     @When("^I POST its payload to the /survey endpoint$")
@@ -105,7 +160,7 @@ public class CreateSurveySteps extends SurveySteps {
     @Given("^I have a survey with the mandatory properties set$")
     public void iHaveASurveyWithOnlyTheUserPropertySet() throws Throwable {
         NewSurvey survey = new NewSurvey();
-        survey.setUser(1L);
+        survey.setUser(new User());
         environment.setNewSurvey(survey);
     }
 

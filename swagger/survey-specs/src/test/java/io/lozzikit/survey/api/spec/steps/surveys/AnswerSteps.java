@@ -1,4 +1,4 @@
-package io.lozzikit.survey.api.spec.steps;
+package io.lozzikit.survey.api.spec.steps.surveys;
 
 import cucumber.api.java.en.When;
 import io.lozzikit.survey.ApiException;

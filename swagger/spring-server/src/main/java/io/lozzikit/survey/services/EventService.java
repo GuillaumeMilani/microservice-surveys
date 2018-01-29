@@ -8,6 +8,9 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class EventService {
     @Autowired
@@ -30,6 +33,10 @@ public class EventService {
         }
 
         return entityToDTO(eventEntity);
+    }
+
+    public List<Event> getEvents(String surveyId) {
+        return eventRepository.findBySurveyId(surveyId).stream().map(this::entityToDTO).collect(Collectors.toList());
     }
 
     private EventEntity DTOToEntity(Event event) {

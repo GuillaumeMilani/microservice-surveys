@@ -2,6 +2,7 @@ package io.lozzikit.survey.api.spec.steps;
 
 import cucumber.api.java.en.Then;
 import io.lozzikit.survey.api.spec.helpers.Environment;
+import io.lozzikit.survey.api.spec.steps.surveys.SurveySteps;
 import org.junit.Assert;
 
 public class CommonSteps extends SurveySteps {

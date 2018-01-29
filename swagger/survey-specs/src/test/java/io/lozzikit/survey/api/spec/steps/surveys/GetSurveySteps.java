@@ -1,6 +1,5 @@
-package io.lozzikit.survey.api.spec.steps;
+package io.lozzikit.survey.api.spec.steps.surveys;
 
-import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
@@ -8,6 +7,7 @@ import io.lozzikit.survey.ApiException;
 import io.lozzikit.survey.ApiResponse;
 import io.lozzikit.survey.api.dto.ExhaustiveSurvey;
 import io.lozzikit.survey.api.dto.NewSurvey;
+import io.lozzikit.survey.api.dto.User;
 import io.lozzikit.survey.api.spec.helpers.Environment;
 import org.junit.Assert;
 
@@ -47,9 +47,7 @@ public class GetSurveySteps extends SurveySteps {
                 Map<String, List<String>> responseHeaders = lastApiResponse.getHeaders();
                 String surveyUrl = responseHeaders.get("Location").get(0);
 
-                String[] splittedUrl = surveyUrl.split("/");
-                Id = splittedUrl[splittedUrl.length - 1];
-                environment.setLastId(Id);
+                environment.setLastId(extractId(surveyUrl));
             } else {
                 throw new IllegalArgumentException("unknown response");
             }
@@ -60,13 +58,13 @@ public class GetSurveySteps extends SurveySteps {
 
     @Given("^I know an id that doesn't match any survey$")
     public void iKnowAnIdThatDoesntMatchAnySurvey() {
-        Id = "THIS ID DOESN'T MATCH ANY SURVEY";
+        environment.setLastId("THIS ID DOESN'T MATCH ANY SURVEY");
     }
 
     @When("^I GET it from the /survey/ID endpoint$")
     public void iGETItFromTheSurveyIDEndpoint() throws Throwable {
         try {
-            lastApiResponse = api.getSurveyByIdWithHttpInfo(Id);
+            lastApiResponse = api.getSurveyByIdWithHttpInfo(environment.getLastId());
             lastApiCallThrewException = false;
             lastApiException = null;
             environment.setLastStatusCode(lastApiResponse.getStatusCode());
@@ -81,17 +79,17 @@ public class GetSurveySteps extends SurveySteps {
 
     @And("^I receive the correct survey$")
     public void iReceiveTheCorrectSurvey() throws Throwable {
-        ExhaustiveSurvey receivedSurvey = environment.getExhaustiveSurvey();
-
         // Compare only common properties
+        checkTwoSurveysEquals(environment.getNewSurvey(), environment.getExhaustiveSurvey());
+    }
 
-        NewSurvey newSurvey = environment.getNewSurvey();
+    private void checkTwoSurveysEquals(NewSurvey newSurvey, ExhaustiveSurvey exhaustiveSurvey) throws Throwable {
         Class className = newSurvey.getClass();
 
         for (Method method : className.getDeclaredMethods()) {
             if (method.getName().startsWith("get") || method.getName().startsWith("is")) {
-                Method receivedSurveyMethod = receivedSurvey.getClass().getMethod(method.getName());
-                assertEquals(method.invoke(newSurvey), receivedSurveyMethod.invoke(receivedSurvey));
+                Method receivedSurveyMethod = exhaustiveSurvey.getClass().getMethod(method.getName());
+                assertEquals(method.invoke(newSurvey), receivedSurveyMethod.invoke(exhaustiveSurvey));
             }
         }
     }
@@ -124,7 +122,7 @@ public class GetSurveySteps extends SurveySteps {
 
     @And("^I receive no survey$")
     public void iReceiveNoSurvey() throws Throwable {
-        assertEquals(0,environment.getExhaustiveSurveys().size());
+        assertEquals(0, environment.getExhaustiveSurveys().size());
     }
 
     @And("^I receive the posted survey$")
@@ -132,7 +130,8 @@ public class GetSurveySteps extends SurveySteps {
         List<ExhaustiveSurvey> surveys = environment.getExhaustiveSurveys();
         assertEquals(environment.getNumberOfAddedSurvey() + 1, surveys.size());
 
-        assertEquals(environment.getNewSurvey().getUser(), surveys.get(surveys.size()-1).getUser());
+        // assertEquals(environment.getNewSurvey().getUser(), surveys.get(surveys.size() - 1).getUser());
+        checkTwoSurveysEquals(environment.getNewSurvey(), surveys.get(surveys.size() - 1));
     }
 
     @Given("^I have many surveys with the mandatory properties set$")
@@ -140,7 +139,9 @@ public class GetSurveySteps extends SurveySteps {
         List<NewSurvey> surveys = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             NewSurvey survey = new NewSurvey();
-            survey.setUser(Long.valueOf(i));
+            User user = new User();
+            user.setUsername(String.valueOf(i));
+            survey.setUser(user);
             surveys.add(survey);
         }
         environment.setNewSurveys(surveys);
@@ -149,7 +150,7 @@ public class GetSurveySteps extends SurveySteps {
     @And("^I post them to the /survey endpoint$")
     public void iPostThemToTheSurveyEndpoint() throws Throwable {
         try {
-            for (NewSurvey newSurvey: environment.getNewSurveys()) {
+            for (NewSurvey newSurvey : environment.getNewSurveys()) {
                 lastApiResponse = api.addSurveyWithHttpInfo(newSurvey);
                 lastApiCallThrewException = false;
                 lastApiException = null;
@@ -166,8 +167,8 @@ public class GetSurveySteps extends SurveySteps {
 
     @And("^i receive the posted surveys$")
     public void iReceiveThePostedSurveys() throws Throwable {
-            List<ExhaustiveSurvey> surveys = environment.getExhaustiveSurveys();
-            assertEquals(environment.getNewSurveys().size() + environment.getNumberOfAddedSurvey(),surveys.size());
+        List<ExhaustiveSurvey> surveys = environment.getExhaustiveSurveys();
+        assertEquals(environment.getNewSurveys().size() + environment.getNumberOfAddedSurvey(), surveys.size());
     }
 
     @Given("^I know how many survey is on the server$")

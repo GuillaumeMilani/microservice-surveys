@@ -4,7 +4,8 @@ Feature: Get a Survey
     Given there is a Surveys server
 
   Scenario: get surveys with no survey posted
-    Given I delete all surveys
+    Given I GET it from the /surveys endpoint
+    And I delete all surveys
     When I GET it from the /surveys endpoint
     Then I receive a 200 status code
     And I receive no survey

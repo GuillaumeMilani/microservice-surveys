@@ -1,4 +1,4 @@
-package io.lozzikit.survey.api.spec.steps;
+package io.lozzikit.survey.api.spec.steps.surveys;
 
 import io.lozzikit.survey.ApiException;
 import io.lozzikit.survey.ApiResponse;
@@ -17,5 +17,10 @@ public abstract class SurveySteps {
     public SurveySteps(Environment environment) {
         this.environment = environment;
         this.api = environment.getApi();
+    }
+
+    protected String extractId(String url) {
+        String[] splittedUrl = url.split("/");
+        return splittedUrl[splittedUrl.length - 1];
     }
 }
