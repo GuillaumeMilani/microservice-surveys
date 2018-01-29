@@ -36,9 +36,7 @@ public class EventService {
     }
 
     public List<Event> getEvents(String surveyId) {
-        List<Event> events = eventRepository.findBySurveyId(surveyId).stream().map(this::entityToDTO).collect(Collectors.toList());
-
-        return events;
+        return eventRepository.findBySurveyId(surveyId).stream().map(this::entityToDTO).collect(Collectors.toList());
     }
 
     private EventEntity DTOToEntity(Event event) {

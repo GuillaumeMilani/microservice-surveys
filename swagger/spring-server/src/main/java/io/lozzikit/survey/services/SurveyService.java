@@ -5,11 +5,14 @@ import io.lozzikit.survey.api.model.*;
 import io.lozzikit.survey.entities.QuestionEntity;
 import io.lozzikit.survey.entities.SurveyEntity;
 import io.lozzikit.survey.entities.UserEntity;
+import io.lozzikit.survey.exceptions.FirstQuestionNotZeroException;
+import io.lozzikit.survey.exceptions.WrongQuestionNumbersException;
 import io.lozzikit.survey.repositories.SurveyRepository;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
@@ -34,14 +37,18 @@ public class SurveyService {
                 .collect(Collectors.toList());
     }
 
-    public String createSurvey(NewSurvey survey) {
+    public String createSurvey(NewSurvey survey) throws FirstQuestionNotZeroException, WrongQuestionNumbersException {
+        checkQuestions(survey.getQuestions());
+
         SurveyEntity surveyEntity = DTOToEntity(survey);
 
         surveyRepository.save(surveyEntity);
         return surveyEntity.getId();
     }
 
-    public void updateSurvey(ExhaustiveSurvey survey, String id) {
+    public void updateSurvey(ExhaustiveSurvey survey, String id) throws FirstQuestionNotZeroException, WrongQuestionNumbersException {
+        checkQuestions(survey.getQuestions());
+
         SurveyEntity surveyEntity = DTOToEntity(survey);
         surveyEntity.setId(id);
 
@@ -60,6 +67,31 @@ public class SurveyService {
 
     public void deleteSurvey(String id) {
         surveyRepository.delete(id);
+    }
+
+    private void checkQuestions(List<Question> questions) throws FirstQuestionNotZeroException, WrongQuestionNumbersException {
+        for (Question q : questions) {
+            if (q.getNumber() == null) {
+                throw new WrongQuestionNumbersException();
+            }
+        }
+
+        List<Integer> questionNumbers = questions.stream().map(Question::getNumber).sorted(Integer::compare).collect(Collectors.toList());
+
+        Iterator<Integer> iterator = questionNumbers.iterator();
+
+        if (iterator.hasNext() && iterator.next() != 0) {
+            throw new FirstQuestionNotZeroException();
+        }
+
+        Integer previous = 0;
+        while (iterator.hasNext()) {
+            Integer current = iterator.next();
+            if (current != previous + 1) {
+                throw new WrongQuestionNumbersException();
+            }
+            previous = current;
+        }
     }
 
     private ExhaustiveSurvey entityToDTO(SurveyEntity surveyEntity) {

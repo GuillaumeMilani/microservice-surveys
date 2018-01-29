@@ -1,7 +1,6 @@
 package io.lozzikit.survey.services;
 
 import io.lozzikit.survey.api.model.Answer;
-import io.lozzikit.survey.api.model.Link;
 import io.lozzikit.survey.api.model.SurveyResponses;
 import io.lozzikit.survey.entities.AnswerEntity;
 import io.lozzikit.survey.entities.SurveyResponsesEntity;
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,17 +18,14 @@ public class SurveyResponsesService {
 
     public void createResponses(SurveyResponses responses, String surveyId) {
         SurveyResponsesEntity surveyResponsesEntity = DTOToEntity(responses);
-        surveyResponsesEntity.setId(surveyId);
+        surveyResponsesEntity.setSurveyId(surveyId);
 
-        responsesRepository.save(responses);
+        responsesRepository.save(surveyResponsesEntity);
     }
 
     public List<SurveyResponses> getAllSurveyResponses(String surveyId) {
-        return responsesRepository.findAll().stream()
-                        .filter(response -> response.getSurveyId().equals(surveyId))
-                        .collect(Collectors.toList());
+        return responsesRepository.findBySurveyId(surveyId).stream().map(this::entityToDTO).collect(Collectors.toList());
     }
-
 
     private SurveyResponses entityToDTO(SurveyResponsesEntity responsesEntity) {
         SurveyResponses responses = new SurveyResponses();
