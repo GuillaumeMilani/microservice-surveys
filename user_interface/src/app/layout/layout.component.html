@@ -1,0 +1,6 @@
+<app-header></app-header>
+<app-sidebar></app-sidebar>
+<section class="main-container">
+    <ngb-alert [type]="message.type" *ngFor="let message of messages" (close)="closeMessage(message.id)">{{ message.message }}</ngb-alert>
+    <router-outlet></router-outlet>
+</section>

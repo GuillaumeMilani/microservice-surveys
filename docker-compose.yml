@@ -29,3 +29,12 @@ services:
       - 8080
     ports:
       - 8080:8080
+  client:
+    image: lozzikit/surveys-client
+    container_name: amt_surveys_client
+    links:
+    - server:server
+    expose:
+      - 4200
+    ports:
+      - 4200:4200
