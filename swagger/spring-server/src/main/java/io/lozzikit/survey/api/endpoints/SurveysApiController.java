@@ -209,10 +209,10 @@ public class SurveysApiController implements SurveysApi {
     public ResponseEntity<List<SurveyResponses>> getSurveyResponses(@ApiParam(value = "ID of survey", required = true) @PathVariable("surveyId") String surveyId) {
         List<SurveyResponses> responses = surveyResponsesService.getAllSurveyResponses(surveyId);
 
-        return new ResponseEntity<>(responses, HttpStatus.OK);
+        return ResponseEntity.ok(responses);
     }
 
     public ResponseEntity<List<Event>> getSurveyEvents(@ApiParam(value = "ID of survey to return", required = true) @PathVariable("surveyId") String surveyId) {
-        return new ResponseEntity<>(eventService.getEvents(surveyId), HttpStatus.OK);
+        return ResponseEntity.ok(eventService.getEvents(surveyId));
     }
 }
