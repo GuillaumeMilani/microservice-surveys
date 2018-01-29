@@ -31,9 +31,11 @@ export class SurveyFormComponent implements OnInit {
 
         if (this.survey.questions.length) {
             lastNumber = Math.max.apply(Math, this.survey.questions.map(q => q.number));
+            newQuestion.number = lastNumber + 1;
+        } else {
+          newQuestion.number = lastNumber;
         }
 
-        newQuestion.number = lastNumber + 1;
         this.survey.questions.push(newQuestion);
     }
 
@@ -42,7 +44,7 @@ export class SurveyFormComponent implements OnInit {
     }
 
     updateQuestionNumbers(): void {
-        this.survey.questions.forEach((question, index) => question.number = index + 1);
+        this.survey.questions.forEach((question, index) => question.number = index);
     }
 
     goBack(): void {
@@ -50,7 +52,6 @@ export class SurveyFormComponent implements OnInit {
     }
 
     save(survey: NewSurvey): void {
-        this.surveyService.addSurvey(survey).subscribe(newSurvey => null);
-        this.goBack();
+        this.surveyService.addSurvey(survey).subscribe(newSurvey => this.goBack());
     }
 }

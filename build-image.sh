@@ -16,8 +16,6 @@ cd ../../
 
 echo "----- Copying client package.JSON ------"
 cp user_interface/package.json images/client/package.json
-rm -rf images/client/src/
-mkdir images/client/src
 cp -r user_interface/ images/client/
 
 cd images/client/

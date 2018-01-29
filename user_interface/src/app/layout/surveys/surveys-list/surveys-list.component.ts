@@ -40,8 +40,7 @@ export class SurveysListComponent implements OnInit {
     }
 
     deleteSurvey(survey: ExhaustiveSurvey):void {
-        this.surveyService.deleteSurvey(survey).subscribe(_ => _);
-        this.getSurveys();
+        this.surveyService.deleteSurvey(survey).subscribe(_ => this.getSurveys());
     }
 
     showDetails(survey: ExhaustiveSurvey): void {

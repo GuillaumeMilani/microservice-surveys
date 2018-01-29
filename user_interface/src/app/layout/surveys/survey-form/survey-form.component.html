@@ -16,7 +16,7 @@
             <ul dnd-sortable-container [sortableData]="survey.questions" class="list-group questions">
                 <li *ngFor="let question of survey.questions; let idx = index" dnd-sortable [sortableIndex]="idx"
                     (onDropSuccess)="updateQuestionNumbers()" class="list-group-item question-item">
-                    {{ question.number }}
+                    {{ question.number + 1 }}
                     <div class="col-md-10">
                         <input type="text" class="form-control" name="question-{{question.number}}"
                                [(ngModel)]="question.question">

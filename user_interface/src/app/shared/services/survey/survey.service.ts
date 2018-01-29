@@ -24,6 +24,7 @@ export class SurveyService {
     }
 
     getSurveys(): Observable<ExhaustiveSurvey[]> {
+      console.log(this.surveysURL);
         return this.http.get<ExhaustiveSurvey[]>(this.surveysURL)
             .pipe(
                 tap(surveys => console.log(`fetched surveys`)),
