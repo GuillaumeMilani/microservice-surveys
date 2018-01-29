@@ -27,3 +27,13 @@ Feature: Creation of Survey
     Given I have a survey payload with wrong user type
     When I custom POST it to the /survey endpoint
     Then I receive a 400 status code
+
+  Scenario: create a survey with first question not zero
+    Given I have a survey payload with first question not zero
+    When I POST its payload to the /survey endpoint
+    Then I receive a 460 status code
+
+  Scenario: create a survey with wrong questions numbers
+    Given I have a survey payload with not consecutive questions numbers
+    When I POST its payload to the /survey endpoint
+    Then I receive a 461 status code

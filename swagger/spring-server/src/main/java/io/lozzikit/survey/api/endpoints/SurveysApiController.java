@@ -3,6 +3,8 @@ package io.lozzikit.survey.api.endpoints;
 import io.lozzikit.survey.api.SurveysApi;
 import io.lozzikit.survey.api.exceptions.NotFoundException;
 import io.lozzikit.survey.api.model.*;
+import io.lozzikit.survey.exceptions.FirstQuestionNotZeroException;
+import io.lozzikit.survey.exceptions.WrongQuestionNumbersException;
 import io.lozzikit.survey.services.EventService;
 import io.lozzikit.survey.services.SurveyResponsesService;
 import io.lozzikit.survey.services.SurveyService;
@@ -119,15 +121,20 @@ public class SurveysApiController implements SurveysApi {
 
     @Override
     public ResponseEntity<Void> addSurvey(@Valid @RequestBody NewSurvey body) {
-        String newSurveyId = surveyService.createSurvey(body);
+        try {
+            String newSurveyId = surveyService.createSurvey(body);
 
-        // TODO: Ensure question number uniqueness. Has to be done programmatically (no way with Mongo)
+            URI location = ServletUriComponentsBuilder
+                    .fromCurrentRequest().path("/{id}")
+                    .buildAndExpand(newSurveyId).toUri();
 
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest().path("/{id}")
-                .buildAndExpand(newSurveyId).toUri();
+            return ResponseEntity.created(location).build();
 
-        return ResponseEntity.created(location).build();
+        } catch (FirstQuestionNotZeroException e) {
+            return ResponseEntity.status(460).build();
+        } catch (WrongQuestionNumbersException e) {
+            return ResponseEntity.status(461).build();
+        }
     }
 
     @Override
@@ -159,6 +166,10 @@ public class SurveysApiController implements SurveysApi {
             return ResponseEntity.ok().build();
         } catch (NotFoundException e) {
             return ResponseEntity.notFound().build();
+        } catch (FirstQuestionNotZeroException e) {
+            return ResponseEntity.status(460).build();
+        } catch (WrongQuestionNumbersException e) {
+            return ResponseEntity.status(461).build();
         }
     }
 

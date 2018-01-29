@@ -39,6 +39,39 @@ public class CreateSurveySteps extends SurveySteps {
         environment.setNewSurvey(new NewSurvey());
     }
 
+    @Given("^I have a survey payload with first question not zero$")
+    public void iHaveASurveyWithFirstQuestionNotZero() {
+        NewSurvey newSurvey = new NewSurvey();
+        newSurvey.setUser(new User());
+        Question question = new Question();
+        question.setNumber(1);
+
+        newSurvey.addQuestionsItem(question);
+
+        environment.setNewSurvey(newSurvey);
+    }
+
+    @Given("^I have a survey payload with not consecutive questions numbers$")
+    public void iHaveASurveyWithNotConsecutiveQuestionsNumbers() {
+        NewSurvey newSurvey = new NewSurvey();
+        newSurvey.setUser(new User());
+
+        Question question1 = new Question();
+        question1.setNumber(0);
+
+        Question question2 = new Question();
+        question2.setNumber(1);
+
+        Question question3 = new Question();
+        question2.setNumber(3);
+
+        newSurvey.addQuestionsItem(question1);
+        newSurvey.addQuestionsItem(question2);
+        newSurvey.addQuestionsItem(question3);
+
+        environment.setNewSurvey(newSurvey);
+    }
+
     @When("^I POST its payload to the /survey endpoint$")
     public void iPOSTItsPayloadToTheSurveyEndpoint() {
         try {
