@@ -1,7 +1,29 @@
 # microservice-surveys
 
-# Docker-compose
-En utilisant `docker-compose up --build` à la racine du micro-service, on peut lancer un serveur *mongo* ainsi que *mongo-express*, qui sera en écoute sur le port **8081** afin d'accéder à la base de donnée. 
+## Installation
+	
+### Pré-requis
+- Docker
+- Maven
+		
+## Compilation depuis les sources
+Lancer le script suivant afin de compiler les sources et créer les images Docker :
+
+```sh build-image.sh```
+	
+## Lancement du microservice
+Après avoir construit les images, vous pouvez lancer le microservice en utilisant `Docker-compose`.
+
+Serveur uniquement : `docker-compose up mongo server`
+
+
+Serveur et client : `docker-compose up mongo server client`
+
+	
+## Accéder au microservice
+Une fois le serveur lancé, la documentation Swagger de l'API se trouve à l'adresse `http://{host docker-machine}:8080/api`.
+
+Si vous avez lancé le client, il se trouve à l'adresse `http://{host docker-machine}:4200`.
 
 # Features
 ## Création de sondage
