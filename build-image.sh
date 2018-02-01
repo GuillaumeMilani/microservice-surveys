@@ -16,7 +16,7 @@ cd ../../
 
 echo "----- Copying client package.JSON ------"
 cp user_interface/package.json images/client/package.json
-cp -r user_interface/ images/client/
+cp -r user_interface/ images/client/user_interface
 
 cd images/client/
 
