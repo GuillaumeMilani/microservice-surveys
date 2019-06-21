@@ -1,5 +1,7 @@
 # microservice-surveys
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/c6ccd95aaadc48fd942758cae9184ba0)](https://app.codacy.com/app/GuillaumeMilani/microservice-surveys?utm_source=github.com&utm_medium=referral&utm_content=GuillaumeMilani/microservice-surveys&utm_campaign=Badge_Grade_Dashboard)
+
 ## Installation
 	
 ### Pré-requis
